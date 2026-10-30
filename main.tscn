@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="1_pj"]
 [ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_modelo"]
+[ext_resource type="PackedScene" uid="uid://b401gky4h00ip" path="res://Cuidadano.tscn" id="3_h2yge"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -85,7 +86,6 @@ transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.81915
 [node name="Personaje" type="CharacterBody3D" parent="." unique_id=1845449479 node_paths=PackedStringArray("camara")]
 script = ExtResource("1_pj")
 camara = NodePath("../Camera3D")
-prueba = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Personaje" unique_id=982192723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
@@ -93,3 +93,7 @@ shape = SubResource("Capsula")
 
 [node name="Modelo" parent="Personaje" unique_id=1353549465 instance=ExtResource("2_modelo")]
 transform = Transform3D(-2.6, 0, 0, 0, 2.6, 0, 0, 0, -2.6, 0, 0, 0)
+
+[node name="Cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+objetivo = NodePath("../Personaje")
