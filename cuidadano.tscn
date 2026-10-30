@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bjekt0e1nvewt"]
 
-[ext_resource type="Script" uid="uid://cva187g5esrt6" path="res://cuidadano.gd" id="1_5hl1a"]
+[ext_resource type="Script" uid="uid://bqarkse6nhueg" path="res://cuidadano.gd" id="1_5hl1a"]
 [ext_resource type="PackedScene" uid="uid://btbidf61ylt57" path="res://personaje/character-male-d.glb" id="2_k0uig"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8w0r3"]

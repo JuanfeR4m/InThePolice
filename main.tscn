@@ -95,5 +95,5 @@ shape = SubResource("Capsula")
 transform = Transform3D(-2.6, 0, 0, 0, 2.6, 0, 0, 0, -2.6, 0, 0, 0)
 
 [node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
 objetivo = NodePath("../Personaje")
