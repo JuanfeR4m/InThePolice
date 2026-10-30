@@ -1,17 +1,20 @@
 extends CharacterBody3D
 
+enum Estado { QUIETO, CAMINAR, CORRER, RESOLVIENDO }
+const RAPIDEZ = [0.0, 4.0, 7.0, 0.5]
+
 @export var camara: Camera3D
 @export var speed_caminar = 4.0
 @export var speed_correr = 7.0
 @export var tiempo_arranque = 0.25
 @onready var anim = $Modelo/AnimationPlayer
 
-# Enchufes: otros scripts (las acciones del juego) cambian estas tres variables.
-var multiplicador = 1.0     # 1 = rapidez normal, 0.5 = la mitad, 0 = quieto
-var empuje = Vector3.ZERO   # velocidad extra en m/s (dash, retroceso)
-var accion = ""             # animación de la acción; "" = ninguna
-var avance = Vector3.ZERO   # la parte de la velocidad que dan las teclas
-
+var multiplicador = 1.0    
+var empuje = Vector3.ZERO   
+var accion = ""           
+var avance = Vector3.ZERO  
+var estado = Estado.QUIETO
+var ruido = 0.0 
 
 func _ready():
 	if camara == null:
@@ -39,17 +42,42 @@ func _physics_process(delta):
 
 	if direction.length() > 0:
 		basis = Basis.looking_at(direction)
-	if accion != "":
-		anim.play(accion)
-	elif avance.length() > speed_caminar + 0.1:
-		anim.play("sprint")
-	elif avance.length() > 0.1:
-		anim.play("walk")
-	else:
-		anim.play("idle")
+
 
 	move_and_slide()
+	var antes = estado
+	estado = elegir_estado()
+	if estado == Estado.RESOLVIENDO:
+		multiplicador = RAPIDEZ[estado] / speed
+	else:
+		multiplicador = 1.0
+	if estado != antes:
+		print("estado ", Estado.keys()[estado], " · rapidez máxima ", RAPIDEZ[estado], " m/s")
+	animar()
 	_prueba()
+	
+func elegir_estado():
+	if Input.is_action_pressed("resolver"):
+		return Estado.RESOLVIENDO
+	var rapidez = Vector2(velocity.x, velocity.z).length()
+	if rapidez < 0.1:
+		return Estado.QUIETO
+	if rapidez > speed_caminar + 0.1:
+		return Estado.CORRER
+	return Estado.CAMINAR
+
+
+func animar():
+	if accion != "":
+		anim.play(accion)
+		return
+	match estado:
+		Estado.QUIETO:
+			anim.play("idle")
+		Estado.CAMINAR:
+			anim.play("walk")
+		Estado.RESOLVIENDO:
+			anim.play("idle")
 
 
 # ---------------------------------------------------------------------------
