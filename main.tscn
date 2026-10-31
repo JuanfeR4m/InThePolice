@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="1_pj"]
 [ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_modelo"]
 [ext_resource type="Script" uid="uid://67g8ul8ywidy" path="res://rodar.gd" id="3_1bvp3"]
-[ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_lquwl"]
 [ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://cuidadano.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_lquwl"]
+[ext_resource type="Script" uid="uid://d3toawbd7umng" path="res://apuntar.gd" id="5_7mycd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -101,6 +102,10 @@ script = ExtResource("3_1bvp3")
 
 [node name="Fuerza" type="Node" parent="Personaje" unique_id=1066369014]
 script = ExtResource("4_lquwl")
+
+[node name="Apuntar" type="Node" parent="Personaje" unique_id=612716870]
+script = ExtResource("5_7mycd")
+
 [node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
 objetivo = NodePath("../Personaje")
