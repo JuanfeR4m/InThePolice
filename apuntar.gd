@@ -5,14 +5,22 @@ extends Node
 @onready var pj = get_parent()
 var origen = Vector3.ZERO # de dónde sale el rayo
 
+@export var danio = 25
+@export var cadencia = 0.25
+var espera = 0.0
+
 func _physics_process(delta):
-	if Input.is_action_just_pressed(tecla):
+	espera -= delta
+	if Input.is_action_pressed(tecla) and espera <= 0.001:
+		espera = cadencia
 		var golpe = lanzar_rayo()
 		if golpe.is_empty():
 			print("no le dio a nada en ", alcance, " m")
-		else:
-			var d = snappedf(origen.distance_to(golpe.position), 0.01)
-			print("le dio a ", golpe.collider.name, " a ", d, " m")
+			return
+		var d = snappedf(origen.distance_to(golpe.position), 0.01)
+		print("le dio a ", golpe.collider.name, " a ", d, " m")
+		if golpe.collider.has_method("recibir_golpe"):
+			golpe.collider.recibir_golpe(danio, -pj.global_basis.z)
 
 func lanzar_rayo():
 	var hacia

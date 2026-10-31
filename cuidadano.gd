@@ -3,6 +3,7 @@ extends CharacterBody3D
 enum Estado { PATRULLA, PERSEGUIR }
 
 @export var objetivo: Node3D
+@export var vida = 100
 @export var rapidez = 2.0
 @export var radio_ver = 6.0
 @export var radio_perder = 9.0
@@ -30,7 +31,15 @@ func _physics_process(delta):
 				print("lo perdió a ", snappedf(distancia, 0.01), " m")
 			ir_a(objetivo.global_position)
 	move_and_slide()
-
+	
+func recibir_golpe(danio, direccion = Vector3.ZERO):
+	print("recibir_golpe llamado, vida antes: ", vida)
+	if vida <= 0:
+		print(name, " ya está en 0")
+		return
+	vida = max(vida - danio, 0)
+	global_position += direccion * 3.0
+	print(name, ": resistencia ", vida)
 func ir_a(p):
 	var hacia = p - global_position
 	hacia.y = 0.0

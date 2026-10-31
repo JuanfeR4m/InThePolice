@@ -108,6 +108,7 @@ script = ExtResource("4_lquwl")
 
 [node name="Apuntar" type="Node" parent="Personaje" unique_id=612716870]
 script = ExtResource("5_7mycd")
+alcance = 2.0
 
 [node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
