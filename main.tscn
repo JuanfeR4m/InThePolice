@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cvcv7o80bsde"]
 
+[ext_resource type="Script" uid="uid://cmfd0gglkasgd" path="res://incidente.gd" id="1_5vw27"]
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="1_pj"]
 [ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_modelo"]
 [ext_resource type="Script" uid="uid://67g8ul8ywidy" path="res://rodar.gd" id="3_1bvp3"]
@@ -56,6 +57,7 @@ shape = SubResource("PisoForma")
 
 [node name="Caja1" type="StaticBody3D" parent="Cajas" unique_id=24474419 groups=["interactivos"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
+script = ExtResource("1_5vw27")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja1" unique_id=581659405]
 mesh = SubResource("CajaMalla")
@@ -113,6 +115,7 @@ alcance = 2.0
 
 [node name="Interactuar" type="Node" parent="Personaje" unique_id=1494322278]
 script = ExtResource("6_272bh")
+tiempo_necesario = 3.0
 
 [node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)

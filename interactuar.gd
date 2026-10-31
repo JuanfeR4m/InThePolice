@@ -4,14 +4,29 @@ extends Node
 @export var alcance = 1.5
 @onready var pj = get_parent()
 
+
+@export var tiempo_necesario = 1.5
+var progreso = 0.0
+var actual = null
+
 func _physics_process(delta):
-	if Input.is_action_just_pressed(tecla):
-		var obj = mas_cercano()
-		if obj == null:
-			print("nada a menos de ", alcance, " m")
-		else:
-			var d = snappedf(distancia_a(obj), 0.01)
-			print("interactúa con ", obj.name, " a ", d, " m")
+	var obj = mas_cercano()
+	if not Input.is_action_pressed(tecla) or obj == null:
+		progreso = 0.0
+		actual = null
+		return
+	if obj != actual: # cambió de objeto: empieza de cero
+		actual = obj
+		progreso = 0.0
+	var antes = progreso
+	progreso += delta / tiempo_necesario
+	if int(progreso * 4) > int(antes * 4) and progreso < 0.999:
+		print(obj.name, ": ", int(progreso * 4) * 25, " %")
+	if progreso >= 0.999:
+		print("completado: ", obj.name)
+		if obj.has_method("usar"):
+			obj.usar()
+		progreso = 0.0
 
 func mas_cercano():
 	var mejor = null
