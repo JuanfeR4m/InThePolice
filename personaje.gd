@@ -57,7 +57,7 @@ func _physics_process(delta):
 	_prueba()
 	
 func elegir_estado():
-	if Input.is_action_pressed("resolver"):
+	if Input.is_action_pressed("interactuar"):
 		return Estado.RESOLVIENDO
 	var rapidez = Vector2(velocity.x, velocity.z).length()
 	if rapidez < 0.1:
@@ -78,6 +78,8 @@ func animar():
 			anim.play("walk")
 		Estado.RESOLVIENDO:
 			anim.play("idle")
+		Estado.CORRER:
+			anim.play("sprint")
 
 
 # ---------------------------------------------------------------------------
