@@ -9,7 +9,8 @@
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="7_takij"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="8_fcx76"]
 [ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://cuidadano.tscn" id="9_3wdyd"]
-[ext_resource type="Script" path="res://luz_jugador.gd" id="9_85d48"]
+[ext_resource type="Script" uid="uid://c1ylyjuojfa61" path="res://luz_jugador.gd" id="9_85d48"]
+[ext_resource type="Script" uid="uid://clahgnnril28" path="res://color_rect.gd" id="11_hsfvb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -132,12 +133,24 @@ script = ExtResource("8_fcx76")
 tiempo_necesario = 3.0
 
 [node name="LuzJugador" type="SpotLight3D" parent="Personaje" unique_id=1522027822]
-transform = Transform3D(1, 0, 0, 0, 0.90630776, 0.42261827, 0, -0.42261827, 0.90630776, 0, 0, 0)
-light_energy = 2.5
+transform = Transform3D(0.9157437, -0.13741104, 0.3775337, 0.12992927, 0.99048555, 0.045351554, -0.38017347, 0.007522283, 0.9248846, 0, 2.2704437, -1.953142)
+light_energy = 20.0
+spot_range = 6.0
 spot_attenuation = 2.0
-spot_angle = 35.0
+spot_angle = 60.0
+spot_angle_attenuation = 4.5
 script = ExtResource("9_85d48")
 
 [node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("9_3wdyd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
 objetivo = NodePath("../Personaje")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=817155519]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=976822703 node_paths=PackedStringArray("jugador", "ciudadano")]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+script = ExtResource("11_hsfvb")
+jugador = NodePath("../../Personaje")
+ciudadano = NodePath("../../cuidadano")

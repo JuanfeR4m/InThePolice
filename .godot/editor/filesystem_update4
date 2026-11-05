@@ -1,3 +1,4 @@
-res://main.tscn
+res://rodar.gd
 res://zona_c.tscn
-res://luz_jugador.gd
+res://personaje/LICENCIA Kenney (CC0).txt
+res://color_rect.gd
