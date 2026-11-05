@@ -22,3 +22,4 @@ static func factor_sol(h: float) -> float:
 
 static func color_sol(h: float) -> Color:
 	return NARANJA.lerp(Color.WHITE, factor_sol(h))
+	
