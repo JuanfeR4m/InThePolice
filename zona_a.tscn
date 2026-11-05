@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cy80y0cs687eh" path="res://sistema_sol.gd" id="1_l7qun"]
 [ext_resource type="Script" uid="uid://c3f1w6y7ay111" path="res://ciclo_dia.gd" id="2_fntjl"]
-[ext_resource type="Script" uid="uid://cgjsgybs03e66" path="res://fotometro.gd" id="3_fntjl"]
+[ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="3_57wwi"]
+[ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="4_o0wp1"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="5_evii1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r6318"]
 
@@ -14,8 +16,6 @@ background_mode = 2
 sky = SubResource("Sky_hchaj")
 ambient_light_source = 3
 tonemap_mode = 2
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_evii1"]
 
 [node name="ZonaA" type="Node3D" unique_id=773773640]
 
@@ -33,17 +33,9 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1601312701]
 environment = SubResource("Environment_uxa2c")
 
-[node name="Fotometro" type="Node" parent="." unique_id=803124098 node_paths=PackedStringArray("sistema", "camara", "superficie")]
-script = ExtResource("3_fntjl")
-sistema = NodePath("../SistemaSol")
-camara = NodePath("../Camera3D")
-superficie = NodePath("../MeshInstance3D")
-punto = Vector3(0, 0, 1)
+[node name="Personaje" parent="." unique_id=2144265238 instance=ExtResource("3_57wwi")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1871662138]
-transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
-mesh = SubResource("PlaneMesh_evii1")
+[node name="Suelo" parent="." unique_id=440831347 instance=ExtResource("4_o0wp1")]
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=22886370]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 2, 3)
-current = true
+[node name="Camera3D" parent="." unique_id=1147277627 node_paths=PackedStringArray("objetivo") instance=ExtResource("5_evii1")]
+objetivo = NodePath("../Personaje")

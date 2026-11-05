@@ -1,7 +1,7 @@
-res://rodar.gd
-res://zona_c.tscn
-res://personaje/LICENCIA Kenney (CC0).txt
-res://color_rect.gd
-res://cuidadano.gd
-res://ciclo_dia.gd
+res://zona_a.tscn
+res://fotometro.gd
 res://sistema_sol.gd
+res://cuidadano.gd
+res://rodar.gd
+res://main.tscn
+res://zona_c.tscn
