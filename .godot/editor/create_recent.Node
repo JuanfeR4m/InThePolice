@@ -1,1 +1,8 @@
+WorldEnvironment
+CollisionShape3D
+MeshInstance3D
+StaticBody3D
+Node3D
+ImporterMeshInstance3D
+Node2D
 Node
