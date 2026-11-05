@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://biyljgujvggl4"]
 
 [ext_resource type="Script" uid="uid://cqufr8mvybimx" path="res://luz_parpadeante.gd" id="1_pjwgy"]
+[ext_resource type="Script" uid="uid://c75387v46xe0m" path="res://disparador.gd" id="2_7ursy"]
+[ext_resource type="Script" uid="uid://c1df1opwnhc5q" path="res://sistema_eventos.gd" id="3_dbxaw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhnf2"]
 
 [node name="ZonaB" type="Node3D" unique_id=1052851359]
 
@@ -13,7 +17,7 @@ omni_attenuation = 2.0
 script = ExtResource("1_pjwgy")
 
 [node name="Foco2" type="OmniLight3D" parent="." unique_id=1682925518]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
 shadow_enabled = true
 omni_range = 6.0
@@ -22,10 +26,26 @@ script = ExtResource("1_pjwgy")
 semilla = 13
 
 [node name="Foco3" type="OmniLight3D" parent="." unique_id=1594634642]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3, 0)
 light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
 shadow_enabled = true
 omni_range = 6.0
 omni_attenuation = 2.0
 script = ExtResource("1_pjwgy")
 semilla = 21
+
+[node name="Disparador" type="Area3D" parent="." unique_id=1529718772]
+script = ExtResource("2_7ursy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Disparador" unique_id=180441561]
+shape = SubResource("BoxShape3D_lhnf2")
+
+[node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1045211127]
+light_color = Color(0.8392157, 0.22745098, 0.22745098, 1)
+light_energy = 0.0
+omni_range = 4.0
+omni_attenuation = 2.0
+
+[node name="SistemaEventos" type="Node" parent="." unique_id=265016157 node_paths=PackedStringArray("luz_evento")]
+script = ExtResource("3_dbxaw")
+luz_evento = NodePath("../LuzEvento")

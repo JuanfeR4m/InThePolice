@@ -1,11 +1,12 @@
-Camera3D
-MeshInstance3D
 Node
 OmniLight3D
+CollisionShape3D
+Area3D
+Camera3D
+MeshInstance3D
 Node3D
 WorldEnvironment
 DirectionalLight3D
-CollisionShape3D
 StaticBody3D
 ImporterMeshInstance3D
 Node2D
