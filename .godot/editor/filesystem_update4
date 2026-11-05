@@ -1,4 +1,5 @@
-res://zona_a.tscn
-res://ciclo_dia.gd
-res://sistema_sol.gd
 res://main.tscn
+res://zona_b.tscn
+res://camara_sigue_zona_b.gd
+res://camara_sigue.gd
+res://luz_parpadeante.gd
