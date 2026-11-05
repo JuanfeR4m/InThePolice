@@ -1,3 +1,4 @@
+res://zona_a.tscn
+res://ciclo_dia.gd
+res://sistema_sol.gd
 res://main.tscn
-res://personaje.gd
-res://camara_sigue.gd
