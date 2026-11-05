@@ -11,3 +11,21 @@ shadow_enabled = true
 omni_range = 6.0
 omni_attenuation = 2.0
 script = ExtResource("1_pjwgy")
+
+[node name="Foco2" type="OmniLight3D" parent="." unique_id=1682925518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+shadow_enabled = true
+omni_range = 6.0
+omni_attenuation = 2.0
+script = ExtResource("1_pjwgy")
+semilla = 13
+
+[node name="Foco3" type="OmniLight3D" parent="." unique_id=1594634642]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+shadow_enabled = true
+omni_range = 6.0
+omni_attenuation = 2.0
+script = ExtResource("1_pjwgy")
+semilla = 21

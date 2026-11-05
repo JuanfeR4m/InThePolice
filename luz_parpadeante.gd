@@ -12,7 +12,6 @@ var t := 0.0
 func _ready() -> void:
 	ruido.seed = semilla
 	ruido.frequency = 1.0
-	print(energia(2.0, 0.3, 1.0), " ", energia(2.0, 0.3, ruido.get_noise_1d(0.25 * 4.0)))
 
 func _process(delta: float) -> void:
 	t += delta
