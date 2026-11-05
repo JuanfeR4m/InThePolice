@@ -87,12 +87,12 @@ surface_material_override/0 = SubResource("CajaMat")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=65109076]
 shape = SubResource("CajaForma")
 
-[node name="Camera3D" parent="." unique_id=1147277627 instance=ExtResource("2_4c57u")]
+[node name="Camera3D" parent="." unique_id=1147277627 node_paths=PackedStringArray("objetivo") instance=ExtResource("2_4c57u")]
 transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.8191518, 0, 5, 7)
+objetivo = NodePath("../Personaje")
 
-[node name="Personaje" type="CharacterBody3D" parent="." unique_id=1845449479 node_paths=PackedStringArray("camara")]
+[node name="Personaje" type="CharacterBody3D" parent="." unique_id=1845449479]
 script = ExtResource("1_pj")
-camara = NodePath("")
 prueba = 1
 accion_prueba = ""
 
