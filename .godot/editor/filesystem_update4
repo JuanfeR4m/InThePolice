@@ -1,5 +1,3 @@
-res://main.tscn
-res://zona_b.tscn
-res://camara_sigue_zona_b.gd
-res://camara_sigue.gd
-res://luz_parpadeante.gd
+res://zona_a.tscn
+res://fotometro.gd
+res://sistema_sol.gd
