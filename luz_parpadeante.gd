@@ -1,4 +1,4 @@
-
+class_name LuzParpadeante
 extends OmniLight3D
 
 @export var energia_base := 2.0
