@@ -1,5 +1,5 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793993826
+::res://::1793995020
 apuntar.gd::GDScript::9154919266375362820::1793883163::0::1::::<>Node<><>0<>0<><>::
 camara_sigue.gd::GDScript::6835303819788986517::1793883163::0::1::::<>Camera3D<><>0<>0<><>::
 camera_3d.tscn::PackedScene::3468454381140211498::1793885494::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://camara_sigue.gd
@@ -12,19 +12,19 @@ curioso.tscn::PackedScene::2935521281573025366::1793992875::0::1::::<><><>0<>0<>
 disparador.gd::GDScript::7082576417969414774::1793992875::0::1::::Disparador<>Area3D<><>0<>0<><>::
 fotometro.gd::GDScript::5213658712591720253::1793894077::0::1::::<>Node<><>0<>0<><>::
 fuerza.gd::GDScript::6038028493805127833::1793390854::0::1::::<>Node<><>0<>0<><>::
-guardia.gd::GDScript::3078550229933413096::1793993589::0::1::::<>CharacterBody3D<><>0<>0<><>::
-guardia.tscn::PackedScene::5438618299913828742::1793993589::0::1::::<><><>0<>0<><>::uid://bj4jjjasqwirw::::res://guardia.gd<>uid://btbidf61ylt57::::res://personaje/character-male-d.glb
+guardia.gd::GDScript::3078550229933413096::1793994873::0::1::::<>CharacterBody3D<><>0<>0<><>::
+guardia.tscn::PackedScene::5438618299913828742::1793994873::0::1::::<><><>0<>0<><>::uid://bj4jjjasqwirw::::res://guardia.gd<>uid://btbidf61ylt57::::res://personaje/character-male-d.glb
 icon.svg::CompressedTexture2D::1082983283144382342::1793390854::1793885494::1::::<><><>0<>0<>63892c2e5cd9b06ae62449f83b4855f0<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 incidente.gd::GDScript::5625656500560912791::1793883163::0::1::::<>StaticBody3D<><>0<>0<><>::
 interactuar.gd::GDScript::5367995637860576821::1793883163::0::1::::<>Node<><>0<>0<><>::
 LEEME.txt::TextFile::-1::1793390854::0::1::::<><><>0<>0<><>::
 luz_jugador.gd::GDScript::6648007618301187504::1793896026::0::1::::LuzJugador<>SpotLight3D<><>0<>0<><>::
 luz_parpadeante.gd::GDScript::5937486116930604023::1793992875::0::1::::LuzParpadeante<>OmniLight3D<><>0<>0<><>::
-main.tscn::PackedScene::183890259676159850::1793993819::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://bjekt0e1nvewt::::res://ciudadano.tscn<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn<>uid://bts8qwxctvwti::::res://zona_a.tscn
+main.tscn::PackedScene::183890259676159850::1793994976::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://bjekt0e1nvewt::::res://ciudadano.tscn<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn<>uid://bts8qwxctvwti::::res://zona_a.tscn
 manifestante.gd::GDScript::8945735252048162096::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
 manifestante.tscn::PackedScene::6782523737467407470::1793992875::0::1::::<><><>0<>0<><>::uid://d0pm7nhq8tcuy::::res://manifestante.gd<>uid://b2d6ms0qpq2yb::::res://assets/policia/GLB format/character-male-b.glb
 personaje.gd::GDScript::4928998021563027591::1793883163::0::1::::<>CharacterBody3D<><>0<>0<><>::
-personaje.tscn::PackedScene::3688718937690695944::1793993466::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://personaje.gd<>uid://67g8ul8ywidy::::res://rodar.gd<>uid://csa4pg43r5vaf::::res://fuerza.gd<>uid://d3oyghjp2e16o::::res://apuntar.gd<>uid://ciqkdsc7x5rl2::::res://interactuar.gd<>uid://kt8lkvi5bed1::::res://assets/policia/GLB format/character-male-d.glb
+personaje.tscn::PackedScene::3688718937690695944::1793994204::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://personaje.gd<>uid://67g8ul8ywidy::::res://rodar.gd<>uid://csa4pg43r5vaf::::res://fuerza.gd<>uid://d3oyghjp2e16o::::res://apuntar.gd<>uid://ciqkdsc7x5rl2::::res://interactuar.gd<>uid://c6ahemttr3fhi::::res://assets/policia/GLB format/character-male-c.glb
 prueba_felipe.tscn::PackedScene::2381025468113338126::1793992875::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://cchv43eug6720::::res://personaje.gd<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://bkmexfnojlmxi::::res://personaje/character-male-a.glb<>uid://67g8ul8ywidy::::res://rodar.gd<>uid://csa4pg43r5vaf::::res://fuerza.gd<>uid://d3oyghjp2e16o::::res://apuntar.gd<>uid://ciqkdsc7x5rl2::::res://interactuar.gd<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn
 prueba_paola.tscn::PackedScene::8930022208089202896::1793992875::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bhwk4dav4gp6u::::res://ruido.gd<>uid://bh28uvixpvqmg::::res://curioso.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn
 rodar.gd::GDScript::2242338543056543662::1793896026::0::1::::<>Node<><>0<>0<><>::
@@ -35,7 +35,7 @@ sistema_sol.gd::GDScript::6527060181489791687::1793894077::0::1::::SistemaSol<>N
 suelo.tscn::PackedScene::9008167162551218476::1793898148::0::1::::<><><>0<>0<><>::
 zona_a.tscn::PackedScene::3759200937013881406::1793992875::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://sistema_sol.gd<>uid://c3f1w6y7ay111::::res://ciclo_dia.gd
 zona_b.tscn::PackedScene::2998160804433784139::1793992875::0::1::::<><><>0<>0<><>::uid://cqufr8mvybimx::::res://luz_parpadeante.gd<>uid://c75387v46xe0m::::res://disparador.gd<>uid://c1df1opwnhc5q::::res://sistema_eventos.gd
-zona_c.tscn::PackedScene::633945155365601340::1793992875::0::1::::<><><>0<>0<><>::uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bjekt0e1nvewt::::res://ciudadano.tscn<>uid://c1ylyjuojfa61::::res://luz_jugador.gd<>uid://clahgnnril28::::res://color_rect.gd
+zona_c.tscn::PackedScene::633945155365601340::1793995011::0::1::::<><><>0<>0<><>::uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://c1ylyjuojfa61::::res://luz_jugador.gd<>uid://clahgnnril28::::res://color_rect.gd
 ::res://assets/::1793992875
 ::res://assets/policia/::1793992875
 ::res://assets/policia/GLB format/::1793992942

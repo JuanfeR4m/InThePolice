@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="3_toaxk"]
 [ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="4_e2xqd"]
 [ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="5_4bgqf"]
-[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://ciudadano.tscn" id="9_3wdyd"]
 [ext_resource type="Script" uid="uid://c1ylyjuojfa61" path="res://luz_jugador.gd" id="9_85d48"]
 [ext_resource type="Script" uid="uid://clahgnnril28" path="res://color_rect.gd" id="11_hsfvb"]
 
@@ -31,7 +30,7 @@ offset_bottom = 40.0
 color = Color(0.9490196, 0.7137255, 0.19607843, 1)
 script = ExtResource("11_hsfvb")
 jugador = NodePath("../../Personaje")
-ciudadano = NodePath("../../cuidadano")
+ciudadano = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2008323335]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
@@ -53,5 +52,3 @@ spot_attenuation = 2.0
 spot_angle = 60.0
 spot_angle_attenuation = 4.5
 script = ExtResource("9_85d48")
-
-[node name="cuidadano" parent="." unique_id=1585811737 instance=ExtResource("9_3wdyd")]
