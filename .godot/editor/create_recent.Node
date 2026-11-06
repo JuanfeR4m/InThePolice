@@ -1,7 +1,9 @@
-AnimationPlayer
-OmniLight3D
+RayCast3D
 Node
 CollisionShape3D
+CharacterBody3D
+AnimationPlayer
+OmniLight3D
 Area3D
 Camera3D
 MeshInstance3D
