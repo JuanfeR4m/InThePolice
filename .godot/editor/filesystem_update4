@@ -1,8 +1,8 @@
 res://prueba_felipe.tscn
 res://main.tscn
-<<<<<<< Updated upstream
 res://guardia.tscn
 res://guardia.gd
 res://zona_a.tscn
-=======
->>>>>>> Stashed changes
+res://manifestante.gd
+res://personaje.tscn
+res://sistema_eventos.gd

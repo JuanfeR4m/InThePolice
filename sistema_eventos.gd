@@ -26,7 +26,6 @@ func _process(delta: float) -> void:
 		variable = maxf(0.0, variable - delta * 0.5)
 
 	if luz_variable != null:
-		print(snappedf(luz_variable.light_energy, 0.001))
 		var v := clampf(variable, 0.0, 1.0)
 		luz_variable.light_color = color_bajo.lerp(color_alto, v)
 		var deseada := 1.0 + 3.0 * v

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_f8plh"]
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="5_pqm5q"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="6_2vb47"]
-[ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/policia/GLB format/character-male-c.glb" id="7_35kqm"]
+[ext_resource type="PackedScene" uid="uid://kt8lkvi5bed1" path="res://assets/policia/GLB format/character-male-d.glb" id="6_cx4ix"]
 
 [sub_resource type="CapsuleShape3D" id="Capsula"]
 radius = 0.35
@@ -34,11 +34,4 @@ alcance = 2.0
 script = ExtResource("6_2vb47")
 tiempo_necesario = 3.0
 
-[node name="Modelo" parent="." unique_id=414783263 instance=ExtResource("7_35kqm")]
-transform = Transform3D(-2, 0, -1.7484555e-07, 0, 2, 0, 1.7484555e-07, 0, -2, 0, 0, 0)
-
-[node name="Skeleton3D" parent="Modelo/character-male-c" parent_id_path=PackedInt32Array(414783263, 679552676) index="0" unique_id=1585079456]
-bones/4/rotation = Quaternion(0, 0, -0.38268346, 0.9238795)
-bones/5/rotation = Quaternion(0, 0, 0.3826835, 0.92387956)
-
-[editable path="Modelo"]
+[node name="Modelo" parent="." unique_id=124021715 instance=ExtResource("6_cx4ix")]
