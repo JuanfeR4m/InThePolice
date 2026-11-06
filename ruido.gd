@@ -1,15 +1,17 @@
-extends CharacterBody3D
+extends Node
 
-@onready var anim = $Modelo/AnimationPlayer
+@export var tecla = "hacer_ruido"
+@export var radio = 8.0
+@onready var pj = get_parent()
 
-func _ready():
-	add_to_group("oyentes")
+func _physics_process(_delta):
+	if Input.is_action_just_pressed(tecla):
+		sonar()
 
-func _physics_process(delta):
-	velocity += get_gravity() * delta
-	anim.play("idle")
-	move_and_slide()
-
-func oir(punto):
-	var d = global_position.distance_to(punto)
-	print(name, " oyó algo a ", snappedf(d, 0.01), " m")
+func sonar():
+	var cuantos = 0
+	for n in get_tree().get_nodes_in_group("oyentes"):
+		if pj.global_position.distance_to(n.global_position) <= radio:
+			n.oir(pj.global_position)
+			cuantos += 1
+	print("ruido de ", radio, "m: lo oyen ", cuantos)
