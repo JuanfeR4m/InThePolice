@@ -1,72 +1,80 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793998292
-apuntar.gd::GDScript::9154919266375362820::1793883163::0::1::::<>Node<><>0<>0<><>::
-camara_sigue.gd::GDScript::6835303819788986517::1793883163::0::1::::<>Camera3D<><>0<>0<><>::
-ciclo_dia.gd::GDScript::6750070474053311798::1793889063::0::1::::CicloDia<>Node<><>0<>0<><>::
-ciudadano.gd::GDScript::3510493181743387206::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
-ciudadano.tscn::PackedScene::3027020207925984711::1793992875::0::1::::<><><>0<>0<><>::uid://bqarkse6nhueg::::res://ciudadano.gd<>uid://btbidf61ylt57::::res://personaje/character-male-d.glb
-color_rect.gd::GDScript::163098678964321171::1793896026::0::1::::<>ColorRect<><>0<>0<><>::
-curioso.gd::GDScript::7714748090575155984::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
-curioso.tscn::PackedScene::2935521281573025366::1793992875::0::1::::<><><>0<>0<><>::uid://dh6c1kv407v3u::::res://curioso.gd<>uid://btbidf61ylt57::::res://personaje/character-male-d.glb
-disparador.gd::GDScript::7082576417969414774::1793992875::0::1::::Disparador<>Area3D<><>0<>0<><>::
-fotometro.gd::GDScript::5213658712591720253::1793894077::0::1::::<>Node<><>0<>0<><>::
-fuerza.gd::GDScript::6038028493805127833::1793390854::0::1::::<>Node<><>0<>0<><>::
-guardia.gd::GDScript::3078550229933413096::1793994873::0::1::::<>CharacterBody3D<><>0<>0<><>::
-guardia.tscn::PackedScene::5438618299913828742::1793994873::0::1::::<><><>0<>0<><>::uid://bj4jjjasqwirw::::res://guardia.gd<>uid://btbidf61ylt57::::res://personaje/character-male-d.glb
-icon.svg::CompressedTexture2D::1082983283144382342::1793390854::1793885494::1::::<><><>0<>0<>63892c2e5cd9b06ae62449f83b4855f0<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-incidente.gd::GDScript::5625656500560912791::1793883163::0::1::::<>StaticBody3D<><>0<>0<><>::
-interactuar.gd::GDScript::5367995637860576821::1793883163::0::1::::<>Node<><>0<>0<><>::
+::res://::1793999429
+::res://assets/::1793999030
+::res://assets/modelos_kenney/::1793992875
+::res://assets/modelos_kenney/GLB format/::1793999061
+aid-cane-blind.glb::PackedScene::8973504449659747154::1793992875::1793999059::1::::<><><>0<>0<>801925ca596a50dc9f19c7008580e5a1<>res://.godot/imported/aid-cane-blind.glb-fd25f92049c6a9f87d94b13694b42648.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-cane-low-vision.glb::PackedScene::1478388916023482401::1793992875::1793999059::1::::<><><>0<>0<>bfd494a38e309fc3444784a17fe03f60<>res://.godot/imported/aid-cane-low-vision.glb-c0075b504dd4430b8f0d306c748f7414.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-cane.glb::PackedScene::7569117882661236566::1793992875::1793999059::1::::<><><>0<>0<>c8437c50f59b8aa35e60903791656a17<>res://.godot/imported/aid-cane.glb-08b1de8f0716f7fe8beebb774518c79d.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-crutch.glb::PackedScene::5075445140656189621::1793992875::1793999059::1::::<><><>0<>0<>55c8270a0707879acb6fc7577011a116<>res://.godot/imported/aid-crutch.glb-6799ec61f478b7f9a7799d067aae3735.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-defibrillator-green.glb::PackedScene::901806695871810958::1793992875::1793999059::1::::<><><>0<>0<>4c375214c9a9f0575687706f6049f4d1<>res://.godot/imported/aid-defibrillator-green.glb-85646ea29c48c99735e0321e0df5abba.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-defibrillator-red.glb::PackedScene::5227935109408324985::1793992875::1793999059::1::::<><><>0<>0<>2e1f409d089a438c565a1891b8fa1b55<>res://.godot/imported/aid-defibrillator-red.glb-f6fbf120f070c8bc3a26b959fbd4b35b.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-glasses.glb::PackedScene::8696769365199891666::1793992875::1793999059::1::::<><><>0<>0<>4ee3afe63faf03b9135b11cda6a799d2<>res://.godot/imported/aid-glasses.glb-40b433e415bf39011ee3a0c7a1104330.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-mask.glb::PackedScene::1824380707033263963::1793992875::1793999059::1::::<><><>0<>0<>a18508767bec38037810f73a2aadd082<>res://.godot/imported/aid-mask.glb-48ee990b3b03cb799ea0d4e8febae1dd.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid-sunglasses.glb::PackedScene::1425103318889459329::1793992875::1793999060::1::::<><><>0<>0<>8b96220924e1f2e86ab4956e2b3e20f4<>res://.godot/imported/aid-sunglasses.glb-edb76727a029e085884506c8aa98ec96.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+aid_hearing.glb::PackedScene::4505347354020668595::1793992875::1793999060::1::::<><><>0<>0<>06f0cffa272de22d250369c57c8231d6<>res://.godot/imported/aid_hearing.glb-77a97ab128c9d0273decd2c42c3c475c.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-female-a.glb::PackedScene::4903299184957777305::1793992875::1793999060::1::::<><><>0<>0<>5492e0bac9134b60fc05d9038379f5b2<>res://.godot/imported/character-female-a.glb-bca08dab311c137d7b01974cd0a91276.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-female-b.glb::PackedScene::5270518862361682823::1793992875::1793999060::1::::<><><>0<>0<>e99774704744b5b3b2691faba577344f<>res://.godot/imported/character-female-b.glb-cbd8aecb5af5c2cd0563b4f31ed805e4.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-female-c.glb::PackedScene::7721155889586543153::1793992875::1793999060::1::::<><><>0<>0<>fee6c1169d25ae16ea5be96fac0a2aa3<>res://.godot/imported/character-female-c.glb-e571bb668663be368f1a1e469d461ab1.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-female-d.glb::PackedScene::7332934132863645881::1793992875::1793999060::1::::<><><>0<>0<>df568beed3f6de2e3ee06429e7d814a6<>res://.godot/imported/character-female-d.glb-6555a31a4327e1aefbc160ccec13fb4c.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-female-e.glb::PackedScene::6611609600887615445::1793992875::1793999060::1::::<><><>0<>0<>92861ceabb633ed4304addc9b10c2a46<>res://.godot/imported/character-female-e.glb-08f7b15623f8f1e71f8a9c094a21d520.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-female-f.glb::PackedScene::1821195324778774179::1793992875::1793999061::1::::<><><>0<>0<>4f9fdaea71a65e09800ca73f854ace7f<>res://.godot/imported/character-female-f.glb-caf69d7ecbfac8aa34d32bf01a40fdde.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-male-a.glb::PackedScene::3280319565695799693::1793992875::1793999061::1::::<><><>0<>0<>078a00b9960339dfa2b521b4022b76cd<>res://.godot/imported/character-male-a.glb-d46bed8f8503cd9e99a251f16428f219.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-male-b.glb::PackedScene::4289617236272859597::1793992875::1793999061::1::::<><><>0<>0<>69bfbba35d34f80826ab044edcf1f4d3<>res://.godot/imported/character-male-b.glb-a99a1b673abfc56945c0fd54223ae326.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-male-c.glb::PackedScene::6949128342808773786::1793992875::1793999058::1::::<><><>0<>0<>07aef664472c8a5d6d817e747879f436<>res://.godot/imported/character-male-c.glb-7f305fa0e17486f72bbefd9193284097.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-male-d.glb::PackedScene::743135476279718456::1793992875::1793999058::1::::<><><>0<>0<>3e5c31445a1d14e80ea6a4fad4623c42<>res://.godot/imported/character-male-d.glb-d9324a5b931b85055ed6c111ec1c060d.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-male-e.glb::PackedScene::2027683429847097206::1793992875::1793999058::1::::<><><>0<>0<>45a59f709ee4f0182bf4229449893097<>res://.godot/imported/character-male-e.glb-42a3e6bb26ca92dbc4ae8d9946b080f9.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+character-male-f.glb::PackedScene::6774854139912714369::1793992875::1793999058::1::::<><><>0<>0<>2500ad725f14af25570a90bf53991441<>res://.godot/imported/character-male-f.glb-6f9a15241f981cf65b55fb68abe8a023.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+wheelchair-deluxe.glb::PackedScene::1310390316957057976::1793992875::1793999059::1::::<><><>0<>0<>d9598ed7c198acc5bdd68840ce1519f7<>res://.godot/imported/wheelchair-deluxe.glb-435d7dc573d1c45b43d57a3ce222c849.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+wheelchair-power-deluxe.glb::PackedScene::979284706012121210::1793992875::1793999058::1::::<><><>0<>0<>ad37ca96cb5278dc9e1d04ac424c8997<>res://.godot/imported/wheelchair-power-deluxe.glb-7b265e4381d8ae83a2efa51bfe8d0c4c.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+wheelchair-power.glb::PackedScene::1956197005463098629::1793992875::1793999058::1::::<><><>0<>0<>73271ebc24dadff7d9a9cfef3c66f644<>res://.godot/imported/wheelchair-power.glb-f2785f7312ef41cdd1d9645ff69b3d53.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+wheelchair.glb::PackedScene::6008629273090937712::1793992875::1793999058::1::::<><><>0<>0<>569f12d130c475d569cfdec761175049<>res://.godot/imported/wheelchair.glb-097816d203b9b4d8e43230c5a34b52f6.scn::uid://cyegelbx66tje::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
+::res://assets/modelos_kenney/GLB format/Textures/::1793999061
+colormap.png::CompressedTexture2D::6466003151236774666::1793992875::1793999061::1::::<><><>0<>0<>5f2e927ae48ae4182f475ee9f7927e50<>res://.godot/imported/colormap.png-f2a658ca005157489dab2339a5038eac.s3tc.ctex::
+::res://docs/::1793998846
+icon.svg::CompressedTexture2D::1082983283144382342::1793390854::1793998844::1::::<><><>0<>0<>b886bae63f9cbe2bc08c220a54760932<>res://.godot/imported/icon.svg-d74203da674a59f31ae118bcc76df45e.ctex::
 LEEME.txt::TextFile::-1::1793390854::0::1::::<><><>0<>0<><>::
-luz_jugador.gd::GDScript::6648007618301187504::1793896026::0::1::::LuzJugador<>SpotLight3D<><>0<>0<><>::
-luz_parpadeante.gd::GDScript::5937486116930604023::1793992875::0::1::::LuzParpadeante<>OmniLight3D<><>0<>0<><>::
-main.tscn::PackedScene::183890259676159850::1793998330::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://bjekt0e1nvewt::::res://ciudadano.tscn<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn<>uid://bts8qwxctvwti::::res://zona_a.tscn
+::res://escenas/::1793999345
+main.tscn::PackedScene::183890259676159850::1793999345::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://bjekt0e1nvewt::::res://escenas/personajes/ciudadano.tscn<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://bts8qwxctvwti::::res://escenas/zonas/zona_a.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn
+::res://escenas/entorno/::1793999276
+camera_3d.tscn::PackedScene::3468454381140211498::1793999276::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://scripts/mundo/camara_sigue.gd
+suelo.tscn::PackedScene::9008167162551218476::1793898148::0::1::::<><><>0<>0<><>::
+::res://escenas/personajes/::1793999409
+ciudadano.tscn::PackedScene::3027020207925984711::1793999297::0::1::::<><><>0<>0<><>::uid://bqarkse6nhueg::::res://scripts/enemigos/ciudadano.gd<>uid://kt8lkvi5bed1::::res://assets/modelos_kenney/GLB format/character-male-d.glb
+curioso.tscn::PackedScene::2935521281573025366::1793999317::0::1::::<><><>0<>0<><>::uid://dh6c1kv407v3u::::res://scripts/enemigos/curioso.gd<>uid://35hwdhmmevhu::::res://assets/modelos_kenney/GLB format/character-male-e.glb
+guardia.tscn::PackedScene::5438618299913828742::1793999337::0::1::::<><><>0<>0<><>::uid://bj4jjjasqwirw::::res://scripts/enemigos/guardia.gd<>uid://c3r14fxs6w8c0::::res://assets/modelos_kenney/GLB format/character-male-f.glb
+manifestante.tscn::PackedScene::6782523737467407470::1793999367::0::1::::<><><>0<>0<><>::uid://d0pm7nhq8tcuy::::res://scripts/enemigos/manifestante.gd<>uid://b2d6ms0qpq2yb::::res://assets/modelos_kenney/GLB format/character-male-b.glb
+personaje.tscn::PackedScene::3688718937690695944::1793999409::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://c6ahemttr3fhi::::res://assets/modelos_kenney/GLB format/character-male-c.glb
+::res://escenas/prototipos/::1793999375
+prueba_felipe.tscn::PackedScene::2381025468113338126::1793999373::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>res://personaje/character-male-a.glb<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn
+prueba_paola.tscn::PackedScene::8930022208089202896::1793999375::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://bhwk4dav4gp6u::::res://scripts/jugador/ruido.gd<>uid://bh28uvixpvqmg::::res://escenas/personajes/curioso.tscn<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn
+::res://escenas/zonas/::1793999401
+zona_a.tscn::PackedScene::3759200937013881406::1793999401::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://scripts/mundo/sistema_sol.gd<>uid://c3f1w6y7ay111::::res://scripts/mundo/ciclo_dia.gd
+zona_b.tscn::PackedScene::2998160804433784139::1793999394::0::1::::<><><>0<>0<><>::uid://cqufr8mvybimx::::res://scripts/mundo/luz_parpadeante.gd<>uid://c75387v46xe0m::::res://scripts/mundo/disparador.gd<>uid://c1df1opwnhc5q::::res://scripts/mundo/sistema_eventos.gd
+zona_c.tscn::PackedScene::633945155365601340::1793999359::0::1::::<><><>0<>0<><>::uid://clahgnnril28::::res://scripts/prototipos/color_rect.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://c1ylyjuojfa61::::res://scripts/prototipos/luz_jugador.gd
+::res://scripts/::1793999401
+::res://scripts/enemigos/::1793999367
+ciudadano.gd::GDScript::3510493181743387206::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
+curioso.gd::GDScript::7714748090575155984::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
+guardia.gd::GDScript::3078550229933413096::1793994873::0::1::::<>CharacterBody3D<><>0<>0<><>::
 manifestante.gd::GDScript::8945735252048162096::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
-manifestante.tscn::PackedScene::6782523737467407470::1793992875::0::1::::<><><>0<>0<><>::uid://d0pm7nhq8tcuy::::res://manifestante.gd<>uid://b2d6ms0qpq2yb::::res://assets/policia/GLB format/character-male-b.glb
+::res://scripts/jugador/::1793999380
+fuerza.gd::GDScript::6038028493805127833::1793390854::0::1::::<>Node<><>0<>0<><>::
+interactuar.gd::GDScript::5367995637860576821::1793883163::0::1::::<>Node<><>0<>0<><>::
 personaje.gd::GDScript::4928998021563027591::1793883163::0::1::::<>CharacterBody3D<><>0<>0<><>::
-personaje.tscn::PackedScene::3688718937690695944::1793994204::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://personaje.gd<>uid://67g8ul8ywidy::::res://rodar.gd<>uid://csa4pg43r5vaf::::res://fuerza.gd<>uid://d3oyghjp2e16o::::res://apuntar.gd<>uid://ciqkdsc7x5rl2::::res://interactuar.gd<>uid://c6ahemttr3fhi::::res://assets/policia/GLB format/character-male-c.glb
-prueba_felipe.tscn::PackedScene::2381025468113338126::1793992875::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://cchv43eug6720::::res://personaje.gd<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://bkmexfnojlmxi::::res://personaje/character-male-a.glb<>uid://67g8ul8ywidy::::res://rodar.gd<>uid://csa4pg43r5vaf::::res://fuerza.gd<>uid://d3oyghjp2e16o::::res://apuntar.gd<>uid://ciqkdsc7x5rl2::::res://interactuar.gd<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn
-prueba_paola.tscn::PackedScene::8930022208089202896::1793992875::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bhwk4dav4gp6u::::res://ruido.gd<>uid://bh28uvixpvqmg::::res://curioso.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn
-rodar.gd::GDScript::2242338543056543662::1793896026::0::1::::<>Node<><>0<>0<><>::
 ruido.gd::GDScript::2923818016262751758::1793992875::0::1::::<>Node<><>0<>0<><>::
 salud.gd::GDScript::7196834913738582884::1793992875::0::1::::<>Node<><>0<>0<><>::
+::res://scripts/mundo/::1793999401
+camara_sigue.gd::GDScript::6835303819788986517::1793883163::0::1::::<>Camera3D<><>0<>0<><>::
+ciclo_dia.gd::GDScript::6750070474053311798::1793889063::0::1::::CicloDia<>Node<><>0<>0<><>::
+disparador.gd::GDScript::7082576417969414774::1793992875::0::1::::Disparador<>Area3D<><>0<>0<><>::
+incidente.gd::GDScript::5625656500560912791::1793883163::0::1::::<>StaticBody3D<><>0<>0<><>::
+luz_parpadeante.gd::GDScript::5937486116930604023::1793992875::0::1::::LuzParpadeante<>OmniLight3D<><>0<>0<><>::
 sistema_eventos.gd::GDScript::6604295210358781468::1793992875::0::1::::SistemaEventos<>Node<><>0<>0<><>::
 sistema_sol.gd::GDScript::6527060181489791687::1793894077::0::1::::SistemaSol<>Node<><>0<>0<><>::
-suelo.tscn::PackedScene::9008167162551218476::1793898148::0::1::::<><><>0<>0<><>::
-zona_a.tscn::PackedScene::3759200937013881406::1793992875::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://sistema_sol.gd<>uid://c3f1w6y7ay111::::res://ciclo_dia.gd
-zona_b.tscn::PackedScene::2998160804433784139::1793992875::0::1::::<><><>0<>0<><>::uid://cqufr8mvybimx::::res://luz_parpadeante.gd<>uid://c75387v46xe0m::::res://disparador.gd<>uid://c1df1opwnhc5q::::res://sistema_eventos.gd
-zona_c.tscn::PackedScene::633945155365601340::1793998330::0::1::::<><><>0<>0<><>::uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://c1ylyjuojfa61::::res://luz_jugador.gd<>uid://clahgnnril28::::res://color_rect.gd
-::res://assets/::1793992875
-::res://assets/policia/::1793992875
-::res://assets/policia/GLB format/::1793992942
-aid-cane-blind.glb::PackedScene::8973504449659747154::1793992875::1793992939::1::::<><><>0<>0<>7b2499c270b54433c626e5f5cc72f588<>res://.godot/imported/aid-cane-blind.glb-315c7c3c7eabd58795c271091688c211.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-cane-low-vision.glb::PackedScene::1478388916023482401::1793992875::1793992939::1::::<><><>0<>0<>ea3bd88c09ac55e276a1f85695f73021<>res://.godot/imported/aid-cane-low-vision.glb-c2844c890e40fda5aace2bcaebb10d60.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-cane.glb::PackedScene::7569117882661236566::1793992875::1793992939::1::::<><><>0<>0<>02ff9bdad1de1c8c03c82be926e04450<>res://.godot/imported/aid-cane.glb-13692dda160acde450395808101b6a4c.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-crutch.glb::PackedScene::5075445140656189621::1793992875::1793992940::1::::<><><>0<>0<>ceae6c220ecaeff85e2336bcb1e79d91<>res://.godot/imported/aid-crutch.glb-d73c5064a4f681f3cde948d328c39bfe.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-defibrillator-green.glb::PackedScene::901806695871810958::1793992875::1793992940::1::::<><><>0<>0<>da72da5d79cbb983504523d71325d3d3<>res://.godot/imported/aid-defibrillator-green.glb-253b9fba4860f972c2aa7c0103d5e2bd.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-defibrillator-red.glb::PackedScene::5227935109408324985::1793992875::1793992941::1::::<><><>0<>0<>4e442d5e272a8a361b7ce1e792759684<>res://.godot/imported/aid-defibrillator-red.glb-4296f71b9b3958374d1d705f38d463f8.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-glasses.glb::PackedScene::8696769365199891666::1793992875::1793992941::1::::<><><>0<>0<>766872f89f9302be4e4629947a3ba573<>res://.godot/imported/aid-glasses.glb-75d30e6d6cd0dba83c311d4b016a5bfe.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-mask.glb::PackedScene::1824380707033263963::1793992875::1793992942::1::::<><><>0<>0<>e7f15b115cf590af33f2558ae0531202<>res://.godot/imported/aid-mask.glb-7ee6073d06bf5ef6d1cb788180c8529e.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid-sunglasses.glb::PackedScene::1425103318889459329::1793992875::1793992942::1::::<><><>0<>0<>ad37b69382779b680c1a8e5ba8f2fb2c<>res://.godot/imported/aid-sunglasses.glb-834a230d55485a8f4da6524dd91217d9.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-aid_hearing.glb::PackedScene::4505347354020668595::1793992875::1793992942::1::::<><><>0<>0<>1784e23d2dc203097359428e1d0b42ca<>res://.godot/imported/aid_hearing.glb-b29d60e6d389289e8cacbf6be94fafdd.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-female-a.glb::PackedScene::4903299184957777305::1793992875::1793992942::1::::<><><>0<>0<>01fec2638095326528e16feac852719d<>res://.godot/imported/character-female-a.glb-200465871e2a57777337a62382acc619.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-female-b.glb::PackedScene::5270518862361682823::1793992875::1793992941::1::::<><><>0<>0<>23c09e544995384e276aff9a6a96f533<>res://.godot/imported/character-female-b.glb-160032ba0815abb85cdadf54239d9487.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-female-c.glb::PackedScene::7721155889586543153::1793992875::1793992941::1::::<><><>0<>0<>e5023d5486f19483374369be8245caa8<>res://.godot/imported/character-female-c.glb-648a2381c732235bcf8389393f825524.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-female-d.glb::PackedScene::7332934132863645881::1793992875::1793992941::1::::<><><>0<>0<>71fa5a0a5000a9a15d0ece2219e4b835<>res://.godot/imported/character-female-d.glb-5a762094602004ff82dff74bd901b06b.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-female-e.glb::PackedScene::6611609600887615445::1793992875::1793992941::1::::<><><>0<>0<>ef516646cd91c757644f69e9b11457c8<>res://.godot/imported/character-female-e.glb-54227388eec3c18735b06c58eadc0f6f.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-female-f.glb::PackedScene::1821195324778774179::1793992875::1793992941::1::::<><><>0<>0<>7ca3d7d6b2704f721e6fdddfbb185e35<>res://.godot/imported/character-female-f.glb-2884215b1990140ccb62a0c3b8b0bd46.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-male-a.glb::PackedScene::3280319565695799693::1793992875::1793992940::1::::<><><>0<>0<>97043aa78aa5c14f960d75923a8a165e<>res://.godot/imported/character-male-a.glb-cbc939593658f24cde7887153200bdfa.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-male-b.glb::PackedScene::4289617236272859597::1793992875::1793992940::1::::<><><>0<>0<>a09359a6a2b272b2c9a504814045fbdb<>res://.godot/imported/character-male-b.glb-2e00af401d97a5f8fcefd548fbb6f128.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-male-c.glb::PackedScene::6949128342808773786::1793992875::1793992940::1::::<><><>0<>0<>107b6a9be8f72596a4deb31f43019886<>res://.godot/imported/character-male-c.glb-e174da1b791b138802f75997e66f86c4.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-male-d.glb::PackedScene::743135476279718456::1793992875::1793992940::1::::<><><>0<>0<>8eb7dc621833c6da1d0130c4399ef184<>res://.godot/imported/character-male-d.glb-69e8a98f8b0c8c35e93959fd6de2d616.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-male-e.glb::PackedScene::2027683429847097206::1793992875::1793992939::1::::<><><>0<>0<>8196927caf256c9180bf3ad78b676190<>res://.godot/imported/character-male-e.glb-0ffd3d02f74370d482b892ecb834116e.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-character-male-f.glb::PackedScene::6774854139912714369::1793992875::1793992939::1::::<><><>0<>0<>3c73b7d794a3d4bb472ebf66f86fbc8e<>res://.godot/imported/character-male-f.glb-cf42a1a077abefcf265ea772383d7fd1.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-wheelchair-deluxe.glb::PackedScene::1310390316957057976::1793992875::1793992939::1::::<><><>0<>0<>c4327da5d9a4b204887e65a0e9b4b720<>res://.godot/imported/wheelchair-deluxe.glb-65d8f24e8d956c4ff66edc3858b62ac5.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-wheelchair-power-deluxe.glb::PackedScene::979284706012121210::1793992875::1793992939::1::::<><><>0<>0<>f2033cb47e1046b3d26f9bbccd0d656f<>res://.godot/imported/wheelchair-power-deluxe.glb-e83cf84a8770521e590daff2cc54f3d4.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-wheelchair-power.glb::PackedScene::1956197005463098629::1793992875::1793992939::1::::<><><>0<>0<>930816f514e589c48390f58c69144729<>res://.godot/imported/wheelchair-power.glb-50315c8ba382c30b15c91d0c428f44d2.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-wheelchair.glb::PackedScene::6008629273090937712::1793992875::1793992940::1::::<><><>0<>0<>32dde9dbcccecfe6b7aa1c22e5e18160<>res://.godot/imported/wheelchair.glb-5d99832aabeb553756da546328581b56.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
-::res://assets/policia/GLB format/Textures/::1793992942
-colormap.png::CompressedTexture2D::3078584250582279995::1793992875::1793992942::1::::<><><>0<>0<>777c82c4294ceb4af6eb78fbd72c9c98<>res://.godot/imported/colormap.png-2cf27f945445568997d631b638ffacd8.s3tc.ctex::
-::res://docs/::1793998274
-::res://escenas/::1793998252
-camera_3d.tscn::PackedScene::3468454381140211498::1793885494::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://camara_sigue.gd
-::res://scripts/::1793998261
+::res://scripts/prototipos/::1793999373
+apuntar.gd::GDScript::9154919266375362820::1793883163::0::1::::<>Node<><>0<>0<><>::
+color_rect.gd::GDScript::163098678964321171::1793896026::0::1::::<>ColorRect<><>0<>0<><>::
+fotometro.gd::GDScript::5213658712591720253::1793894077::0::1::::<>Node<><>0<>0<><>::
+luz_jugador.gd::GDScript::6648007618301187504::1793896026::0::1::::LuzJugador<>SpotLight3D<><>0<>0<><>::
+rodar.gd::GDScript::2242338543056543662::1793896026::0::1::::<>Node<><>0<>0<><>::

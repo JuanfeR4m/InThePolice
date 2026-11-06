@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bpoe64ckmnffe"]
+
+[ext_resource type="Script" uid="uid://c4ncpqjuna8wv" path="res://scripts/mundo/camara_sigue.gd" id="1_86a6h"]
+
+[node name="Camera3D" type="Camera3D" unique_id=1147277627]
+transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.8191518, 0, 0, 0)
+script = ExtResource("1_86a6h")
