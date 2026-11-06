@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="3_toaxk"]
 [ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="4_e2xqd"]
 [ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="5_4bgqf"]
-[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://cuidadano.tscn" id="9_3wdyd"]
+[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://ciudadano.tscn" id="9_3wdyd"]
 [ext_resource type="Script" uid="uid://c1ylyjuojfa61" path="res://luz_jugador.gd" id="9_85d48"]
 [ext_resource type="Script" uid="uid://clahgnnril28" path="res://color_rect.gd" id="11_hsfvb"]
 
@@ -54,5 +54,4 @@ spot_angle = 60.0
 spot_angle_attenuation = 4.5
 script = ExtResource("9_85d48")
 
-[node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("9_3wdyd")]
-objetivo = NodePath("../Personaje")
+[node name="cuidadano" parent="." unique_id=1585811737 instance=ExtResource("9_3wdyd")]

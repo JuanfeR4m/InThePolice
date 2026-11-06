@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://bjekt0e1nvewt"]
 
-[ext_resource type="Script" uid="uid://bqarkse6nhueg" path="res://cuidadano.gd" id="1_5hl1a"]
+[ext_resource type="Script" uid="uid://bqarkse6nhueg" path="res://ciudadano.gd" id="1_umigy"]
 [ext_resource type="PackedScene" uid="uid://btbidf61ylt57" path="res://personaje/character-male-d.glb" id="2_k0uig"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8w0r3"]
 radius = 0.35
 height = 1.75
 
-[node name="cuidadano" type="CharacterBody3D" unique_id=1585811737]
-script = ExtResource("1_5hl1a")
+[node name="ciudadano" type="CharacterBody3D" unique_id=1585811737]
+script = ExtResource("1_umigy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1937436006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)

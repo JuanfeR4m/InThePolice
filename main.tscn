@@ -6,12 +6,14 @@
 [ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="2_4c57u"]
 [ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_modelo"]
 [ext_resource type="Script" uid="uid://67g8ul8ywidy" path="res://rodar.gd" id="3_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://cuidadano.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://ciudadano.tscn" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="6_272bh"]
 [ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://zona_b.tscn" id="11_efxa6"]
+[ext_resource type="PackedScene" uid="uid://cjqripveonc8u" path="res://guardia.tscn" id="11_w48qg"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://manifestante.tscn" id="12_dg77c"]
+[ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://zona_a.tscn" id="13_vivmo"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -108,11 +110,15 @@ alcance = 2.0
 script = ExtResource("6_272bh")
 tiempo_necesario = 3.0
 
-[node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
+[node name="ciudadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
 objetivo = NodePath("../Personaje")
 
+[node name="Guardia" parent="." unique_id=1604311321 instance=ExtResource("11_w48qg")]
+
 [node name="ZonaB" parent="." unique_id=1052851359 instance=ExtResource("11_efxa6")]
+
+[node name="ZonaA" parent="." unique_id=773773640 instance=ExtResource("13_vivmo")]
 
 [node name="Manifestante" parent="." unique_id=1403517617 instance=ExtResource("12_dg77c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
