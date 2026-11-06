@@ -4,8 +4,8 @@ enum Estado { EN_PUESTO, INVESTIGAR, MIRAR, VOLVER }
 
 @export var rapidez: float = 2.0
 @export var tiempo_mirar: float = 3.0
-# Se detiene antes del punto: ahí puede estar el jugador, y chocarían.
 @export var llega_a: float = 1.0
+@export var radio_aviso: float = 6.0
 
 var estado = Estado.EN_PUESTO
 var puesto = Vector3.ZERO
@@ -60,11 +60,22 @@ func cambiar_a(nuevo):
 	if estado == Estado.MIRAR:
 		reloj = tiempo_mirar
 
-# Un ruido nuevo lo interrumpe en cualquier estado.
 func oir(punto):
+	# Solo avisa quien estaba tranquilo: así la cadena termina y se evita el desbordamiento.
+	var estaba_en_puesto = (estado == Estado.EN_PUESTO)
 	ruido_en = punto
 	if estado != Estado.INVESTIGAR:
 		cambiar_a(Estado.INVESTIGAR)
+	if estaba_en_puesto:
+		avisar_a_vecinos(punto)
+
+func avisar_a_vecinos(punto):
+	for n in get_tree().get_nodes_in_group("oyentes"):
+		if n == self:
+			continue
+		if global_position.distance_to(n.global_position) <= radio_aviso:
+			print(name, " avisa a ", n.name)
+			n.oir(punto)
 
 func ir_a(destino):
 	var hacia = destino - global_position
