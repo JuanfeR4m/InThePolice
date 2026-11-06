@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://jbc8puuwkmki"]
 
-[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="3_toaxk"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://escenas/camera_3d.tscn" id="3_toaxk"]
 [ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="4_e2xqd"]
 [ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="5_4bgqf"]
 [ext_resource type="Script" uid="uid://c1ylyjuojfa61" path="res://luz_jugador.gd" id="9_85d48"]
@@ -24,13 +24,12 @@ shadow_normal_bias = 6.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=817155519]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=976822703 node_paths=PackedStringArray("jugador", "ciudadano")]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=976822703 node_paths=PackedStringArray("jugador")]
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.9490196, 0.7137255, 0.19607843, 1)
 script = ExtResource("11_hsfvb")
 jugador = NodePath("../../Personaje")
-ciudadano = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2008323335]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)

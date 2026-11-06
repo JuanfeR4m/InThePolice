@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bjekt0e1nvewt"]
 
 [ext_resource type="Script" uid="uid://bqarkse6nhueg" path="res://ciudadano.gd" id="1_umigy"]
-[ext_resource type="PackedScene" uid="uid://btbidf61ylt57" path="res://personaje/character-male-d.glb" id="2_k0uig"]
+[ext_resource type="PackedScene" uid="uid://kt8lkvi5bed1" path="res://assets/policia/GLB format/character-male-d.glb" id="2_k0uig"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8w0r3"]
 radius = 0.35

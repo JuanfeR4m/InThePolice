@@ -1,8 +1,7 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793995020
+::res://::1793998292
 apuntar.gd::GDScript::9154919266375362820::1793883163::0::1::::<>Node<><>0<>0<><>::
 camara_sigue.gd::GDScript::6835303819788986517::1793883163::0::1::::<>Camera3D<><>0<>0<><>::
-camera_3d.tscn::PackedScene::3468454381140211498::1793885494::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://camara_sigue.gd
 ciclo_dia.gd::GDScript::6750070474053311798::1793889063::0::1::::CicloDia<>Node<><>0<>0<><>::
 ciudadano.gd::GDScript::3510493181743387206::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
 ciudadano.tscn::PackedScene::3027020207925984711::1793992875::0::1::::<><><>0<>0<><>::uid://bqarkse6nhueg::::res://ciudadano.gd<>uid://btbidf61ylt57::::res://personaje/character-male-d.glb
@@ -20,7 +19,7 @@ interactuar.gd::GDScript::5367995637860576821::1793883163::0::1::::<>Node<><>0<>
 LEEME.txt::TextFile::-1::1793390854::0::1::::<><><>0<>0<><>::
 luz_jugador.gd::GDScript::6648007618301187504::1793896026::0::1::::LuzJugador<>SpotLight3D<><>0<>0<><>::
 luz_parpadeante.gd::GDScript::5937486116930604023::1793992875::0::1::::LuzParpadeante<>OmniLight3D<><>0<>0<><>::
-main.tscn::PackedScene::183890259676159850::1793994976::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://bjekt0e1nvewt::::res://ciudadano.tscn<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn<>uid://bts8qwxctvwti::::res://zona_a.tscn
+main.tscn::PackedScene::183890259676159850::1793998330::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://cmfd0gglkasgd::::res://incidente.gd<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://bjekt0e1nvewt::::res://ciudadano.tscn<>uid://biyljgujvggl4::::res://zona_b.tscn<>uid://cjqripveonc8u::::res://guardia.tscn<>uid://c3vrf7k4qf5i5::::res://manifestante.tscn<>uid://bts8qwxctvwti::::res://zona_a.tscn
 manifestante.gd::GDScript::8945735252048162096::1793992875::0::1::::<>CharacterBody3D<><>0<>0<><>::
 manifestante.tscn::PackedScene::6782523737467407470::1793992875::0::1::::<><><>0<>0<><>::uid://d0pm7nhq8tcuy::::res://manifestante.gd<>uid://b2d6ms0qpq2yb::::res://assets/policia/GLB format/character-male-b.glb
 personaje.gd::GDScript::4928998021563027591::1793883163::0::1::::<>CharacterBody3D<><>0<>0<><>::
@@ -35,7 +34,7 @@ sistema_sol.gd::GDScript::6527060181489791687::1793894077::0::1::::SistemaSol<>N
 suelo.tscn::PackedScene::9008167162551218476::1793898148::0::1::::<><><>0<>0<><>::
 zona_a.tscn::PackedScene::3759200937013881406::1793992875::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://sistema_sol.gd<>uid://c3f1w6y7ay111::::res://ciclo_dia.gd
 zona_b.tscn::PackedScene::2998160804433784139::1793992875::0::1::::<><><>0<>0<><>::uid://cqufr8mvybimx::::res://luz_parpadeante.gd<>uid://c75387v46xe0m::::res://disparador.gd<>uid://c1df1opwnhc5q::::res://sistema_eventos.gd
-zona_c.tscn::PackedScene::633945155365601340::1793995011::0::1::::<><><>0<>0<><>::uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://c1ylyjuojfa61::::res://luz_jugador.gd<>uid://clahgnnril28::::res://color_rect.gd
+zona_c.tscn::PackedScene::633945155365601340::1793998330::0::1::::<><><>0<>0<><>::uid://bpoe64ckmnffe::::res://camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://c1ylyjuojfa61::::res://luz_jugador.gd<>uid://clahgnnril28::::res://color_rect.gd
 ::res://assets/::1793992875
 ::res://assets/policia/::1793992875
 ::res://assets/policia/GLB format/::1793992942
@@ -67,11 +66,7 @@ wheelchair-power.glb::PackedScene::1956197005463098629::1793992875::1793992939::
 wheelchair.glb::PackedScene::6008629273090937712::1793992875::1793992940::1::::<><><>0<>0<>32dde9dbcccecfe6b7aa1c22e5e18160<>res://.godot/imported/wheelchair.glb-5d99832aabeb553756da546328581b56.scn::uid://bj4j3k0f0smal::::res://assets/policia/GLB format/Textures/colormap.png
 ::res://assets/policia/GLB format/Textures/::1793992942
 colormap.png::CompressedTexture2D::3078584250582279995::1793992875::1793992942::1::::<><><>0<>0<>777c82c4294ceb4af6eb78fbd72c9c98<>res://.godot/imported/colormap.png-2cf27f945445568997d631b638ffacd8.s3tc.ctex::
-::res://personaje/::1793896026
-character-female-b.glb::PackedScene::8970474359897470931::1793390854::1793885495::1::::<><><>0<>0<>31e275a2532a586c20b1969b0a36830a<>res://.godot/imported/character-female-b.glb-503cd04c05c31313ea8932489876b749.scn::uid://cdvgidkn4vx8x::::res://personaje/Textures/colormap.png
-character-female-e.glb::PackedScene::5967598437573518196::1793390854::1793885495::1::::<><><>0<>0<>6c34d32525302dc828bd724457fe2a55<>res://.godot/imported/character-female-e.glb-3362fbfb1a076431870b833efb897333.scn::uid://cdvgidkn4vx8x::::res://personaje/Textures/colormap.png
-character-male-a.glb::PackedScene::3113365877700798766::1793390854::1793885495::1::::<><><>0<>0<>7c6936e5d3aef1046bda80279e7da681<>res://.godot/imported/character-male-a.glb-3f828efe93bec79b9c573a7112d032ff.scn::uid://cdvgidkn4vx8x::::res://personaje/Textures/colormap.png
-character-male-d.glb::PackedScene::3722564495613158592::1793390854::1793885495::1::::<><><>0<>0<>2027c8a1ad23c10d2131da87f279eac3<>res://.godot/imported/character-male-d.glb-2f5c98e70616da82073b63ba465b742f.scn::uid://cdvgidkn4vx8x::::res://personaje/Textures/colormap.png
-LICENCIA Kenney (CC0).txt::TextFile::-1::1793896026::0::1::::<><><>0<>0<><>::
-::res://personaje/Textures/::1793885494
-colormap.png::CompressedTexture2D::5027138593091754477::1793390854::1793885494::1::::<><><>0<>0<>539afaa51056daabb01b1fd3bed1d997<>res://.godot/imported/colormap.png-2b39337a8bfecb91d904da17c75fef11.s3tc.ctex::
+::res://docs/::1793998274
+::res://escenas/::1793998252
+camera_3d.tscn::PackedScene::3468454381140211498::1793885494::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://camara_sigue.gd
+::res://scripts/::1793998261

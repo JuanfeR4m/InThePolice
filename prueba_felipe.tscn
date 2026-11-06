@@ -2,16 +2,17 @@
 
 [ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="1_nkf6p"]
 [ext_resource type="Script" uid="uid://cmfd0gglkasgd" path="res://incidente.gd" id="2_7kpsl"]
-[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="3_iipcd"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://escenas/camera_3d.tscn" id="3_iipcd"]
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="4_2b4xo"]
 [ext_resource type="PackedScene" uid="uid://cjqripveonc8u" path="res://guardia.tscn" id="4_nkf6p"]
-[ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="5_iqp6a"]
+[ext_resource type="PackedScene" path="res://personaje/character-male-a.glb" id="5_iqp6a"]
 [ext_resource type="Script" uid="uid://67g8ul8ywidy" path="res://rodar.gd" id="6_s3eey"]
 [ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="7_nh2ap"]
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="8_jhpm1"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="9_jxec1"]
 [ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://zona_b.tscn" id="11_4040t"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://manifestante.tscn" id="12_wuo62"]
+
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 

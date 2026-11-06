@@ -3,8 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="1_1fq1c"]
 [ext_resource type="Script" uid="uid://bhwk4dav4gp6u" path="res://ruido.gd" id="2_lel44"]
 [ext_resource type="PackedScene" uid="uid://bh28uvixpvqmg" path="res://curioso.tscn" id="3_gfh27"]
-[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="5_lel44"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://escenas/camera_3d.tscn" id="5_lel44"]
 [ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="6_tjojb"]
+
 
 [sub_resource type="Environment" id="Environment_uvjf1"]
 
