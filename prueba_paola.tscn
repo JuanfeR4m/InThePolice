@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://d0h1fqg44kocu"]
+
+[ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="1_1fq1c"]
+[ext_resource type="PackedScene" uid="uid://bh28uvixpvqmg" path="res://curioso.tscn" id="3_gfh27"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="5_lel44"]
+[ext_resource type="PackedScene" uid="uid://dln0xvcovgq1w" path="res://suelo.tscn" id="6_tjojb"]
+
+[sub_resource type="GDScript" id="GDScript_e2xqd"]
+script/source = "extends Node
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+"
+
+[sub_resource type="Environment" id="Environment_uvjf1"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_8w0r3"]
+
+[node name="prueba_paola" type="Node3D" unique_id=1713803488]
+
+[node name="Personaje" parent="." unique_id=2144265238 instance=ExtResource("1_1fq1c")]
+prueba = 4
+accion_prueba = "hacer_ruido"
+
+[node name="Ruido" type="Node" parent="Personaje" unique_id=354534727]
+script = SubResource("GDScript_e2xqd")
+
+[node name="curioso2" parent="." unique_id=793721264 instance=ExtResource("3_gfh27")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+
+[node name="curioso1" parent="." unique_id=809107970 instance=ExtResource("3_gfh27")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="Camera3D" parent="." unique_id=1147277627 node_paths=PackedStringArray("objetivo") instance=ExtResource("5_lel44")]
+objetivo = NodePath("../Personaje")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1292507576]
+transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64278764, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=832903708]
+environment = SubResource("Environment_uvjf1")
+
+[node name="Piso" type="StaticBody3D" parent="." unique_id=1484511532]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Piso" unique_id=1179895474]
+shape = SubResource("WorldBoundaryShape3D_8w0r3")
+
+[node name="Suelo" parent="Piso" unique_id=1613570984 instance=ExtResource("6_tjojb")]
