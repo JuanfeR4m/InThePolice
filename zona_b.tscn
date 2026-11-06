@@ -1,35 +1,57 @@
 [gd_scene format=3 uid="uid://biyljgujvggl4"]
 
-[ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="1_7ursy"]
-[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="2_dbxaw"]
+[ext_resource type="Script" uid="uid://cqufr8mvybimx" path="res://luz_parpadeante.gd" id="1_pjwgy"]
+[ext_resource type="Script" uid="uid://c75387v46xe0m" path="res://disparador.gd" id="2_7ursy"]
+[ext_resource type="Script" uid="uid://c1df1opwnhc5q" path="res://sistema_eventos.gd" id="3_dbxaw"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_uxa2c"]
-size = Vector3(20, 0.2, 20)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_uxa2c"]
-size = Vector3(20, 0.2, 20)
-
-[sub_resource type="Environment" id="Environment_hchaj"]
-background_mode = 1
-background_color = Color(0.105882354, 0.13333334, 0.2509804, 1)
-ambient_light_source = 2
-ambient_light_color = Color(0.105882354, 0.13333334, 0.2509804, 1)
-tonemap_mode = 2
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhnf2"]
 
 [node name="ZonaB" type="Node3D" unique_id=1052851359]
 
-[node name="Personaje" parent="." unique_id=2144265238 instance=ExtResource("1_7ursy")]
+[node name="Foco1" type="OmniLight3D" parent="." unique_id=1953005121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+shadow_enabled = true
+omni_range = 6.0
+omni_attenuation = 2.0
+script = ExtResource("1_pjwgy")
 
-[node name="Piso" type="StaticBody3D" parent="." unique_id=1416398171]
+[node name="Foco2" type="OmniLight3D" parent="." unique_id=1682925518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+shadow_enabled = true
+omni_range = 6.0
+omni_attenuation = 2.0
+script = ExtResource("1_pjwgy")
+semilla = 13
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Piso" unique_id=1523458821]
-mesh = SubResource("BoxMesh_uxa2c")
+[node name="Foco3" type="OmniLight3D" parent="." unique_id=1594634642]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3, 0)
+light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+shadow_enabled = true
+omni_range = 6.0
+omni_attenuation = 2.0
+script = ExtResource("1_pjwgy")
+semilla = 21
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Piso" unique_id=1655192686]
-shape = SubResource("BoxShape3D_uxa2c")
+[node name="Disparador" type="Area3D" parent="." unique_id=1529718772]
+script = ExtResource("2_7ursy")
 
-[node name="Camera3D" parent="." unique_id=1147277627 instance=ExtResource("2_dbxaw")]
-current = true
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Disparador" unique_id=180441561]
+shape = SubResource("BoxShape3D_lhnf2")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1912299467]
-environment = SubResource("Environment_hchaj")
+[node name="LuzEvento" type="OmniLight3D" parent="." unique_id=1045211127]
+light_color = Color(0.8392157, 0.22745098, 0.22745098, 1)
+light_energy = 0.0
+omni_range = 4.0
+omni_attenuation = 2.0
+
+[node name="SistemaEventos" type="Node" parent="." unique_id=265016157 node_paths=PackedStringArray("luz_evento", "luz_variable")]
+script = ExtResource("3_dbxaw")
+luz_evento = NodePath("../LuzEvento")
+luz_variable = NodePath("../LuzIra")
+
+[node name="LuzIra" type="OmniLight3D" parent="." unique_id=1551088084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -3)
+omni_range = 6.0
+omni_attenuation = 2.0

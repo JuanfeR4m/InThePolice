@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://d1lvgx2fcg3ee"]
+
+[sub_resource type="PlaneMesh" id="PisoMalla"]
+size = Vector2(30, 30)
+
+[sub_resource type="BoxShape3D" id="PisoForma"]
+size = Vector3(30, 0.2, 30)
+
+[node name="Suelo" type="StaticBody3D" unique_id=440831347]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1065530894]
+mesh = SubResource("PisoMalla")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=859585586]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("PisoForma")

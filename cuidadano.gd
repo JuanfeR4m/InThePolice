@@ -14,6 +14,19 @@ enum Estado { PATRULLA, PERSEGUIR }
 var estado = Estado.PATRULLA
 var punto = 0
 
+static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
+	
+	var n = normal.normalized()
+	var l = hacia_luz.normalized()
+	var v = hacia_ojo.normalized()
+	
+
+	var h = (l + v).normalized()
+	
+	
+	var ndot_h = max(0.0, n.dot(h))
+	return pow(ndot_h, brillo)
+
 func _physics_process(delta):
 	velocity += get_gravity() * delta
 	var distancia = global_position.distance_to(objetivo.global_position)

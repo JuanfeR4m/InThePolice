@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cy80y0cs687eh" path="res://sistema_sol.gd" id="1_l7qun"]
 [ext_resource type="Script" uid="uid://c3f1w6y7ay111" path="res://ciclo_dia.gd" id="2_fntjl"]
+[ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://personaje.tscn" id="3_57wwi"]
+[ext_resource type="PackedScene" uid="uid://d1lvgx2fcg3ee" path="res://suelo.tscn" id="4_o0wp1"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://camera_3d.tscn" id="5_evii1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r6318"]
 
@@ -29,3 +32,10 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1601312701]
 environment = SubResource("Environment_uxa2c")
+
+[node name="Personaje" parent="." unique_id=2144265238 instance=ExtResource("3_57wwi")]
+
+[node name="Suelo" parent="." unique_id=440831347 instance=ExtResource("4_o0wp1")]
+
+[node name="Camera3D" parent="." unique_id=1147277627 node_paths=PackedStringArray("objetivo") instance=ExtResource("5_evii1")]
+objetivo = NodePath("../Personaje")

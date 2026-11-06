@@ -1,28 +1,24 @@
 [gd_scene format=3 uid="uid://bss3wrijjf7fg"]
 
 [ext_resource type="Script" uid="uid://cchv43eug6720" path="res://personaje.gd" id="1_cx4ix"]
-[ext_resource type="PackedScene" uid="uid://bkmexfnojlmxi" path="res://personaje/character-male-a.glb" id="2_35kqm"]
 [ext_resource type="Script" uid="uid://67g8ul8ywidy" path="res://rodar.gd" id="3_1y5k2"]
 [ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_f8plh"]
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="5_pqm5q"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="6_2vb47"]
+[ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/policia/GLB format/character-male-c.glb" id="7_35kqm"]
 
 [sub_resource type="CapsuleShape3D" id="Capsula"]
 radius = 0.35
 height = 1.75
 
-[node name="Personaje" type="CharacterBody3D" unique_id=2144265238 node_paths=PackedStringArray("camara")]
+[node name="Personaje" type="CharacterBody3D" unique_id=2144265238]
 script = ExtResource("1_cx4ix")
-camara = NodePath("")
 prueba = 1
 accion_prueba = ""
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1178244521]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
 shape = SubResource("Capsula")
-
-[node name="Modelo" parent="." unique_id=1322987097 instance=ExtResource("2_35kqm")]
-transform = Transform3D(-2.6, 0, 0, 0, 2.6, 0, 0, 0, -2.6, 0, 0, 0)
 
 [node name="Rodar" type="Node" parent="." unique_id=881688414]
 script = ExtResource("3_1y5k2")
@@ -37,3 +33,12 @@ alcance = 2.0
 [node name="Interactuar" type="Node" parent="." unique_id=1684086891]
 script = ExtResource("6_2vb47")
 tiempo_necesario = 3.0
+
+[node name="Modelo" parent="." unique_id=414783263 instance=ExtResource("7_35kqm")]
+transform = Transform3D(-2, 0, -1.7484555e-07, 0, 2, 0, 1.7484555e-07, 0, -2, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Modelo/character-male-c" parent_id_path=PackedInt32Array(414783263, 679552676) index="0" unique_id=1585079456]
+bones/4/rotation = Quaternion(0, 0, -0.38268346, 0.9238795)
+bones/5/rotation = Quaternion(0, 0, 0.3826835, 0.92387956)
+
+[editable path="Modelo"]
