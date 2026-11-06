@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="Juego del equipo (3D)"
 
+[global_group]
+
+jugador=""
+
 [input]
 
 move_left={

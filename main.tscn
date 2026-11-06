@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="6_272bh"]
 [ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://zona_b.tscn" id="11_efxa6"]
+[ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://manifestante.tscn" id="12_dg77c"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -80,7 +81,7 @@ shape = SubResource("CajaForma")
 transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.8191518, 0, 5, 7)
 objetivo = NodePath("../Personaje")
 
-[node name="Personaje" type="CharacterBody3D" parent="." unique_id=1845449479 node_paths=PackedStringArray("camara")]
+[node name="Personaje" type="CharacterBody3D" parent="." unique_id=1845449479 node_paths=PackedStringArray("camara") groups=["jugador"]]
 script = ExtResource("1_pj")
 camara = NodePath("../Camera3D")
 prueba = 1
@@ -112,3 +113,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
 objetivo = NodePath("../Personaje")
 
 [node name="ZonaB" parent="." unique_id=1052851359 instance=ExtResource("11_efxa6")]
+
+[node name="Manifestante" parent="." unique_id=1403517617 instance=ExtResource("12_dg77c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)

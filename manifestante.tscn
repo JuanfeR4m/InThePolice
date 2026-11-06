@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://c3vrf7k4qf5i5"]
+
+[ext_resource type="Script" uid="uid://d0pm7nhq8tcuy" path="res://manifestante.gd" id="1_0ai38"]
+[ext_resource type="PackedScene" uid="uid://b2d6ms0qpq2yb" path="res://assets/policia/GLB format/character-male-b.glb" id="2_oxgpb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lhnf2"]
+radius = 0.35
+height = 1.75
+
+[node name="Manifestante" type="CharacterBody3D" unique_id=1403517617]
+script = ExtResource("1_0ai38")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=465112932]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_lhnf2")
+
+[node name="Modelo" parent="." unique_id=855778431 instance=ExtResource("2_oxgpb")]
+transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2.6, 0, 0, 0)
