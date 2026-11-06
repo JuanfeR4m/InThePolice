@@ -5,13 +5,13 @@
 [ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_f8plh"]
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="5_pqm5q"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="6_2vb47"]
-[ext_resource type="PackedScene" uid="uid://kt8lkvi5bed1" path="res://assets/policia/GLB format/character-male-d.glb" id="6_cx4ix"]
+[ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/policia/GLB format/character-male-c.glb" id="6_cx4ix"]
 
 [sub_resource type="CapsuleShape3D" id="Capsula"]
 radius = 0.35
 height = 1.75
 
-[node name="Personaje" type="CharacterBody3D" unique_id=2144265238]
+[node name="Personaje" type="CharacterBody3D" unique_id=2144265238 groups=["jugador"]]
 script = ExtResource("1_cx4ix")
 prueba = 1
 accion_prueba = ""
@@ -34,4 +34,5 @@ alcance = 2.0
 script = ExtResource("6_2vb47")
 tiempo_necesario = 3.0
 
-[node name="Modelo" parent="." unique_id=124021715 instance=ExtResource("6_cx4ix")]
+[node name="Modelo" parent="." unique_id=1292492849 instance=ExtResource("6_cx4ix")]
+transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2.6, 0, 0, 0)

@@ -1,8 +1,3 @@
-res://prueba_felipe.tscn
 res://main.tscn
-res://guardia.tscn
-res://guardia.gd
-res://zona_a.tscn
-res://manifestante.gd
 res://personaje.tscn
-res://sistema_eventos.gd
+res://guardia.gd
