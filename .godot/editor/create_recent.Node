@@ -1,8 +1,8 @@
+Node
 CollisionShape3D
 CharacterBody3D
 AnimationPlayer
 OmniLight3D
-Node
 Area3D
 Camera3D
 MeshInstance3D

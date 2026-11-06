@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://fuerza.gd" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://apuntar.gd" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://interactuar.gd" id="6_272bh"]
+[ext_resource type="Script" uid="uid://dasg24n6trd5e" path="res://salud.gd" id="10_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://zona_b.tscn" id="11_efxa6"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://manifestante.tscn" id="12_dg77c"]
 
@@ -107,6 +108,9 @@ alcance = 2.0
 [node name="Interactuar" type="Node" parent="Personaje" unique_id=1494322278]
 script = ExtResource("6_272bh")
 tiempo_necesario = 3.0
+
+[node name="Salud" type="Node" parent="Personaje" unique_id=2117237635]
+script = ExtResource("10_ycdy4")
 
 [node name="cuidadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_h2yge")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
