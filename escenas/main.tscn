@@ -95,7 +95,9 @@ rango_vision = 4.0
 [node name="Manifestante" parent="." unique_id=1403517617 instance=ExtResource("9_jwie6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
 
-[node name="Partida" type="Node" parent="." unique_id=1240064146]
+[node name="Partida" type="Node" parent="." unique_id=1240064146 groups=["partida"]]
+process_mode = 3
 script = ExtResource("10_dg7ii")
 tiempo_limite = 180.0
 gana_con_tiempo = true
+metas = 0
