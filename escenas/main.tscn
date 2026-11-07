@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://escenas/zonas/zona_b.tscn" id="7_ueiap"]
 [ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://escenas/zonas/zona_a.tscn" id="8_ymkly"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://escenas/personajes/manifestante.tscn" id="9_jwie6"]
+[ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="10_dg7ii"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -31,6 +32,7 @@ albedo_color = Color(0.85, 0.55, 0.25, 1)
 [node name="Personaje" parent="." unique_id=2144265238 node_paths=PackedStringArray("camara") instance=ExtResource("1_lyxkq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 camara = NodePath("../Camera3D")
+prueba = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1776246404]
 environment = SubResource("Entorno")
@@ -92,3 +94,8 @@ rango_vision = 4.0
 
 [node name="Manifestante" parent="." unique_id=1403517617 instance=ExtResource("9_jwie6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+
+[node name="Partida" type="Node" parent="." unique_id=1240064146]
+script = ExtResource("10_dg7ii")
+tiempo_limite = 180.0
+gana_con_tiempo = true

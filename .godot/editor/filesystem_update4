@@ -1,1 +1,3 @@
-res://escenas/personajes/personaje.tscn
+res://escenas/main.tscn
+res://scripts/partida.gd
+res://scripts/prototipos/apuntar.gd

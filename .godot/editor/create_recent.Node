@@ -1,5 +1,5 @@
-RayCast3D
 Node
+RayCast3D
 CollisionShape3D
 CharacterBody3D
 AnimationPlayer
@@ -12,4 +12,3 @@ WorldEnvironment
 DirectionalLight3D
 StaticBody3D
 ImporterMeshInstance3D
-Node2D

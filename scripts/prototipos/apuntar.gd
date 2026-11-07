@@ -3,7 +3,7 @@ extends Node
 @export var tecla = "disparar"
 @export var alcance = 20.0
 @onready var pj = get_parent()
-var origen = Vector3.ZERO # de dónde sale el rayo
+var origen = Vector3.ZERO 
 
 @export var danio = 25
 @export var cadencia = 0.25
@@ -24,10 +24,10 @@ func _physics_process(delta):
 
 func lanzar_rayo():
 	var hacia
-	if desde == 0: # desde el pecho, hacia donde mira el personaje
+	if desde == 0: 
 		origen = pj.global_position + Vector3(0, 0.8, 0)
 		hacia = origen - pj.global_basis.z * alcance
-	else: # desde la cámara, por un punto de la pantalla
+	else: 
 		var cam = get_viewport().get_camera_3d()
 		var punto = get_viewport().get_visible_rect().size / 2
 		if desde == 2:
