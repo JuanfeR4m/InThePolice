@@ -6,26 +6,31 @@ enum Estado { JUGANDO, GANO, PERDIO }
 @export var gana_con_tiempo = false
 @export var metas = 3
 @export var noche_en = 80.0
+@export var espera_reinicio = 2.0
+
+static var intentos = 1
+static var mejor = 0.0
 
 var estado = Estado.JUGANDO
 var tiempo = 0.0
 var hechas = 0
 var noche_avisada = false
+var reloj = 0.0
 
 
 func _ready():
 	tiempo = tiempo_limite
+	print("intento ", intentos, " · mejor tiempo ", snappedf(mejor, 0.01))
 
 
 func _physics_process(delta):
-	if Input.is_action_just_pressed("ui_accept"):
-		avisar_meta()
-
 	if estado != Estado.JUGANDO:
+		reloj -= delta
+		if reloj <= 0.001:
+			reiniciar()
 		return
 
 	tiempo = maxf(tiempo - delta, 0.0)
-
 
 	if not noche_avisada and tiempo < noche_en:
 		noche_avisada = true
@@ -62,3 +67,13 @@ func terminar(nuevo, motivo):
 	print("fin: ", Estado.keys()[estado], " cuadro ",
 		Engine.get_physics_frames(), " (", motivo, ")")
 	get_tree().paused = true
+	reloj = espera_reinicio
+	var usado = tiempo_limite - tiempo
+	if estado == Estado.GANO and (mejor == 0.0 or usado < mejor):
+		mejor = usado
+
+
+func reiniciar():
+	intentos += 1
+	get_tree().paused = false
+	get_tree().reload_current_scene()
