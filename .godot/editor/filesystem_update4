@@ -1,1 +1,4 @@
 res://escenas/main.tscn
+res://scripts/partida.gd
+res://scripts/mundo/sistema_sol.gd
+res://scripts/prototipos/apuntar.gd
