@@ -37,7 +37,7 @@ prueba = 0
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1776246404]
 environment = SubResource("Entorno")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1775150563]
+[node name="Sol" type="DirectionalLight3D" parent="." unique_id=1775150563]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 6, 0)
 shadow_enabled = true
 
@@ -90,14 +90,19 @@ rango_vision = 4.0
 
 [node name="ZonaB" parent="." unique_id=1052851359 instance=ExtResource("7_ueiap")]
 
-[node name="ZonaA" parent="." unique_id=773773640 instance=ExtResource("8_ymkly")]
-
 [node name="Manifestante" parent="." unique_id=1403517617 instance=ExtResource("9_jwie6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
 
-[node name="Partida" type="Node" parent="." unique_id=1240064146 groups=["partida"]]
+[node name="Partida" type="Node" parent="." unique_id=1240064146 node_paths=PackedStringArray("sistema_sol") groups=["partida"]]
 process_mode = 3
 script = ExtResource("10_dg7ii")
-tiempo_limite = 180.0
-gana_con_tiempo = true
-metas = 0
+sistema_sol = NodePath("../ZonaA/SistemaSol")
+
+[node name="ZonaA" parent="." unique_id=773773640 instance=ExtResource("8_ymkly")]
+
+[node name="SistemaSol" parent="ZonaA" index="0" unique_id=2125741162 node_paths=PackedStringArray("sol", "entorno")]
+sol = NodePath("../../Sol")
+entorno = NodePath("../../WorldEnvironment")
+automatico = true
+
+[editable path="ZonaA"]

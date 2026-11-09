@@ -3,29 +3,12 @@
 [ext_resource type="Script" uid="uid://cy80y0cs687eh" path="res://scripts/mundo/sistema_sol.gd" id="1_l7qun"]
 [ext_resource type="Script" uid="uid://c3f1w6y7ay111" path="res://scripts/mundo/ciclo_dia.gd" id="2_fntjl"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r6318"]
-
-[sub_resource type="Sky" id="Sky_hchaj"]
-sky_material = SubResource("ProceduralSkyMaterial_r6318")
-
-[sub_resource type="Environment" id="Environment_uxa2c"]
-background_mode = 2
-sky = SubResource("Sky_hchaj")
-ambient_light_source = 3
-tonemap_mode = 2
-
 [node name="ZonaA" type="Node3D" unique_id=773773640]
 
 [node name="SistemaSol" type="Node3D" parent="." unique_id=2125741162 node_paths=PackedStringArray("sol", "entorno")]
 script = ExtResource("1_l7qun")
-sol = NodePath("../Sol")
-entorno = NodePath("../WorldEnvironment")
+sol = NodePath("")
+entorno = NodePath("")
 
 [node name="CicloDia" type="Node3D" parent="SistemaSol" unique_id=931191903]
 script = ExtResource("2_fntjl")
-
-[node name="Sol" type="DirectionalLight3D" parent="." unique_id=1092898908]
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1601312701]
-environment = SubResource("Environment_uxa2c")

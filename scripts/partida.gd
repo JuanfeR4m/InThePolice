@@ -1,12 +1,16 @@
 extends Node
 
-enum Estado { JUGANDO, GANO, PERDIO }
+enum Estado { JUGANDO, GANO }
 
-@export var tiempo_limite = 30.0
-@export var gana_con_tiempo = false
-@export var metas = 3
+@export var tiempo_limite = 180.0
+@export var metas = 0
 @export var noche_en = 80.0
-@export var espera_reinicio = 2.0
+@export var espera_reinicio = 15.0
+
+@export var sistema_sol: SistemaSol
+@export var hora_inicio = 9.0
+@export var hora_atardecer = 18.0
+@export var hora_fin = 21.0
 
 static var intentos = 1
 static var mejor = 0.0
@@ -31,16 +35,27 @@ func _physics_process(delta):
 		return
 
 	tiempo = maxf(tiempo - delta, 0.0)
+	actualizar_sol()
 
 	if not noche_avisada and tiempo < noche_en:
 		noche_avisada = true
 		print("cae la noche")
 
 	if tiempo <= 0.001:
-		if gana_con_tiempo:
-			ganar()
-		else:
-			perder("se acabó el tiempo")
+		ganar()
+
+
+func actualizar_sol():
+	if sistema_sol == null:
+		return
+	var transcurrido = tiempo_limite - tiempo
+	var dia = tiempo_limite - noche_en
+	var hora
+	if transcurrido < dia:
+		hora = lerpf(hora_inicio, hora_atardecer, transcurrido / dia)
+	else:
+		hora = lerpf(hora_atardecer, hora_fin, (transcurrido - dia) / noche_en)
+	sistema_sol.ciclo.hora = hora
 
 
 func avisar_meta():
@@ -54,10 +69,6 @@ func avisar_meta():
 
 func ganar():
 	terminar(Estado.GANO, "ganó")
-
-
-func perder(motivo):
-	terminar(Estado.PERDIO, motivo)
 
 
 func terminar(nuevo, motivo):
