@@ -1,6 +1,7 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1794237584
-::res://assets/::1794237854
+::res://::1794240632
+zona_a.tscn::PackedScene::4316812428646384800::1794239266::0::1::::<><><>0<>0<><>::res://sistema_sol.gd<>res://ciclo_dia.gd
+::res://assets/::1794238579
 ::res://assets/modelos_kenney/::1794237490
 ::res://assets/modelos_kenney/GLB format/::1794237490
 aid-cane-blind.glb::PackedScene::8973504449659747154::1794237490::1794237490::1::::<><><>0<>0<>7adca9758edf95418b7727d69e6e65a2<>res://.godot/imported/aid-cane-blind.glb-fd25f92049c6a9f87d94b13694b42648.scn::uid://301goeqp1kq4::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
@@ -32,4 +33,101 @@ wheelchair.glb::PackedScene::6008629273090937712::1794237490::1794237490::1::::<
 ::res://assets/modelos_kenney/GLB format/Textures/::1794237490
 colormap.png::CompressedTexture2D::2018487164545924133::1794237490::1794237490::1::::<><><>0<>0<>0b16524adbdba33d1ed8851e3f516c91<>res://.godot/imported/colormap.png-f2a658ca005157489dab2339a5038eac.s3tc.ctex::
 ::res://assets/modelos_kenney_ciudad/::1794237918
-::res://assets/modelos_kenney_ciudad/Models/::1794238
+::res://assets/modelos_kenney_ciudad/Models/::1794238094
+License.txt::TextFile::-1::1794238094::0::1::::<><><>0<>0<><>::
+::res://assets/modelos_kenney_ciudad/Models/GLB format/::1794238126
+building-a.glb::PackedScene::7690242548622296053::1794237919::1794238120::1::::<><><>0<>0<>8948394cd9225e5ff67f11e20532f96c<>res://.godot/imported/building-a.glb-9ea4447f0949e145b1f699fc0980fa57.scn::
+building-b.glb::PackedScene::3106105581186381395::1794237919::1794238121::1::::<><><>0<>0<>347caab66a546acd782791e1b04cdf39<>res://.godot/imported/building-b.glb-7d5f66981bb4fb1be7deed901b3c391b.scn::
+building-c.glb::PackedScene::8382389201952367662::1794237919::1794238121::1::::<><><>0<>0<>764e2d64fcec97344d7da4808a2e02c4<>res://.godot/imported/building-c.glb-ccfb1bcc76a7c886dc4dee8d0db1376f.scn::
+building-d.glb::PackedScene::2166042425585534608::1794237919::1794238121::1::::<><><>0<>0<>fa7eee30bcb43819cf65ba4dbb21e71e<>res://.godot/imported/building-d.glb-14f627334d6984dc39ccbf1f476259fe.scn::
+building-e.glb::PackedScene::771845241854242069::1794237919::1794238121::1::::<><><>0<>0<>16b498ca5253927489dbc1952b268d95<>res://.godot/imported/building-e.glb-dbc159cf693e560e8c279bdf43740ec3.scn::
+building-f.glb::PackedScene::481591911054921137::1794237919::1794238121::1::::<><><>0<>0<>0a94bd0edc1d947faf5c93b8b8ce480d<>res://.godot/imported/building-f.glb-38a0ed8f70669441ec334c6c19162c49.scn::
+building-g.glb::PackedScene::7879873123420022920::1794237919::1794238122::1::::<><><>0<>0<>f6c3a82e18a353d55d80b32a74c842f5<>res://.godot/imported/building-g.glb-775f1310ee29d71682a6671908986700.scn::
+building-h.glb::PackedScene::3186578652458673354::1794237919::1794238122::1::::<><><>0<>0<>31f2d410218bec18e3af8bd412498800<>res://.godot/imported/building-h.glb-78b844b311e02a9552dac86421b43cf5.scn::
+building-i.glb::PackedScene::7738820129280191448::1794237919::1794238122::1::::<><><>0<>0<>730da401b4df62b7f278e00678cf412f<>res://.godot/imported/building-i.glb-f3ef72febbf47c1ed3d04c84e8194218.scn::
+building-j.glb::PackedScene::2289972600922201903::1794237919::1794238123::1::::<><><>0<>0<>d79c4d6730b22b30e08e1d3eb4cf4a4a<>res://.godot/imported/building-j.glb-0634f57a6c137d09754d552866bc9e11.scn::
+building-k.glb::PackedScene::2521363645591942696::1794237919::1794238123::1::::<><><>0<>0<>a80d0c893efa6ef90785ab67376c384e<>res://.godot/imported/building-k.glb-87a7767823f16030c54702258a64588b.scn::
+building-l.glb::PackedScene::6931199530163730898::1794237919::1794238123::1::::<><><>0<>0<>b3e275bd303c584c96ac076d53b13769<>res://.godot/imported/building-l.glb-857ad5581b77aed63c8b34b5dd44e23a.scn::
+building-m.glb::PackedScene::8445423359966510916::1794237919::1794238123::1::::<><><>0<>0<>682ebd34e9b0d9cd69e22d32f1f14f57<>res://.godot/imported/building-m.glb-c3a51068166332f04615b39961cfe636.scn::
+building-n.glb::PackedScene::2229380496841479128::1794237919::1794238124::1::::<><><>0<>0<>7e332342a99df560e46e8784ec5fb5a6<>res://.godot/imported/building-n.glb-a1c9670aba553f6a2d0c6ef4c0085916.scn::
+building-skyscraper-a.glb::PackedScene::4251300952336345351::1794237919::1794238124::1::::<><><>0<>0<>712586d3ff3da26017d15bb388dcfb1d<>res://.godot/imported/building-skyscraper-a.glb-5baafcd11db7d18d1f9e52028f14a5c6.scn::
+building-skyscraper-b.glb::PackedScene::126168270174043070::1794237919::1794238124::1::::<><><>0<>0<>05c73f2bff52214b83e83d4851ea5e79<>res://.godot/imported/building-skyscraper-b.glb-1fc95f32e9943d4ccb33057d2493b72a.scn::
+building-skyscraper-c.glb::PackedScene::6017947140535474963::1794237919::1794238124::1::::<><><>0<>0<>d9289c9e6076e80f08d5955ed9ed8d38<>res://.godot/imported/building-skyscraper-c.glb-9079fe6a3ecf0240a338eaddd509a7e8.scn::
+building-skyscraper-d.glb::PackedScene::2994817743524104501::1794237919::1794238125::1::::<><><>0<>0<>1705925dd899a824ffe4f75c3b1e3d58<>res://.godot/imported/building-skyscraper-d.glb-9e92869cee0e8a6f9aba4b157a16b774.scn::
+building-skyscraper-e.glb::PackedScene::7846024267774606555::1794237919::1794238125::1::::<><><>0<>0<>a5b4aeec65474ea35c4fad26b74dc3ce<>res://.godot/imported/building-skyscraper-e.glb-dc2ac1bab599792b5a297f6aa4a124aa.scn::
+detail-awning-wide.glb::PackedScene::2391919274953886202::1794237919::1794238125::1::::<><><>0<>0<>96356a8d716cce082f29cbe693356abc<>res://.godot/imported/detail-awning-wide.glb-5e2a35a0ef1532261880bfdd24c93916.scn::
+detail-awning.glb::PackedScene::176338558606083347::1794237919::1794238125::1::::<><><>0<>0<>5bfd43f2a3c84bc291cf5d6d9355c9f6<>res://.godot/imported/detail-awning.glb-afc6f6a79ec84794034a46056899eafd.scn::
+detail-overhang-wide.glb::PackedScene::939548130590836692::1794237919::1794238126::1::::<><><>0<>0<>77f9a537c96f3d816ecfa2b3cd163a79<>res://.godot/imported/detail-overhang-wide.glb-c79dfa8ae90e7e235e3aa7eee29785eb.scn::
+detail-overhang.glb::PackedScene::693372788432514981::1794237919::1794238117::1::::<><><>0<>0<>283107b39a86e2e6efdaa36b449e2ebc<>res://.godot/imported/detail-overhang.glb-bff6f79583627d7faecf417631de0e8b.scn::
+detail-parasol-a.glb::PackedScene::5021602647848599344::1794237919::1794238117::1::::<><><>0<>0<>e8c576711bec99f1181ae5500fbfaa3b<>res://.godot/imported/detail-parasol-a.glb-c72df7f6e8de3f473dbf3bbb6989af3d.scn::
+detail-parasol-b.glb::PackedScene::131422090012008137::1794237920::1794238117::1::::<><><>0<>0<>58ca0291521d6a5c77912edee242e6a0<>res://.godot/imported/detail-parasol-b.glb-b11291f49359d20b1748356c7c4ddf80.scn::
+low-detail-building-a.glb::PackedScene::3855169695573804702::1794237920::1794238117::1::::<><><>0<>0<>ce1b3403083cc319e45c33c2ed497539<>res://.godot/imported/low-detail-building-a.glb-481589c1d32619f01049200e390255ce.scn::
+low-detail-building-b.glb::PackedScene::499134139998746551::1794237920::1794238118::1::::<><><>0<>0<>7724fd3c196e70184d484823628be12b<>res://.godot/imported/low-detail-building-b.glb-4ad6d2b86117ac097d3df6927408b680.scn::
+low-detail-building-c.glb::PackedScene::8636512268827546280::1794237920::1794238118::1::::<><><>0<>0<>3c5c58d08e321653d2f5e5f9b1d2d0d4<>res://.godot/imported/low-detail-building-c.glb-239d4c942a5608e2623c0ce0bcec49c1.scn::
+low-detail-building-d.glb::PackedScene::8672678355066386333::1794237920::1794238118::1::::<><><>0<>0<>aea4b6d27f5b0c527722cf4d458ed145<>res://.godot/imported/low-detail-building-d.glb-b078597e412050429a366f7eed591ec4.scn::
+low-detail-building-e.glb::PackedScene::3452035144755643738::1794237920::1794238118::1::::<><><>0<>0<>ec7c72db7f28b8e948ebed32a81f6eed<>res://.godot/imported/low-detail-building-e.glb-6494177b82d8a170f559b55f080cc946.scn::
+low-detail-building-f.glb::PackedScene::3960075795081952825::1794237920::1794238118::1::::<><><>0<>0<>5d514bf6b4df0d12f38e7348a37739bb<>res://.godot/imported/low-detail-building-f.glb-b5618b4ac9c2e1703420dd84da72ba85.scn::
+low-detail-building-g.glb::PackedScene::9015237174560007797::1794237920::1794238119::1::::<><><>0<>0<>1cf5b2726d263d07000d4d51a6d41a73<>res://.godot/imported/low-detail-building-g.glb-bd97d5b08f6ebdb96882e5cf5d8a5dbd.scn::
+low-detail-building-h.glb::PackedScene::7743610725824245378::1794237920::1794238119::1::::<><><>0<>0<>902bac3e7561171e7f895efa5f8eaea8<>res://.godot/imported/low-detail-building-h.glb-d26ec475d2c46350161cdec6fab2c404.scn::
+low-detail-building-i.glb::PackedScene::5344081829313440071::1794237920::1794238119::1::::<><><>0<>0<>cc71951b0f516c95b4925edf8dd9a4fa<>res://.godot/imported/low-detail-building-i.glb-8eac4845c3d7a9435d34bfd869eb1f87.scn::
+low-detail-building-j.glb::PackedScene::8252239052212434660::1794237920::1794238119::1::::<><><>0<>0<>050c66433e6c8c306064e2d5e9f14a9e<>res://.godot/imported/low-detail-building-j.glb-b9f1faa34ff3eaf37457b8b23f3103a3.scn::
+low-detail-building-k.glb::PackedScene::4707368641862143969::1794237920::1794238119::1::::<><><>0<>0<>ac09e9a90cdb2276e056d5cbb176cc7d<>res://.godot/imported/low-detail-building-k.glb-702d15f756ccfb2de48bce50826484c9.scn::
+low-detail-building-l.glb::PackedScene::7535428695705775559::1794237920::1794238119::1::::<><><>0<>0<>e8579a2d264964d59e6c9db952b0f723<>res://.godot/imported/low-detail-building-l.glb-17bdf3e2ed9db077d3193cf93b59092c.scn::
+low-detail-building-m.glb::PackedScene::4445692919919117782::1794237920::1794238120::1::::<><><>0<>0<>48b9cfb91af2bf019d89f06cc59b9a4a<>res://.godot/imported/low-detail-building-m.glb-a3c9e01e1825c1e6bbc5297b76b2f24f.scn::
+low-detail-building-n.glb::PackedScene::6536931168215208826::1794237920::1794238120::1::::<><><>0<>0<>87e240fdfef5ff643ad934b4ee858738<>res://.godot/imported/low-detail-building-n.glb-41c238376fe3c52695d7278a4e38fec1.scn::
+low-detail-building-wide-a.glb::PackedScene::3255518021396872540::1794237920::1794238120::1::::<><><>0<>0<>221119ec3a47b48a7d602506764a98de<>res://.godot/imported/low-detail-building-wide-a.glb-12a53fec63d8f8764b64b3c3e0d4063c.scn::
+low-detail-building-wide-b.glb::PackedScene::8957463267455817028::1794237920::1794238120::1::::<><><>0<>0<>15b6d7d3528ff67fca15fcd52e92e82d<>res://.godot/imported/low-detail-building-wide-b.glb-a0cf8ac5e9f291c91e4430df22ed8207.scn::
+::res://assets/modelos_kenney_ciudad/Models/GLB format/Textures/::1794238127
+colormap.png::CompressedTexture2D::7679251069494320988::1794237920::1794238127::1::::<><><>0<>0<>305aac79a6167c5819f7bb6b4a113740<>res://.godot/imported/colormap.png-1c32854ab43a9abac1cbf6eba431d01b.s3tc.ctex::
+::res://assets/modelos_kenney_ciudad/Models/Textures/::1794238116
+variation-a.png::CompressedTexture2D::5149500076376598094::1794237922::1794238116::1::::<><><>0<>0<>86864b0e5c6b87165f82bd292a6e1a80<>res://.godot/imported/variation-a.png-56a8342a37e50ab42321f8bb3287dc03.ctex::
+variation-b.png::CompressedTexture2D::5667782083980865148::1794237922::1794238116::1::::<><><>0<>0<>7bf2a7e3dfef567d39543c006c47efae<>res://.godot/imported/variation-b.png-ac045f037c3f875c24227738ae8db35d.ctex::
+::res://docs/::1794237490
+icon.svg::CompressedTexture2D::1082983283144382342::1794237490::1794237490::1::::<><><>0<>0<>22b970c2077b0970cb4211d4eb30c2fc<>res://.godot/imported/icon.svg-d74203da674a59f31ae118bcc76df45e.ctex::
+LEEME.txt::TextFile::-1::1794237490::0::1::::<><><>0<>0<><>::
+::res://escenas/::1794239707
+main.tscn::PackedScene::183890259676159850::1794240616::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://bjekt0e1nvewt::::res://escenas/personajes/ciudadano.tscn<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://bts8qwxctvwti::::res://escenas/zonas/zona_a.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn<>uid://b33i6k8jqj7f8::::res://scripts/partida.gd<>res://escenas/entorno/feria.tscn
+::res://escenas/entorno/::1794239249
+camera_3d.tscn::PackedScene::3468454381140211498::1794237490::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://scripts/mundo/camara_sigue.gd
+feria.tscn::PackedScene::-1::1794239228::0::1::::<><><>0<>0<><>::res://assets/modelos_kenney_ciudad/Models/GLB format/building-a.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-b.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-c.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-d.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-e.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-f.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-g.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-h.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-i.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-k.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-l.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-m.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-n.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-a.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-c.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-j.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-a.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-b.glb
+suelo.tscn::PackedScene::9008167162551218476::1794237490::0::1::::<><><>0<>0<><>::
+::res://escenas/personajes/::1794237490
+ciudadano.tscn::PackedScene::3027020207925984711::1794237490::0::1::::<><><>0<>0<><>::uid://bqarkse6nhueg::::res://scripts/enemigos/ciudadano.gd<>uid://kt8lkvi5bed1::::res://assets/modelos_kenney/GLB format/character-male-d.glb
+curioso.tscn::PackedScene::2935521281573025366::1794237490::0::1::::<><><>0<>0<><>::uid://dh6c1kv407v3u::::res://scripts/enemigos/curioso.gd<>uid://35hwdhmmevhu::::res://assets/modelos_kenney/GLB format/character-male-e.glb
+guardia.tscn::PackedScene::5438618299913828742::1794237490::0::1::::<><><>0<>0<><>::uid://bj4jjjasqwirw::::res://scripts/enemigos/guardia.gd<>uid://c3r14fxs6w8c0::::res://assets/modelos_kenney/GLB format/character-male-f.glb
+manifestante.tscn::PackedScene::6782523737467407470::1794237490::0::1::::<><><>0<>0<><>::uid://d0pm7nhq8tcuy::::res://scripts/enemigos/manifestante.gd<>uid://b2d6ms0qpq2yb::::res://assets/modelos_kenney/GLB format/character-male-b.glb
+personaje.tscn::PackedScene::3688718937690695944::1794237490::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://c6ahemttr3fhi::::res://assets/modelos_kenney/GLB format/character-male-c.glb
+::res://escenas/prototipos/::1794237490
+prueba_felipe.tscn::PackedScene::2381025468113338126::1794237490::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>res://personaje/character-male-a.glb<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn
+prueba_paola.tscn::PackedScene::8930022208089202896::1794237490::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://bhwk4dav4gp6u::::res://scripts/jugador/ruido.gd<>uid://bh28uvixpvqmg::::res://escenas/personajes/curioso.tscn<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn
+::res://escenas/zonas/::1794239707
+zona_a.tscn::PackedScene::3759200937013881406::1794239707::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://scripts/mundo/sistema_sol.gd<>uid://c3f1w6y7ay111::::res://scripts/mundo/ciclo_dia.gd
+zona_b.tscn::PackedScene::2998160804433784139::1794237490::0::1::::<><><>0<>0<><>::uid://cqufr8mvybimx::::res://scripts/mundo/luz_parpadeante.gd<>uid://c75387v46xe0m::::res://scripts/mundo/disparador.gd<>uid://c1df1opwnhc5q::::res://scripts/mundo/sistema_eventos.gd
+zona_c.tscn::PackedScene::633945155365601340::1794237490::0::1::::<><><>0<>0<><>::uid://clahgnnril28::::res://scripts/prototipos/color_rect.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://c1ylyjuojfa61::::res://scripts/prototipos/luz_jugador.gd
+::res://scripts/::1794239707
+partida.gd::GDScript::4410052554867603315::1794239707::0::1::::<>Node<><>0<>0<><>::
+::res://scripts/enemigos/::1794237490
+ciudadano.gd::GDScript::3510493181743387206::1794237490::0::1::::<>CharacterBody3D<><>0<>0<><>::
+curioso.gd::GDScript::7714748090575155984::1794237490::0::1::::<>CharacterBody3D<><>0<>0<><>::
+guardia.gd::GDScript::3078550229933413096::1794237490::0::1::::<>CharacterBody3D<><>0<>0<><>::
+manifestante.gd::GDScript::8945735252048162096::1794237490::0::1::::<>CharacterBody3D<><>0<>0<><>::
+::res://scripts/jugador/::1794237490
+fuerza.gd::GDScript::6038028493805127833::1794237490::0::1::::<>Node<><>0<>0<><>::
+interactuar.gd::GDScript::5367995637860576821::1794237490::0::1::::<>Node<><>0<>0<><>::
+personaje.gd::GDScript::4928998021563027591::1794237490::0::1::::<>CharacterBody3D<><>0<>0<><>::
+ruido.gd::GDScript::2923818016262751758::1794237490::0::1::::<>Node<><>0<>0<><>::
+salud.gd::GDScript::7196834913738582884::1794237490::0::1::::<>Node<><>0<>0<><>::
+::res://scripts/mundo/::1794239707
+camara_sigue.gd::GDScript::6835303819788986517::1794237490::0::1::::<>Camera3D<><>0<>0<><>::
+ciclo_dia.gd::GDScript::6750070474053311798::1794237490::0::1::::CicloDia<>Node<><>0<>0<><>::
+disparador.gd::GDScript::7082576417969414774::1794237490::0::1::::Disparador<>Area3D<><>0<>0<><>::
+incidente.gd::GDScript::5625656500560912791::1794237490::0::1::::<>StaticBody3D<><>0<>0<><>::
+luz_parpadeante.gd::GDScript::5937486116930604023::1794237490::0::1::::LuzParpadeante<>OmniLight3D<><>0<>0<><>::
+sistema_eventos.gd::GDScript::6604295210358781468::1794237490::0::1::::SistemaEventos<>Node<><>0<>0<><>::
+sistema_sol.gd::GDScript::6527060181489791687::1794239707::0::1::::SistemaSol<>Node<><>0<>0<><>::
+::res://scripts/prototipos/::1794239707
+apuntar.gd::GDScript::9154919266375362820::1794239707::0::1::::<>Node<><>0<>0<><>::
+color_rect.gd::GDScript::163098678964321171::1794237490::0::1::::<>ColorRect<><>0<>0<><>::
+fotometro.gd::GDScript::5213658712591720253::1794237490::0::1::::<>Node<><>0<>0<><>::
+luz_jugador.gd::GDScript::6648007618301187504::1794237490::0::1::::LuzJugador<>SpotLight3D<><>0<>0<><>::
+rodar.gd::GDScript::2242338543056543662::1794237490::0::1::::<>Node<><>0<>0<><>::

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b2rdjgekhxqds"]
 
-[ext_resource type="Script" path="res://sistema_sol.gd" id="1_l7qun"]
-[ext_resource type="Script" path="res://ciclo_dia.gd" id="2_fntjl"]
+[ext_resource type="Script" uid="uid://cy80y0cs687eh" path="res://scripts/mundo/sistema_sol.gd" id="1_l7qun"]
+[ext_resource type="Script" uid="uid://c3f1w6y7ay111" path="res://scripts/mundo/ciclo_dia.gd" id="2_fntjl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r6318"]
 
