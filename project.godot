@@ -22,6 +22,7 @@ project/assembly_name="Juego del equipo (3D)"
 [global_group]
 
 jugador=""
+focos=""
 
 [input]
 

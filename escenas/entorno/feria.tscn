@@ -1,595 +1,586 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://s4gd7xv4gbdu"]
 
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-a.glb" id="1"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-b.glb" id="2"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-c.glb" id="3"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-d.glb" id="4"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-e.glb" id="5"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-f.glb" id="6"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-g.glb" id="7"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-h.glb" id="8"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-i.glb" id="9"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-k.glb" id="10"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-l.glb" id="11"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-m.glb" id="12"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-n.glb" id="13"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-a.glb" id="14"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-c.glb" id="15"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-j.glb" id="16"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-a.glb" id="17"]
-[ext_resource type="PackedScene" path="res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-b.glb" id="18"]
-
-[sub_resource type="StandardMaterial3D" id="M_Pasto"]
-albedo_color = Color(0.431, 0.604, 0.357, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Fondo"]
-albedo_color = Color(0.310, 0.478, 0.278, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Plaza"]
-albedo_color = Color(0.851, 0.788, 0.639, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Camino"]
-albedo_color = Color(0.722, 0.663, 0.541, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Amarillo"]
-albedo_color = Color(0.949, 0.714, 0.196, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Azul"]
-albedo_color = Color(0.184, 0.365, 0.659, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Menta"]
-albedo_color = Color(0.373, 0.722, 0.545, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Madera"]
-albedo_color = Color(0.541, 0.416, 0.282, 1)
-
-[sub_resource type="StandardMaterial3D" id="M_Foco"]
-albedo_color = Color(0.949, 0.714, 0.196, 1)
-emission_enabled = true
-emission = Color(0.949, 0.714, 0.196, 1)
+[ext_resource type="PackedScene" uid="uid://dhthf26r4e62t" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-a.glb" id="1"]
+[ext_resource type="PackedScene" uid="uid://bkivdtrog6gv0" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-b.glb" id="2"]
+[ext_resource type="PackedScene" uid="uid://droqywwayfxuc" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-c.glb" id="3"]
+[ext_resource type="PackedScene" uid="uid://54inxbqd3afw" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-d.glb" id="4"]
+[ext_resource type="PackedScene" uid="uid://k85gcgqa1f6t" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-e.glb" id="5"]
+[ext_resource type="PackedScene" uid="uid://g4j0pfwb7vy4" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-f.glb" id="6"]
+[ext_resource type="PackedScene" uid="uid://dkjcmhdiadaui" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-g.glb" id="7"]
+[ext_resource type="PackedScene" uid="uid://blnuqqqgrvcnq" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-h.glb" id="8"]
+[ext_resource type="PackedScene" uid="uid://dii0ib3csyheu" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-i.glb" id="9"]
+[ext_resource type="PackedScene" uid="uid://bb6mqxpblawfw" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-k.glb" id="10"]
+[ext_resource type="PackedScene" uid="uid://c50r3xg5hkffu" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-l.glb" id="11"]
+[ext_resource type="PackedScene" uid="uid://dsla5hribwit5" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-m.glb" id="12"]
+[ext_resource type="PackedScene" uid="uid://606tofguto7i" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-n.glb" id="13"]
+[ext_resource type="PackedScene" uid="uid://b1tmknh2xi1rn" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-a.glb" id="14"]
+[ext_resource type="PackedScene" uid="uid://cr0eye7t17xqx" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-c.glb" id="15"]
+[ext_resource type="PackedScene" uid="uid://7vjrqm4hj8cp" path="res://assets/modelos_kenney_ciudad/Models/GLB format/building-j.glb" id="16"]
+[ext_resource type="PackedScene" uid="uid://cdsrcduw8ooyi" path="res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-a.glb" id="17"]
+[ext_resource type="PackedScene" uid="uid://b4wrdbbgrruv" path="res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-b.glb" id="18"]
 
 [sub_resource type="PlaneMesh" id="PisoM"]
 size = Vector2(30, 30)
 
+[sub_resource type="StandardMaterial3D" id="M_Pasto"]
+albedo_color = Color(0.431, 0.604, 0.357, 1)
+
 [sub_resource type="BoxShape3D" id="PisoS"]
 size = Vector3(30, 0.2, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bj2op"]
+size = Vector3(300, 0.2, 300)
 
 [sub_resource type="PlaneMesh" id="FondoM"]
 size = Vector2(120, 120)
 
+[sub_resource type="StandardMaterial3D" id="M_Fondo"]
+albedo_color = Color(0.31, 0.478, 0.278, 1)
+
 [sub_resource type="PlaneMesh" id="PlazaM"]
 size = Vector2(14, 14)
 
+[sub_resource type="StandardMaterial3D" id="M_Plaza"]
+albedo_color = Color(0.851, 0.788, 0.639, 1)
+
 [sub_resource type="PlaneMesh" id="CaminoM"]
 size = Vector2(4, 30)
+
+[sub_resource type="StandardMaterial3D" id="M_Camino"]
+albedo_color = Color(0.722, 0.663, 0.541, 1)
+
+[sub_resource type="BoxMesh" id="B0M"]
+size = Vector3(12, 0.8, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="M_Amarillo"]
+albedo_color = Color(0.949, 0.714, 0.196, 1)
+
+[sub_resource type="BoxShape3D" id="B0S"]
+size = Vector3(12, 0.8, 0.2)
+
+[sub_resource type="BoxMesh" id="B1M"]
+size = Vector3(0.4, 2, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="M_Azul"]
+albedo_color = Color(0.184, 0.365, 0.659, 1)
+
+[sub_resource type="BoxShape3D" id="B1S"]
+size = Vector3(0.4, 2, 0.4)
+
+[sub_resource type="BoxMesh" id="B2M"]
+size = Vector3(3, 1, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="M_Madera"]
+albedo_color = Color(0.541, 0.416, 0.282, 1)
+
+[sub_resource type="BoxShape3D" id="B2S"]
+size = Vector3(3, 1, 1.2)
+
+[sub_resource type="BoxMesh" id="B3M"]
+size = Vector3(3.6, 0.15, 2.2)
 
 [sub_resource type="CylinderMesh" id="PosteM"]
 top_radius = 0.08
 bottom_radius = 0.1
 height = 3.0
 
+[sub_resource type="StandardMaterial3D" id="M_Menta"]
+albedo_color = Color(0.373, 0.722, 0.545, 1)
+
 [sub_resource type="SphereMesh" id="BombillaM"]
 radius = 0.25
 height = 0.5
 
-[sub_resource type="BoxMesh" id="B0M"]
-size = Vector3(12, 0.8, 0.2)
+[sub_resource type="StandardMaterial3D" id="M_Foco"]
+albedo_color = Color(0.949, 0.714, 0.196, 1)
+emission_enabled = true
+emission = Color(0.949, 0.714, 0.196, 1)
 
-[sub_resource type="BoxShape3D" id="B0S"]
-size = Vector3(12, 0.8, 0.2)
+[node name="Feria" type="Node3D" unique_id=260571915]
 
-[sub_resource type="BoxMesh" id="B1M"]
-size = Vector3(0.4, 2.0, 0.4)
+[node name="Suelo" type="StaticBody3D" parent="." unique_id=680280335]
 
-[sub_resource type="BoxShape3D" id="B1S"]
-size = Vector3(0.4, 2.0, 0.4)
-
-[sub_resource type="BoxMesh" id="B2M"]
-size = Vector3(3.0, 1.0, 1.2)
-
-[sub_resource type="BoxShape3D" id="B2S"]
-size = Vector3(3.0, 1.0, 1.2)
-
-[sub_resource type="BoxMesh" id="B3M"]
-size = Vector3(3.6, 0.15, 2.2)
-
-[sub_resource type="BoxShape3D" id="B3S"]
-size = Vector3(3.6, 0.15, 2.2)
-
-[node name="Feria" type="Node3D"]
-
-[node name="Suelo" type="StaticBody3D" parent="."]
-
-[node name="Malla" type="MeshInstance3D" parent="Suelo"]
+[node name="Malla" type="MeshInstance3D" parent="Suelo" unique_id=1360035143]
 mesh = SubResource("PisoM")
 surface_material_override/0 = SubResource("M_Pasto")
 
-[node name="Colision" type="CollisionShape3D" parent="Suelo"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, -0.1, 0)
+[node name="Colision" type="CollisionShape3D" parent="Suelo" unique_id=500309244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("PisoS")
 
-[node name="FondoLejano" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, -0.05, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo" unique_id=1363717119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_bj2op")
+
+[node name="FondoLejano" type="MeshInstance3D" parent="." unique_id=1490030742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 mesh = SubResource("FondoM")
 surface_material_override/0 = SubResource("M_Fondo")
 
-[node name="Plaza" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.02, 0)
+[node name="Plaza" type="MeshInstance3D" parent="." unique_id=1793978718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 mesh = SubResource("PlazaM")
 surface_material_override/0 = SubResource("M_Plaza")
 
-[node name="CaminoNS" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.015, 0)
+[node name="CaminoNS" type="MeshInstance3D" parent="." unique_id=2029329150]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
 mesh = SubResource("CaminoM")
 surface_material_override/0 = SubResource("M_Camino")
 
-[node name="CaminoEO" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, 0, 0.015, 0)
+[node name="CaminoEO" type="MeshInstance3D" parent="." unique_id=106646823]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.015, 0)
 mesh = SubResource("CaminoM")
 surface_material_override/0 = SubResource("M_Camino")
 
-[node name="CercaNorteA" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -9.0, 0.4, -15)
+[node name="CercaNorteB" type="StaticBody3D" parent="." unique_id=1616266797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.4, -15)
 
-[node name="Malla" type="MeshInstance3D" parent="CercaNorteA"]
+[node name="Malla" type="MeshInstance3D" parent="CercaNorteB" unique_id=1167909217]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaNorteA"]
+[node name="Colision" type="CollisionShape3D" parent="CercaNorteB" unique_id=406595324]
 shape = SubResource("B0S")
 
-[node name="CercaNorteB" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 9.0, 0.4, -15)
+[node name="PosteNorteA" type="StaticBody3D" parent="." unique_id=1940417193]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -15)
 
-[node name="Malla" type="MeshInstance3D" parent="CercaNorteB"]
+[node name="Malla" type="MeshInstance3D" parent="PosteNorteA" unique_id=1279614069]
+mesh = SubResource("B1M")
+surface_material_override/0 = SubResource("M_Azul")
+
+[node name="Colision" type="CollisionShape3D" parent="PosteNorteA" unique_id=1794914714]
+shape = SubResource("B1S")
+
+[node name="PosteNorteB" type="StaticBody3D" parent="." unique_id=1498874385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, -15)
+
+[node name="Malla" type="MeshInstance3D" parent="PosteNorteB" unique_id=685821949]
+mesh = SubResource("B1M")
+surface_material_override/0 = SubResource("M_Azul")
+
+[node name="Colision" type="CollisionShape3D" parent="PosteNorteB" unique_id=158992666]
+shape = SubResource("B1S")
+
+[node name="CercaSurA" type="StaticBody3D" parent="." unique_id=196413855]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.4, 15)
+
+[node name="Malla" type="MeshInstance3D" parent="CercaSurA" unique_id=1492055973]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaNorteB"]
+[node name="Colision" type="CollisionShape3D" parent="CercaSurA" unique_id=270096515]
 shape = SubResource("B0S")
 
-[node name="PosteNorteA" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -3, 1.0, -15)
+[node name="CercaSurB" type="StaticBody3D" parent="." unique_id=1657447330]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.4, 15)
 
-[node name="Malla" type="MeshInstance3D" parent="PosteNorteA"]
-mesh = SubResource("B1M")
-surface_material_override/0 = SubResource("M_Azul")
-
-[node name="Colision" type="CollisionShape3D" parent="PosteNorteA"]
-shape = SubResource("B1S")
-
-[node name="PosteNorteB" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 3, 1.0, -15)
-
-[node name="Malla" type="MeshInstance3D" parent="PosteNorteB"]
-mesh = SubResource("B1M")
-surface_material_override/0 = SubResource("M_Azul")
-
-[node name="Colision" type="CollisionShape3D" parent="PosteNorteB"]
-shape = SubResource("B1S")
-
-[node name="CercaSurA" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -9.0, 0.4, 15)
-
-[node name="Malla" type="MeshInstance3D" parent="CercaSurA"]
+[node name="Malla" type="MeshInstance3D" parent="CercaSurB" unique_id=1390898987]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaSurA"]
+[node name="Colision" type="CollisionShape3D" parent="CercaSurB" unique_id=613975797]
 shape = SubResource("B0S")
 
-[node name="CercaSurB" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 9.0, 0.4, 15)
+[node name="PosteSurA" type="StaticBody3D" parent="." unique_id=1816245547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 15)
 
-[node name="Malla" type="MeshInstance3D" parent="CercaSurB"]
+[node name="Malla" type="MeshInstance3D" parent="PosteSurA" unique_id=1827000322]
+mesh = SubResource("B1M")
+surface_material_override/0 = SubResource("M_Azul")
+
+[node name="Colision" type="CollisionShape3D" parent="PosteSurA" unique_id=675209581]
+shape = SubResource("B1S")
+
+[node name="PosteSurB" type="StaticBody3D" parent="." unique_id=1961987793]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 15)
+
+[node name="Malla" type="MeshInstance3D" parent="PosteSurB" unique_id=933043793]
+mesh = SubResource("B1M")
+surface_material_override/0 = SubResource("M_Azul")
+
+[node name="Colision" type="CollisionShape3D" parent="PosteSurB" unique_id=2087513518]
+shape = SubResource("B1S")
+
+[node name="CercaEsteA" type="StaticBody3D" parent="." unique_id=978464378]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 15, 0.4, -9)
+
+[node name="Malla" type="MeshInstance3D" parent="CercaEsteA" unique_id=272534465]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaSurB"]
+[node name="Colision" type="CollisionShape3D" parent="CercaEsteA" unique_id=236702946]
 shape = SubResource("B0S")
 
-[node name="PosteSurA" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -3, 1.0, 15)
+[node name="CercaEsteB" type="StaticBody3D" parent="." unique_id=1428645652]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 15, 0.4, 9)
 
-[node name="Malla" type="MeshInstance3D" parent="PosteSurA"]
-mesh = SubResource("B1M")
-surface_material_override/0 = SubResource("M_Azul")
-
-[node name="Colision" type="CollisionShape3D" parent="PosteSurA"]
-shape = SubResource("B1S")
-
-[node name="PosteSurB" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 3, 1.0, 15)
-
-[node name="Malla" type="MeshInstance3D" parent="PosteSurB"]
-mesh = SubResource("B1M")
-surface_material_override/0 = SubResource("M_Azul")
-
-[node name="Colision" type="CollisionShape3D" parent="PosteSurB"]
-shape = SubResource("B1S")
-
-[node name="CercaEsteA" type="StaticBody3D" parent="."]
-transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, 15, 0.4, -9.0)
-
-[node name="Malla" type="MeshInstance3D" parent="CercaEsteA"]
+[node name="Malla" type="MeshInstance3D" parent="CercaEsteB" unique_id=146737267]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaEsteA"]
+[node name="Colision" type="CollisionShape3D" parent="CercaEsteB" unique_id=1199367901]
 shape = SubResource("B0S")
 
-[node name="CercaEsteB" type="StaticBody3D" parent="."]
-transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, 15, 0.4, 9.0)
+[node name="PosteEsteA" type="StaticBody3D" parent="." unique_id=380683551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, -3)
 
-[node name="Malla" type="MeshInstance3D" parent="CercaEsteB"]
+[node name="Malla" type="MeshInstance3D" parent="PosteEsteA" unique_id=1627519439]
+mesh = SubResource("B1M")
+surface_material_override/0 = SubResource("M_Azul")
+
+[node name="Colision" type="CollisionShape3D" parent="PosteEsteA" unique_id=2105804947]
+shape = SubResource("B1S")
+
+[node name="PosteEsteB" type="StaticBody3D" parent="." unique_id=1271325927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 3)
+
+[node name="Malla" type="MeshInstance3D" parent="PosteEsteB" unique_id=12437064]
+mesh = SubResource("B1M")
+surface_material_override/0 = SubResource("M_Azul")
+
+[node name="Colision" type="CollisionShape3D" parent="PosteEsteB" unique_id=2029084135]
+shape = SubResource("B1S")
+
+[node name="CercaOesteA" type="StaticBody3D" parent="." unique_id=2011482870]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -15, 0.4, -9)
+
+[node name="Malla" type="MeshInstance3D" parent="CercaOesteA" unique_id=375935148]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaEsteB"]
+[node name="Colision" type="CollisionShape3D" parent="CercaOesteA" unique_id=436654256]
 shape = SubResource("B0S")
 
-[node name="PosteEsteA" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 15, 1.0, -3)
+[node name="CercaOesteB" type="StaticBody3D" parent="." unique_id=1630818015]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -15, 0.4, 9)
 
-[node name="Malla" type="MeshInstance3D" parent="PosteEsteA"]
-mesh = SubResource("B1M")
-surface_material_override/0 = SubResource("M_Azul")
-
-[node name="Colision" type="CollisionShape3D" parent="PosteEsteA"]
-shape = SubResource("B1S")
-
-[node name="PosteEsteB" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 15, 1.0, 3)
-
-[node name="Malla" type="MeshInstance3D" parent="PosteEsteB"]
-mesh = SubResource("B1M")
-surface_material_override/0 = SubResource("M_Azul")
-
-[node name="Colision" type="CollisionShape3D" parent="PosteEsteB"]
-shape = SubResource("B1S")
-
-[node name="CercaOesteA" type="StaticBody3D" parent="."]
-transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, -15, 0.4, -9.0)
-
-[node name="Malla" type="MeshInstance3D" parent="CercaOesteA"]
+[node name="Malla" type="MeshInstance3D" parent="CercaOesteB" unique_id=203684809]
 mesh = SubResource("B0M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Colision" type="CollisionShape3D" parent="CercaOesteA"]
+[node name="Colision" type="CollisionShape3D" parent="CercaOesteB" unique_id=1596939475]
 shape = SubResource("B0S")
 
-[node name="CercaOesteB" type="StaticBody3D" parent="."]
-transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, -15, 0.4, 9.0)
+[node name="PosteOesteA" type="StaticBody3D" parent="." unique_id=1959875732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, -3)
 
-[node name="Malla" type="MeshInstance3D" parent="CercaOesteB"]
-mesh = SubResource("B0M")
-surface_material_override/0 = SubResource("M_Amarillo")
-
-[node name="Colision" type="CollisionShape3D" parent="CercaOesteB"]
-shape = SubResource("B0S")
-
-[node name="PosteOesteA" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -15, 1.0, -3)
-
-[node name="Malla" type="MeshInstance3D" parent="PosteOesteA"]
+[node name="Malla" type="MeshInstance3D" parent="PosteOesteA" unique_id=735995136]
 mesh = SubResource("B1M")
 surface_material_override/0 = SubResource("M_Azul")
 
-[node name="Colision" type="CollisionShape3D" parent="PosteOesteA"]
+[node name="Colision" type="CollisionShape3D" parent="PosteOesteA" unique_id=1938009250]
 shape = SubResource("B1S")
 
-[node name="PosteOesteB" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -15, 1.0, 3)
+[node name="PosteOesteB" type="StaticBody3D" parent="." unique_id=48775073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 3)
 
-[node name="Malla" type="MeshInstance3D" parent="PosteOesteB"]
+[node name="Malla" type="MeshInstance3D" parent="PosteOesteB" unique_id=940122085]
 mesh = SubResource("B1M")
 surface_material_override/0 = SubResource("M_Azul")
 
-[node name="Colision" type="CollisionShape3D" parent="PosteOesteB"]
+[node name="Colision" type="CollisionShape3D" parent="PosteOesteB" unique_id=360962406]
 shape = SubResource("B1S")
 
-[node name="EdifNorteA1" parent="." instance=ExtResource("1")]
-transform = Transform3D(5.00000, 0, 0.00000, 0, 5.0, 0, -0.00000, 0, 5.00000, -6.208969742059708, 0, -20.549999994039535)
+[node name="EdifNorteA1" parent="." unique_id=1940577028 instance=ExtResource("1")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -6.2089696, 0, -20.55)
 
-[node name="EdifNorteA2" parent="." instance=ExtResource("2")]
-transform = Transform3D(5.00000, 0, 0.00000, 0, 5.0, 0, -0.00000, 0, 5.00000, -11.242939704656601, 0, -20.549999994039535)
+[node name="EdifNorteA2" parent="." unique_id=2064924604 instance=ExtResource("2")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -11.24294, 0, -20.55)
 
-[node name="EdifNorteA3" parent="." instance=ExtResource("3")]
-transform = Transform3D(5.00000, 0, 0.00000, 0, 5.0, 0, -0.00000, 0, 5.00000, -16.276909667253495, 0, -20.925000232458114)
+[node name="EdifNorteA3" parent="." unique_id=527256615 instance=ExtResource("3")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -16.276909, 0, -20.925001)
 
-[node name="EdifNorteB1" parent="." instance=ExtResource("4")]
-transform = Transform3D(5.00000, 0, 0.00000, 0, 5.0, 0, -0.00000, 0, 5.00000, 6.100000083446503, 0, -20.44999964237213)
+[node name="EdifNorteB1" parent="." unique_id=1080847503 instance=ExtResource("4")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 6.1, 0, -20.449999)
 
-[node name="EdifNorteB2" parent="." instance=ExtResource("5")]
-transform = Transform3D(5.00000, 0, 0.00000, 0, 5.0, 0, -0.00000, 0, 5.00000, 12.70000028014183, 0, -20.71972883939743)
+[node name="EdifNorteB2" parent="." unique_id=281320758 instance=ExtResource("5")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 12.7, 0, -20.719728)
 
-[node name="EdifNorteB3" parent="." instance=ExtResource("6")]
-transform = Transform3D(5.00000, 0, 0.00000, 0, 5.0, 0, -0.00000, 0, 5.00000, 19.30000047683716, 0, -20.775000524520873)
+[node name="EdifNorteB3" parent="." unique_id=1296535292 instance=ExtResource("6")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 19.300001, 0, -20.775)
 
-[node name="EdifOesteA1" parent="." instance=ExtResource("7")]
-transform = Transform3D(0.00000, 0, 5.00000, 0, 5.0, 0, -5.00000, 0, 0.00000, -20.505000498890876, 0, -6.425000071525574)
+[node name="EdifOesteA1" parent="." unique_id=1659831404 instance=ExtResource("7")]
+transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -20.505001, 0, -6.425)
 
-[node name="EdifOesteA2" parent="." instance=ExtResource("8")]
-transform = Transform3D(0.00000, 0, 5.00000, 0, 5.0, 0, -5.00000, 0, 0.00000, -20.719727796316146, 0, -11.458969736099244)
+[node name="EdifOesteA2" parent="." unique_id=269565130 instance=ExtResource("8")]
+transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -20.719728, 0, -11.45897)
 
-[node name="EdifOesteA3" parent="." instance=ExtResource("9")]
-transform = Transform3D(0.00000, 0, 5.00000, 0, 5.0, 0, -5.00000, 0, 0.00000, -21.454999965429305, 0, -17.16793950200081)
+[node name="EdifOesteA3" parent="." unique_id=1950733843 instance=ExtResource("9")]
+transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -21.455, 0, -17.16794)
 
-[node name="EdifOesteB1" parent="." instance=ExtResource("10")]
-transform = Transform3D(0.00000, 0, 5.00000, 0, 5.0, 0, -5.00000, 0, 0.00000, -20.554999482631683, 0, 9.20897001028061)
+[node name="EdifOesteB1" parent="." unique_id=649984968 instance=ExtResource("10")]
+transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -20.555, 0, 9.20897)
 
-[node name="EdifOesteB2" parent="." instance=ExtResource("11")]
-transform = Transform3D(0.00000, 0, 5.00000, 0, 5.0, 0, -5.00000, 0, 0.00000, -21.70500002503395, 0, 18.242940032482146)
+[node name="EdifOesteB2" parent="." unique_id=202003677 instance=ExtResource("11")]
+transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -21.705, 0, 18.24294)
 
-[node name="EdifOesteB3" parent="." instance=ExtResource("12")]
-transform = Transform3D(0.00000, 0, 5.00000, 0, 5.0, 0, -5.00000, 0, 0.00000, -21.305000406503677, 0, 25.16794036626816)
+[node name="EdifOesteB3" parent="." unique_id=1042299722 instance=ExtResource("12")]
+transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -21.305, 0, 25.16794)
 
-[node name="EdifEsteA1" parent="." instance=ExtResource("13")]
-transform = Transform3D(0.00000, 0, -5.00000, 0, 5.0, 0, 5.00000, 0, 0.00000, 22.750000131130218, 0, -9.800000727176666)
+[node name="EdifEsteA1" parent="." unique_id=1217506660 instance=ExtResource("13")]
+transform = Transform3D(0, 0, -5, 0, 5, 0, 5, 0, 0, 22.75, 0, -9.800001)
 
-[node name="EdifEsteA2" parent="." instance=ExtResource("14")]
-transform = Transform3D(0.00000, 0, -5.00000, 0, 5.0, 0, 5.00000, 0, 0.00000, 21.60000033378601, 0, -19.40000089406967)
+[node name="EdifEsteA2" parent="." unique_id=200274885 instance=ExtResource("14")]
+transform = Transform3D(0, 0, -5, 0, 5, 0, 5, 0, 0, 21.6, 0, -19.400002)
 
-[node name="EdifEsteA3" parent="." instance=ExtResource("15")]
-transform = Transform3D(0.00000, 0, -5.00000, 0, 5.0, 0, 5.00000, 0, 0.00000, 21.669728380441665, 0, -26.399999517202374)
+[node name="EdifEsteA3" parent="." unique_id=590500013 instance=ExtResource("15")]
+transform = Transform3D(0, 0, -5, 0, 5, 0, 5, 0, 0, 21.66973, 0, -26.4)
 
-[node name="EdifEsteB1" parent="." instance=ExtResource("16")]
-transform = Transform3D(0.00000, 0, -5.00000, 0, 5.0, 0, 5.00000, 0, 0.00000, 21.550000083446502, 0, 9.20897001028061)
+[node name="EdifEsteB1" parent="." unique_id=1099647759 instance=ExtResource("16")]
+transform = Transform3D(0, 0, -5, 0, 5, 0, 5, 0, 0, 21.55, 0, 9.20897)
 
-[node name="EdifEsteB2" parent="." instance=ExtResource("1")]
-transform = Transform3D(0.00000, 0, -5.00000, 0, 5.0, 0, 5.00000, 0, 0.00000, 20.549999994039535, 0, 17.026909762620924)
+[node name="EdifEsteB2" parent="." unique_id=1382887242 instance=ExtResource("1")]
+transform = Transform3D(0, 0, -5, 0, 5, 0, 5, 0, 0, 20.55, 0, 17.026909)
 
-[node name="EdifEsteB3" parent="." instance=ExtResource("2")]
-transform = Transform3D(0.00000, 0, -5.00000, 0, 5.0, 0, 5.00000, 0, 0.00000, 20.549999994039535, 0, 22.06087972521782)
+[node name="EdifEsteB3" parent="." unique_id=684772811 instance=ExtResource("2")]
+transform = Transform3D(0, 0, -5, 0, 5, 0, 5, 0, 0, 20.55, 0, 22.06088)
 
-[node name="Puesto1" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -8, 0, -7)
+[node name="Puesto1" type="StaticBody3D" parent="." unique_id=1275832045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -7)
 
-[node name="Mostrador" type="MeshInstance3D" parent="Puesto1"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Mostrador" type="MeshInstance3D" parent="Puesto1" unique_id=377976804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("B2M")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Colision" type="CollisionShape3D" parent="Puesto1"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Colision" type="CollisionShape3D" parent="Puesto1" unique_id=784148037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("B2S")
 
-[node name="Toldo" type="MeshInstance3D" parent="Puesto1"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.3, 0.1)
+[node name="Toldo" type="MeshInstance3D" parent="Puesto1" unique_id=241868094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
 mesh = SubResource("B3M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Palo1" type="MeshInstance3D" parent="Puesto1"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -1.6, 1.5, -0.5)
+[node name="Palo1" type="MeshInstance3D" parent="Puesto1" unique_id=434419689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Palo2" type="MeshInstance3D" parent="Puesto1"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 1.6, 1.5, -0.5)
+[node name="Palo2" type="MeshInstance3D" parent="Puesto1" unique_id=1189265876]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Puesto2" type="StaticBody3D" parent="."]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 8, 0, -7)
+[node name="Puesto2" type="StaticBody3D" parent="." unique_id=1406623191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -7)
 
-[node name="Mostrador" type="MeshInstance3D" parent="Puesto2"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Mostrador" type="MeshInstance3D" parent="Puesto2" unique_id=1123170950]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("B2M")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Colision" type="CollisionShape3D" parent="Puesto2"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Colision" type="CollisionShape3D" parent="Puesto2" unique_id=1202651441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("B2S")
 
-[node name="Toldo" type="MeshInstance3D" parent="Puesto2"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.3, 0.1)
+[node name="Toldo" type="MeshInstance3D" parent="Puesto2" unique_id=39182790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
 mesh = SubResource("B3M")
 surface_material_override/0 = SubResource("M_Menta")
 
-[node name="Palo1" type="MeshInstance3D" parent="Puesto2"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -1.6, 1.5, -0.5)
+[node name="Palo1" type="MeshInstance3D" parent="Puesto2" unique_id=1799905602]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Palo2" type="MeshInstance3D" parent="Puesto2"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 1.6, 1.5, -0.5)
+[node name="Palo2" type="MeshInstance3D" parent="Puesto2" unique_id=186281814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Puesto3" type="StaticBody3D" parent="."]
-transform = Transform3D(-1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, -1.00000, -8, 0, 7)
+[node name="Puesto3" type="StaticBody3D" parent="." unique_id=892309262]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8, 0, 7)
 
-[node name="Mostrador" type="MeshInstance3D" parent="Puesto3"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Mostrador" type="MeshInstance3D" parent="Puesto3" unique_id=815501436]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("B2M")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Colision" type="CollisionShape3D" parent="Puesto3"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Colision" type="CollisionShape3D" parent="Puesto3" unique_id=199227856]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("B2S")
 
-[node name="Toldo" type="MeshInstance3D" parent="Puesto3"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.3, 0.1)
+[node name="Toldo" type="MeshInstance3D" parent="Puesto3" unique_id=556138007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
 mesh = SubResource("B3M")
 surface_material_override/0 = SubResource("M_Menta")
 
-[node name="Palo1" type="MeshInstance3D" parent="Puesto3"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -1.6, 1.5, -0.5)
+[node name="Palo1" type="MeshInstance3D" parent="Puesto3" unique_id=1152649497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Palo2" type="MeshInstance3D" parent="Puesto3"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 1.6, 1.5, -0.5)
+[node name="Palo2" type="MeshInstance3D" parent="Puesto3" unique_id=85749186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Puesto4" type="StaticBody3D" parent="."]
-transform = Transform3D(-1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, -1.00000, 8, 0, 7)
+[node name="Puesto4" type="StaticBody3D" parent="." unique_id=759071056]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8, 0, 7)
 
-[node name="Mostrador" type="MeshInstance3D" parent="Puesto4"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Mostrador" type="MeshInstance3D" parent="Puesto4" unique_id=1844838017]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("B2M")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Colision" type="CollisionShape3D" parent="Puesto4"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Colision" type="CollisionShape3D" parent="Puesto4" unique_id=78685051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("B2S")
 
-[node name="Toldo" type="MeshInstance3D" parent="Puesto4"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.3, 0.1)
+[node name="Toldo" type="MeshInstance3D" parent="Puesto4" unique_id=984784295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
 mesh = SubResource("B3M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Palo1" type="MeshInstance3D" parent="Puesto4"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -1.6, 1.5, -0.5)
+[node name="Palo1" type="MeshInstance3D" parent="Puesto4" unique_id=1819854305]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Palo2" type="MeshInstance3D" parent="Puesto4"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 1.6, 1.5, -0.5)
+[node name="Palo2" type="MeshInstance3D" parent="Puesto4" unique_id=1209262011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Puesto5" type="StaticBody3D" parent="."]
-transform = Transform3D(0.00000, 0, 1.00000, 0, 1, 0, -1.00000, 0, 0.00000, -10.5, 0, 0)
+[node name="Puesto5" type="StaticBody3D" parent="." unique_id=657900563]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -10.5, 0, 0)
 
-[node name="Mostrador" type="MeshInstance3D" parent="Puesto5"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Mostrador" type="MeshInstance3D" parent="Puesto5" unique_id=1511529723]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("B2M")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Colision" type="CollisionShape3D" parent="Puesto5"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Colision" type="CollisionShape3D" parent="Puesto5" unique_id=187287354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("B2S")
 
-[node name="Toldo" type="MeshInstance3D" parent="Puesto5"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.3, 0.1)
+[node name="Toldo" type="MeshInstance3D" parent="Puesto5" unique_id=1087473577]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
 mesh = SubResource("B3M")
 surface_material_override/0 = SubResource("M_Amarillo")
 
-[node name="Palo1" type="MeshInstance3D" parent="Puesto5"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -1.6, 1.5, -0.5)
+[node name="Palo1" type="MeshInstance3D" parent="Puesto5" unique_id=445679842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Palo2" type="MeshInstance3D" parent="Puesto5"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 1.6, 1.5, -0.5)
+[node name="Palo2" type="MeshInstance3D" parent="Puesto5" unique_id=1007628626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Puesto6" type="StaticBody3D" parent="."]
-transform = Transform3D(0.00000, 0, -1.00000, 0, 1, 0, 1.00000, 0, 0.00000, 10.5, 0, 0)
+[node name="Puesto6" type="StaticBody3D" parent="." unique_id=685347908]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.5, 0, 0)
 
-[node name="Mostrador" type="MeshInstance3D" parent="Puesto6"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Mostrador" type="MeshInstance3D" parent="Puesto6" unique_id=54846718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("B2M")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Colision" type="CollisionShape3D" parent="Puesto6"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 0.5, 0)
+[node name="Colision" type="CollisionShape3D" parent="Puesto6" unique_id=1542191780]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("B2S")
 
-[node name="Toldo" type="MeshInstance3D" parent="Puesto6"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 2.3, 0.1)
+[node name="Toldo" type="MeshInstance3D" parent="Puesto6" unique_id=137510661]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
 mesh = SubResource("B3M")
 surface_material_override/0 = SubResource("M_Menta")
 
-[node name="Palo1" type="MeshInstance3D" parent="Puesto6"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -1.6, 1.5, -0.5)
+[node name="Palo1" type="MeshInstance3D" parent="Puesto6" unique_id=344991027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Palo2" type="MeshInstance3D" parent="Puesto6"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 1.6, 1.5, -0.5)
+[node name="Palo2" type="MeshInstance3D" parent="Puesto6" unique_id=180978720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Madera")
 
-[node name="Sombrilla1" parent="." instance=ExtResource("17")]
-transform = Transform3D(3.82421, 0, 3.22109, 0, 5.0, 0, -3.22109, 0, 3.82421, -4.5, 0, -4.5)
+[node name="Sombrilla2" parent="." unique_id=376720057 instance=ExtResource("17")]
+transform = Transform3D(0.84984, 0, 4.92725, 0, 5, 0, -4.92725, 0, 0.84984, 4.5, 0, 4.5)
 
-[node name="Sombrilla2" parent="." instance=ExtResource("17")]
-transform = Transform3D(0.84984, 0, 4.92725, 0, 5.0, 0, -4.92725, 0, 0.84984, 4.5, 0, 4.5)
+[node name="Sombrilla3" parent="." unique_id=1969489369 instance=ExtResource("18")]
+transform = Transform3D(-2.52423, 0, 4.31605, 0, 5, 0, -4.31605, 0, -2.52423, -4.5, 0, 4.5)
 
-[node name="Sombrilla3" parent="." instance=ExtResource("18")]
-transform = Transform3D(-2.52423, 0, 4.31605, 0, 5.0, 0, -4.31605, 0, -2.52423, -4.5, 0, 4.5)
+[node name="Sombrilla4" parent="." unique_id=1240250681 instance=ExtResource("18")]
+transform = Transform3D(-4.71111, 0, 1.67494, 0, 5, 0, -1.67494, 0, -4.71111, 4.5, 0, -4.5)
 
-[node name="Sombrilla4" parent="." instance=ExtResource("18")]
-transform = Transform3D(-4.71111, 0, 1.67494, 0, 5.0, 0, -1.67494, 0, -4.71111, 4.5, 0, -4.5)
+[node name="Focos" type="Node3D" parent="." unique_id=1769375409]
 
-[node name="Focos" type="Node3D" parent="."]
+[node name="FocoNorte" type="Node3D" parent="Focos" unique_id=1143302934]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -13.05)
 
-[node name="FocoNorte" type="Node3D" parent="Focos"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 3.5, 0, -13.05)
-
-[node name="Poste" type="MeshInstance3D" parent="Focos/FocoNorte"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.5, 0)
+[node name="Poste" type="MeshInstance3D" parent="Focos/FocoNorte" unique_id=1732988539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Azul")
 
-[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoNorte"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.1, 0)
+[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoNorte" unique_id=1186816755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
 mesh = SubResource("BombillaM")
 surface_material_override/0 = SubResource("M_Foco")
 
-[node name="Luz" type="OmniLight3D" parent="Focos/FocoNorte"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.0, 0)
+[node name="Luz" type="OmniLight3D" parent="Focos/FocoNorte" unique_id=1539959343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(0.949, 0.714, 0.196, 1)
 light_energy = 0.8
 omni_range = 9.0
 
-[node name="FocoSur" type="Node3D" parent="Focos"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 3.5, 0, 13.05)
+[node name="FocoSur" type="Node3D" parent="Focos" unique_id=867776670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 13.05)
 
-[node name="Poste" type="MeshInstance3D" parent="Focos/FocoSur"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.5, 0)
+[node name="Poste" type="MeshInstance3D" parent="Focos/FocoSur" unique_id=1145979940]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Azul")
 
-[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoSur"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.1, 0)
+[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoSur" unique_id=486410699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
 mesh = SubResource("BombillaM")
 surface_material_override/0 = SubResource("M_Foco")
 
-[node name="Luz" type="OmniLight3D" parent="Focos/FocoSur"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.0, 0)
+[node name="Luz" type="OmniLight3D" parent="Focos/FocoSur" unique_id=545116744]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(0.949, 0.714, 0.196, 1)
 light_energy = 0.8
 omni_range = 9.0
 
-[node name="FocoEste" type="Node3D" parent="Focos"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 13.05, 0, 3.5)
+[node name="FocoEste" type="Node3D" parent="Focos" unique_id=1655900551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.05, 0, 3.5)
 
-[node name="Poste" type="MeshInstance3D" parent="Focos/FocoEste"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.5, 0)
+[node name="Poste" type="MeshInstance3D" parent="Focos/FocoEste" unique_id=466745557]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Azul")
 
-[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoEste"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.1, 0)
+[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoEste" unique_id=420155333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
 mesh = SubResource("BombillaM")
 surface_material_override/0 = SubResource("M_Foco")
 
-[node name="Luz" type="OmniLight3D" parent="Focos/FocoEste"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.0, 0)
+[node name="Luz" type="OmniLight3D" parent="Focos/FocoEste" unique_id=666694481]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(0.949, 0.714, 0.196, 1)
 light_energy = 0.8
 omni_range = 9.0
 
-[node name="FocoOeste" type="Node3D" parent="Focos"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, -13.05, 0, 3.5)
+[node name="FocoOeste" type="Node3D" parent="Focos" unique_id=1946243574]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.05, 0, 3.5)
 
-[node name="Poste" type="MeshInstance3D" parent="Focos/FocoOeste"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 1.5, 0)
+[node name="Poste" type="MeshInstance3D" parent="Focos/FocoOeste" unique_id=561867832]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 mesh = SubResource("PosteM")
 surface_material_override/0 = SubResource("M_Azul")
 
-[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoOeste"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.1, 0)
+[node name="Bombilla" type="MeshInstance3D" parent="Focos/FocoOeste" unique_id=969209297]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
 mesh = SubResource("BombillaM")
 surface_material_override/0 = SubResource("M_Foco")
 
-[node name="Luz" type="OmniLight3D" parent="Focos/FocoOeste"]
-transform = Transform3D(1.00000, 0, 0.00000, 0, 1, 0, -0.00000, 0, 1.00000, 0, 3.0, 0)
+[node name="Luz" type="OmniLight3D" parent="Focos/FocoOeste" unique_id=516525241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(0.949, 0.714, 0.196, 1)
 light_energy = 0.8
 omni_range = 9.0

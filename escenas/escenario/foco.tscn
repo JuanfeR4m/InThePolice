@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://e3o4js1ubh1k"]
+
+[ext_resource type="Material" uid="uid://dp5j37hqcpvo0" path="res://escenas/escenario/mat_azul.tres" id="1_q4s01"]
+[ext_resource type="Material" uid="uid://bigi10ro8wygt" path="res://escenas/escenario/mat_amarillo.tres" id="2_p7856"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lhnf2"]
+material = ExtResource("1_q4s01")
+top_radius = 0.08
+bottom_radius = 0.1
+height = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_lhnf2"]
+material = ExtResource("2_p7856")
+radius = 0.25
+height = 0.5
+
+[node name="Foco" type="Node3D" unique_id=1506435116 groups=["focos"]]
+
+[node name="Poste" type="MeshInstance3D" parent="." unique_id=440484789]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("CylinderMesh_lhnf2")
+
+[node name="Bombilla" type="MeshInstance3D" parent="." unique_id=691518826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+mesh = SubResource("SphereMesh_lhnf2")
+
+[node name="Luz" type="OmniLight3D" parent="." unique_id=922578300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+light_color = Color(0.9490196, 0.7137255, 0.19607843, 1)
+light_energy = 0.8
+omni_range = 9.0

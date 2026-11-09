@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bhty38posbe1v"]
+
+[ext_resource type="Material" uid="uid://crrff25pkygli" path="res://escenas/escenario/mat_madera.tres" id="1_f2ois"]
+[ext_resource type="Script" uid="uid://o5lja301e7c2" path="res://escenas/escenario/puesto.gd" id="1_ihs4r"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lhnf2"]
+material = ExtResource("1_f2ois")
+size = Vector3(3, 1, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhnf2"]
+size = Vector3(3, 1, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g5tq8"]
+size = Vector3(3.6, 0.15, 2.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lhnf2"]
+material = ExtResource("1_f2ois")
+top_radius = 0.08
+bottom_radius = 0.1
+height = 3.0
+
+[node name="Puesto" type="StaticBody3D" unique_id=2141115075]
+script = ExtResource("1_ihs4r")
+
+[node name="Mostrador" type="MeshInstance3D" parent="." unique_id=144140349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_lhnf2")
+
+[node name="Colision" type="CollisionShape3D" parent="." unique_id=1962467671]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_lhnf2")
+
+[node name="Toldo" type="MeshInstance3D" parent="." unique_id=1852121121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0.1)
+mesh = SubResource("BoxMesh_g5tq8")
+
+[node name="Palo1" type="MeshInstance3D" parent="." unique_id=1841155051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.5, -0.5)
+mesh = SubResource("CylinderMesh_lhnf2")
+
+[node name="Palo2" type="MeshInstance3D" parent="." unique_id=410722218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.5, -0.5)
+mesh = SubResource("CylinderMesh_lhnf2")
