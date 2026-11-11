@@ -1,7 +1,7 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1794240632
-zona_a.tscn::PackedScene::4316812428646384800::1794239266::0::1::::<><><>0<>0<><>::res://sistema_sol.gd<>res://ciclo_dia.gd
-::res://assets/::1794238579
+::res://::1794243845
+zona_a.tscn::PackedScene::4316812428646384800::1794240689::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://scripts/mundo/sistema_sol.gd<>uid://c3f1w6y7ay111::::res://scripts/mundo/ciclo_dia.gd
+::res://assets/::1794419313
 ::res://assets/modelos_kenney/::1794237490
 ::res://assets/modelos_kenney/GLB format/::1794237490
 aid-cane-blind.glb::PackedScene::8973504449659747154::1794237490::1794237490::1::::<><><>0<>0<>7adca9758edf95418b7727d69e6e65a2<>res://.godot/imported/aid-cane-blind.glb-fd25f92049c6a9f87d94b13694b42648.scn::uid://301goeqp1kq4::::res://assets/modelos_kenney/GLB format/Textures/colormap.png
@@ -82,15 +82,53 @@ colormap.png::CompressedTexture2D::7679251069494320988::1794237920::1794238127::
 ::res://assets/modelos_kenney_ciudad/Models/Textures/::1794238116
 variation-a.png::CompressedTexture2D::5149500076376598094::1794237922::1794238116::1::::<><><>0<>0<>86864b0e5c6b87165f82bd292a6e1a80<>res://.godot/imported/variation-a.png-56a8342a37e50ab42321f8bb3287dc03.ctex::
 variation-b.png::CompressedTexture2D::5667782083980865148::1794237922::1794238116::1::::<><><>0<>0<>7bf2a7e3dfef567d39543c006c47efae<>res://.godot/imported/variation-b.png-ac045f037c3f875c24227738ae8db35d.ctex::
+::res://assets/modelos_parque/::1794419313
+LICENSE.txt::TextFile::-1::1794419313::0::1::::<><><>0<>0<><>::
+README.md::TextFile::-1::1794419313::0::1::::<><><>0<>0<><>::
+::res://assets/modelos_parque/GLB/::1794419313
+balloon_dart_game.glb::PackedScene::3553171087163985073::1794419313::1794419351::1::::<><><>0<>0<>7a3f677f35dba57473f5c2f0ceb7db42<>res://.godot/imported/balloon_dart_game.glb-5fe847c5beb81d57e0aa0a50e47c690c.scn::
+bumper_cars_ring.glb::PackedScene::911914593081994825::1794419313::1794419351::1::::<><><>0<>0<>1eb04347ec47c0370433cb36072dc584<>res://.godot/imported/bumper_cars_ring.glb-9af9b454b35ed83912830fd4d1e8c1cc.scn::
+carousel_horse_ride.glb::PackedScene::5637469716922413489::1794419313::1794419351::1::::<><><>0<>0<>46c90a7490f3dada9eaecbcf016db814<>res://.godot/imported/carousel_horse_ride.glb-571eb6211d17af5ece361f5fe735cd07.scn::
+coaster_car.glb::PackedScene::7175035657881885321::1794419313::1794419351::1::::<><><>0<>0<>4637d34a86d8b8188d514909326a3c8a<>res://.godot/imported/coaster_car.glb-2b604fb6f227287d3f1546d53bad60e1.scn::
+drop_tower.glb::PackedScene::1377130928002094575::1794419313::1794419351::1::::<><><>0<>0<>c09fe5d1397eeeed609dd2dcf1355ae4<>res://.godot/imported/drop_tower.glb-acd9a8dc88bf894e6e7decfd27e0424e.scn::
+entrance_arch.glb::PackedScene::8817982688157065945::1794419313::1794419351::1::::<><><>0<>0<>279a54121ae2a3a4663ebbaa1697db87<>res://.godot/imported/entrance_arch.glb-b0e4bc2a93a25bace9333fad42e62b10.scn::
+ferris_wheel.glb::PackedScene::2721345192859957133::1794419313::1794419351::1::::<><><>0<>0<>481e6cf27550ed579f8db37609612785<>res://.godot/imported/ferris_wheel.glb-374578f737fe3fd080e10303c7844e11.scn::
+food_kiosk.glb::PackedScene::7193624517909191998::1794419313::1794419351::1::::<><><>0<>0<>553803b2f1f827f6d0316d00803d162f<>res://.godot/imported/food_kiosk.glb-967c004ac3e62364feed01e1344e232e.scn::
+free_fall_arm_ride.glb::PackedScene::5381635109217563069::1794419313::1794419351::1::::<><><>0<>0<>405505f5167491a51d07bb09e4fe0ac6<>res://.godot/imported/free_fall_arm_ride.glb-0e5109a6dc1ea35586d1e2a7fe037851.scn::
+haunted_house.glb::PackedScene::7814784561123473959::1794419313::1794419351::1::::<><><>0<>0<>efaa9f6c22c44c3c6674b273f80c0741<>res://.godot/imported/haunted_house.glb-938a7f7fa01849a7c724cbc1bd1fa730.scn::
+kiddie_train.glb::PackedScene::3788137777318250510::1794419313::1794419350::1::::<><><>0<>0<>f0a79c1277b9c4078690ed24e33488f5<>res://.godot/imported/kiddie_train.glb-300e2bbff088f6e9d1f41abeebc4d6f6.scn::
+log_flume_boat.glb::PackedScene::3726496144632134753::1794419313::1794419350::1::::<><><>0<>0<>a0ecef9bbd6f8023ccff221226bf424f<>res://.godot/imported/log_flume_boat.glb-13eecd4c7e0b0992e89932424de7a2af.scn::
+park_bench.glb::PackedScene::2072782816466879315::1794419313::1794419350::1::::<><><>0<>0<>44b0c06880e79f7d07aa758916bc84a2<>res://.godot/imported/park_bench.glb-4c33fd0d292bf1e3d2594c8111f7a4ba.scn::
+park_lamp.glb::PackedScene::6196749010527977488::1794419313::1794419350::1::::<><><>0<>0<>fc4c1168c4143987dc5ab13cab0b11c0<>res://.godot/imported/park_lamp.glb-74a7d911e8ad36696f8403792ea20430.scn::
+pirate_ship_swing.glb::PackedScene::7319422929835832741::1794419313::1794419348::1::::<><><>0<>0<>3d02469fab3c1a87eb423c7ac97e211f<>res://.godot/imported/pirate_ship_swing.glb-ab7ab7fc402257376c09ace2fbe7780f.scn::
+queue_rails.glb::PackedScene::6416356072508509741::1794419313::1794419348::1::::<><><>0<>0<>c211bb5ea619c07455e7c6bcb4287947<>res://.godot/imported/queue_rails.glb-1fd3b53cf2df479f35f2d5e32073af25.scn::
+ride_sign.glb::PackedScene::3630674527424026920::1794419313::1794419348::1::::<><><>0<>0<>550798c4b24f09cc2c6f28fc4be57372<>res://.godot/imported/ride_sign.glb-7a24ca37946e5632d5c65a855fabae82.scn::
+roller_coaster_track.glb::PackedScene::3159594485533285351::1794419313::1794419348::1::::<><><>0<>0<>8971698cfb9c76fb2a1a8708bedd7784<>res://.godot/imported/roller_coaster_track.glb-97c79152d534078a984f8104d574aa7e.scn::
+spinning_teacups.glb::PackedScene::8008036142908217689::1794419313::1794419348::1::::<><><>0<>0<>0c14608d2c58d0d79455ff59c7867c97<>res://.godot/imported/spinning_teacups.glb-4ea3a6835bfbfd9993d43279092df9c7.scn::
+strength_tester.glb::PackedScene::5760434363090494376::1794419313::1794419347::1::::<><><>0<>0<>3ac249d3e1d3eaefa94dfafcb6d8954c<>res://.godot/imported/strength_tester.glb-1cbba0a8a60b808a11bd180ab2bf4bfa.scn::
+swing_chair_ride.glb::PackedScene::5950056857199024555::1794419313::1794419347::1::::<><><>0<>0<>7cb7a71b56a652d979b490a1ccd207cf<>res://.godot/imported/swing_chair_ride.glb-5218f94a67fde1755383110ce64f7976.scn::
+ticket_balloon_cart.glb::PackedScene::5499368591784818175::1794419313::1794419347::1::::<><><>0<>0<>459f562622bfe1feb5cb6de1d0909e2e<>res://.godot/imported/ticket_balloon_cart.glb-d001106d03bafea42bf299032408059e.scn::
+ticket_gate.glb::PackedScene::739272241653940085::1794419313::1794419347::1::::<><><>0<>0<>eba665e087fa31a1a7efe14f4612e7ba<>res://.godot/imported/ticket_gate.glb-23233edf3cfb79034cb9c0f82c4cc68d.scn::
+trash_bin.glb::PackedScene::8831702809399317162::1794419313::1794419347::1::::<><><>0<>0<>3764fa6dd449c2770a70b5ada8eaed4a<>res://.godot/imported/trash_bin.glb-728336f6d0f14308822bf41ba760c90c.scn::
 ::res://docs/::1794237490
 icon.svg::CompressedTexture2D::1082983283144382342::1794237490::1794237490::1::::<><><>0<>0<>22b970c2077b0970cb4211d4eb30c2fc<>res://.godot/imported/icon.svg-d74203da674a59f31ae118bcc76df45e.ctex::
 LEEME.txt::TextFile::-1::1794237490::0::1::::<><><>0<>0<><>::
-::res://escenas/::1794239707
-main.tscn::PackedScene::183890259676159850::1794240616::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://bjekt0e1nvewt::::res://escenas/personajes/ciudadano.tscn<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://bts8qwxctvwti::::res://escenas/zonas/zona_a.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn<>uid://b33i6k8jqj7f8::::res://scripts/partida.gd<>res://escenas/entorno/feria.tscn
-::res://escenas/entorno/::1794239249
+::res://escenas/::1794240956
+main.tscn::PackedScene::183890259676159850::1794240813::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://bjekt0e1nvewt::::res://escenas/personajes/ciudadano.tscn<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://bts8qwxctvwti::::res://escenas/zonas/zona_a.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn<>uid://b33i6k8jqj7f8::::res://scripts/partida.gd<>res://escenas/entorno/feria.tscn
+::res://escenas/entorno/::1794419344
 camera_3d.tscn::PackedScene::3468454381140211498::1794237490::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://scripts/mundo/camara_sigue.gd
-feria.tscn::PackedScene::-1::1794239228::0::1::::<><><>0<>0<><>::res://assets/modelos_kenney_ciudad/Models/GLB format/building-a.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-b.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-c.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-d.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-e.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-f.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-g.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-h.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-i.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-k.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-l.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-m.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-n.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-a.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-c.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/building-j.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-a.glb<>res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-b.glb
-suelo.tscn::PackedScene::9008167162551218476::1794237490::0::1::::<><><>0<>0<><>::
+feria.tscn::PackedScene::1323637516961470814::1794245058::0::1::::<><><>0<>0<><>::uid://dhthf26r4e62t::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-a.glb<>uid://bkivdtrog6gv0::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-b.glb<>uid://droqywwayfxuc::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-c.glb<>uid://54inxbqd3afw::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-d.glb<>uid://k85gcgqa1f6t::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-e.glb<>uid://g4j0pfwb7vy4::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-f.glb<>uid://dkjcmhdiadaui::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-g.glb<>uid://blnuqqqgrvcnq::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-h.glb<>uid://dii0ib3csyheu::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-i.glb<>uid://bb6mqxpblawfw::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-k.glb<>uid://c50r3xg5hkffu::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-l.glb<>uid://dsla5hribwit5::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-m.glb<>uid://606tofguto7i::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-n.glb<>uid://b1tmknh2xi1rn::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-a.glb<>uid://cr0eye7t17xqx::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-c.glb<>uid://7vjrqm4hj8cp::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-j.glb<>uid://cdsrcduw8ooyi::::res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-a.glb<>uid://b4wrdbbgrruv::::res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-b.glb
+parque.tscn::PackedScene::-1::1794419344::0::1::::<><><>0<>0<><>::
+suelo.tscn::PackedScene::9008167162551218476::1794243044::0::1::::<><><>0<>0<><>::
+::res://escenas/escenario/::1794244832
+mat_amarillo.tres::StandardMaterial3D::2960851205931894143::1794244209::0::1::::<><><>0<>0<><>::
+mat_azul.tres::StandardMaterial3D::8274624185726906785::1794241718::0::1::::<><><>0<>0<><>::
+mat_madera.tres::StandardMaterial3D::6001460110155557334::1794241718::0::1::::<><><>0<>0<><>::
+cerca.tscn::PackedScene::9163256754593921949::1794242368::0::1::::<><><>0<>0<><>::uid://bigi10ro8wygt::::res://escenas/escenario/mat_amarillo.tres
+poste_porton.tscn::PackedScene::2152976597600189919::1794243782::0::1::::<><><>0<>0<><>::uid://dp5j37hqcpvo0::::res://escenas/escenario/mat_azul.tres
+foco.tscn::PackedScene::339460279312502562::1794244351::0::1::::<><><>0<>0<><>::uid://dp5j37hqcpvo0::::res://escenas/escenario/mat_azul.tres<>uid://bigi10ro8wygt::::res://escenas/escenario/mat_amarillo.tres
+Puesto.tscn::PackedScene::2918474733645011521::1794244832::0::1::::<><><>0<>0<><>::uid://crrff25pkygli::::res://escenas/escenario/mat_madera.tres<>uid://o5lja301e7c2::::res://escenas/escenario/puesto.gd
+puesto.gd::GDScript::1045259147045170111::1794244780::0::1::::<>StaticBody3D<><>0<>0<><>::
 ::res://escenas/personajes/::1794237490
 ciudadano.tscn::PackedScene::3027020207925984711::1794237490::0::1::::<><><>0<>0<><>::uid://bqarkse6nhueg::::res://scripts/enemigos/ciudadano.gd<>uid://kt8lkvi5bed1::::res://assets/modelos_kenney/GLB format/character-male-d.glb
 curioso.tscn::PackedScene::2935521281573025366::1794237490::0::1::::<><><>0<>0<><>::uid://dh6c1kv407v3u::::res://scripts/enemigos/curioso.gd<>uid://35hwdhmmevhu::::res://assets/modelos_kenney/GLB format/character-male-e.glb

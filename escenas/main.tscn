@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://escenas/zonas/zona_a.tscn" id="8_ymkly"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://escenas/personajes/manifestante.tscn" id="9_jwie6"]
 [ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="10_dg7ii"]
-[ext_resource type="PackedScene" path="res://escenas/entorno/feria.tscn" id="10_woaio"]
+[ext_resource type="PackedScene" path="res://escenas/entorno/parque.tscn" id="10_woaio"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -96,13 +96,13 @@ process_mode = 3
 script = ExtResource("10_dg7ii")
 sistema_sol = NodePath("../ZonaA/SistemaSol")
 
-[node name="Feria" parent="." unique_id=706092572 instance=ExtResource("10_woaio")]
-
 [node name="ZonaA" parent="." unique_id=773773640 instance=ExtResource("8_ymkly")]
 
 [node name="SistemaSol" parent="ZonaA" index="0" unique_id=2125741162 node_paths=PackedStringArray("sol", "entorno")]
 sol = NodePath("../../Sol")
 entorno = NodePath("../../WorldEnvironment")
 automatico = true
+
+[node name="Parque" parent="." unique_id=1578475930 instance=ExtResource("10_woaio")]
 
 [editable path="ZonaA"]

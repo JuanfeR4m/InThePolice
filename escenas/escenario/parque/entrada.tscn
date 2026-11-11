@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/entrance_arch.glb" id="1"]
+[ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/ticket_gate.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/queue_rails.glb" id="3"]
+
+[node name="Entrada" type="Node3D"]
+
+[node name="Arco" parent="." instance=ExtResource("1")]
+
+[node name="TorniqueteA" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 2.5)
+
+[node name="TorniqueteB" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 2.5)
+
+[node name="Rieles" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 1.8)

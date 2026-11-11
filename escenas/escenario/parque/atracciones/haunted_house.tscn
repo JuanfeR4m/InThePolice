@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/haunted_house.glb" id="1"]
+
+[sub_resource type="BoxShape3D" id="Caja"]
+size = Vector3(5.06, 6.2, 5.2)
+
+[node name="HauntedHouse" type="StaticBody3D"]
+
+[node name="Modelo" parent="." instance=ExtResource("1")]
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
+shape = SubResource("Caja")

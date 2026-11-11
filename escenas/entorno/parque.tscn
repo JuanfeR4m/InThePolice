@@ -1,0 +1,148 @@
+[gd_scene format=3 uid="uid://71fg8epyucis"]
+
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/banca.tscn" id="banca"]
+[ext_resource type="PackedScene" path="res://escenas/entorno/parque_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/bumper_cars_ring.tscn" id="bumper_cars_ring"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/caneca.tscn" id="caneca"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/carousel_horse_ride.tscn" id="carousel_horse_ride"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/coaster_car.tscn" id="coaster_car"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/drop_tower.tscn" id="drop_tower"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/entrada.tscn" id="entrada"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/farol.tscn" id="farol"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/ferris_wheel.tscn" id="ferris_wheel"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/free_fall_arm_ride.tscn" id="free_fall_arm_ride"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/haunted_house.tscn" id="haunted_house"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/kiddie_train.tscn" id="kiddie_train"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/letrero.tscn" id="letrero"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/log_flume_boat.tscn" id="log_flume_boat"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/pirate_ship_swing.tscn" id="pirate_ship_swing"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/puesto_comida.tscn" id="puesto_comida"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/puesto_dardos.tscn" id="puesto_dardos"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/puesto_fuerza.tscn" id="puesto_fuerza"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/puesto_globos.tscn" id="puesto_globos"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/roller_coaster_track.tscn" id="roller_coaster_track"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/spinning_teacups.tscn" id="spinning_teacups"]
+[ext_resource type="PackedScene" path="res://escenas/escenario/parque/atracciones/swing_chair_ride.tscn" id="swing_chair_ride"]
+
+[node name="Parque" type="Node3D" unique_id=2046046618]
+
+[node name="Base" parent="." unique_id=1633674982 instance=ExtResource("base")]
+
+[node name="Entradas" type="Node3D" parent="." unique_id=1992294972]
+
+[node name="entrada_1" parent="Entradas" unique_id=764624205 instance=ExtResource("entrada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
+
+[node name="entrada_2" parent="Entradas" unique_id=470913449 instance=ExtResource("entrada")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 15)
+
+[node name="entrada_3" parent="Entradas" unique_id=1297641649 instance=ExtResource("entrada")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 15, 0, 0)
+
+[node name="entrada_4" parent="Entradas" unique_id=401087085 instance=ExtResource("entrada")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -15, 0, 0)
+
+[node name="Puestos" type="Node3D" parent="." unique_id=1172700353]
+
+[node name="puesto_comida_1" parent="Puestos" unique_id=259128595 instance=ExtResource("puesto_comida")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -7)
+
+[node name="puesto_dardos_1" parent="Puestos" unique_id=971781575 instance=ExtResource("puesto_dardos")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -7)
+
+[node name="puesto_globos_1" parent="Puestos" unique_id=1384562818 instance=ExtResource("puesto_globos")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8, 0, 7)
+
+[node name="puesto_fuerza_1" parent="Puestos" unique_id=44055796 instance=ExtResource("puesto_fuerza")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8, 0, 7)
+
+[node name="puesto_comida_2" parent="Puestos" unique_id=1310342956 instance=ExtResource("puesto_comida")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -10.5, 0, 0)
+
+[node name="puesto_dardos_2" parent="Puestos" unique_id=1014662722 instance=ExtResource("puesto_dardos")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 10.5, 0, 0)
+
+[node name="Mobiliario" type="Node3D" parent="." unique_id=1895551847]
+
+[node name="banca_1" parent="Mobiliario" unique_id=617770623 instance=ExtResource("banca")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -3.2, 0, 5.5)
+
+[node name="banca_2" parent="Mobiliario" unique_id=724082577 instance=ExtResource("banca")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 3.2, 0, 5.5)
+
+[node name="banca_3" parent="Mobiliario" unique_id=1739945691 instance=ExtResource("banca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0, -5.5)
+
+[node name="banca_4" parent="Mobiliario" unique_id=1161422192 instance=ExtResource("banca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0, -5.5)
+
+[node name="farol_1" parent="Mobiliario" unique_id=1903479322 instance=ExtResource("farol")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, -8.5)
+
+[node name="farol_2" parent="Mobiliario" unique_id=498401656 instance=ExtResource("farol")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0, -8.5)
+
+[node name="farol_3" parent="Mobiliario" unique_id=400116015 instance=ExtResource("farol")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, 8.5)
+
+[node name="farol_4" parent="Mobiliario" unique_id=24095144 instance=ExtResource("farol")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0, 8.5)
+
+[node name="caneca_1" parent="Mobiliario" unique_id=1542631519 instance=ExtResource("caneca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, 6.6)
+
+[node name="caneca_2" parent="Mobiliario" unique_id=233375308 instance=ExtResource("caneca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0, -6.6)
+
+[node name="Atracciones" type="Node3D" parent="." unique_id=217635381]
+
+[node name="ferris_wheel_1" parent="Atracciones" unique_id=1912055829 instance=ExtResource("ferris_wheel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -52)
+
+[node name="carousel_horse_ride_1" parent="Atracciones" unique_id=1047542929 instance=ExtResource("carousel_horse_ride")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -42)
+
+[node name="bumper_cars_ring_1" parent="Atracciones" unique_id=40277367 instance=ExtResource("bumper_cars_ring")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -42)
+
+[node name="spinning_teacups_1" parent="Atracciones" unique_id=111362437 instance=ExtResource("spinning_teacups")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -44, 0, 5)
+
+[node name="haunted_house_1" parent="Atracciones" unique_id=1391508650 instance=ExtResource("haunted_house")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -44, 0, -18)
+
+[node name="swing_chair_ride_1" parent="Atracciones" unique_id=974477895 instance=ExtResource("swing_chair_ride")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -44, 0, 28)
+
+[node name="pirate_ship_swing_1" parent="Atracciones" unique_id=247393753 instance=ExtResource("pirate_ship_swing")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 44, 0, -5)
+
+[node name="drop_tower_1" parent="Atracciones" unique_id=624956756 instance=ExtResource("drop_tower")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 44, 0, 15)
+
+[node name="free_fall_arm_ride_1" parent="Atracciones" unique_id=289823717 instance=ExtResource("free_fall_arm_ride")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 44, 0, -25)
+
+[node name="roller_coaster_track_1" parent="Atracciones" unique_id=358369635 instance=ExtResource("roller_coaster_track")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 48)
+
+[node name="coaster_car_1" parent="Atracciones" unique_id=923967618 instance=ExtResource("coaster_car")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 44)
+
+[node name="kiddie_train_1" parent="Atracciones" unique_id=1659135027 instance=ExtResource("kiddie_train")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -20, 0, 40)
+
+[node name="log_flume_boat_1" parent="Atracciones" unique_id=563885396 instance=ExtResource("log_flume_boat")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 20, 0, 40)
+
+[node name="letrero_1" parent="Atracciones" unique_id=2120850710 instance=ExtResource("letrero")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -34)
+
+[node name="letrero_2" parent="Atracciones" unique_id=910484603 instance=ExtResource("letrero")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -34)
+
+[node name="letrero_3" parent="Atracciones" unique_id=1084469857 instance=ExtResource("letrero")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -38, 0, 5)
+
+[node name="letrero_4" parent="Atracciones" unique_id=1053559821 instance=ExtResource("letrero")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 38, 0, -5)
