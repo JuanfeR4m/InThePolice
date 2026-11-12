@@ -9,7 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://escenas/zonas/zona_a.tscn" id="8_ymkly"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://escenas/personajes/manifestante.tscn" id="9_jwie6"]
 [ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="10_dg7ii"]
-[ext_resource type="PackedScene" path="res://escenas/entorno/parque.tscn" id="10_woaio"]
+[ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="10_woaio"]
+[ext_resource type="Script" uid="uid://b4wqsucg04mb1" path="res://scripts/mundo/juego.gd" id="11_7an46"]
+[ext_resource type="PackedScene" uid="uid://d2th30bl64q15" path="res://escenas/escenario/hud.tscn" id="12_acisx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -104,5 +106,10 @@ entorno = NodePath("../../WorldEnvironment")
 automatico = true
 
 [node name="Parque" parent="." unique_id=1578475930 instance=ExtResource("10_woaio")]
+
+[node name="Juego" type="Node" parent="." unique_id=2222872]
+script = ExtResource("11_7an46")
+
+[node name="HUD" parent="." unique_id=1930543901 instance=ExtResource("12_acisx")]
 
 [editable path="ZonaA"]

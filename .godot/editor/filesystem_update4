@@ -1,13 +1,3 @@
-res://zona_a.tscn
+res://escenas/escenario/hud.tscn
+res://scripts/mundo/hud.gd
 res://escenas/main.tscn
-res://escenas/entorno/feria.tscn
-res://escenas/escenario/mat_azul.tres
-res://escenas/escenario/mat_madera.tres
-res://escenas/escenario/cerca.tscn
-res://escenas/escenario/mat_amarillo.tres
-res://escenas/entorno/suelo.tscn
-res://escenas/escenario/poste_porton.tscn
-res://escenas/escenario/foco.tscn
-res://escenas/escenario/Puesto.tscn
-res://escenas/escenario/puesto.gd
-res://escenas/entorno/parque.tscn
