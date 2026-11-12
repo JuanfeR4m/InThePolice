@@ -7,7 +7,7 @@
 radius = 0.35
 height = 1.75
 
-[node name="Manifestante" type="CharacterBody3D" unique_id=1403517617]
+[node name="Manifestante" type="CharacterBody3D" unique_id=1403517617 groups=["ciudadanos"]]
 script = ExtResource("1_0ai38")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=465112932]

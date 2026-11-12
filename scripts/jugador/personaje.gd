@@ -24,8 +24,8 @@ func _ready():
 func _physics_process(delta):
 	velocity += get_gravity() * delta
 
-	var input_dir = Input.get_vector("move_left", "move_right",
-		"move_up", "move_down")
+	var input_dir = Input.get_vector("move_left1", "move_right1",
+		"move_up1", "move_down1")
 	var entrada = Vector3(input_dir.x, 0.0, input_dir.y)
 	var giro_cam = camara.global_rotation.y
 	var direction = entrada.rotated(Vector3.UP, giro_cam).normalized()
@@ -57,7 +57,7 @@ func _physics_process(delta):
 	_prueba()
 	
 func elegir_estado():
-	if Input.is_action_pressed("interactuar"):
+	if Input.is_action_pressed("interactuar1"):
 		return Estado.RESOLVIENDO
 	var rapidez = Vector2(velocity.x, velocity.z).length()
 	if rapidez < 0.1:
@@ -100,8 +100,8 @@ func _prueba():
 	if prueba == 0 or _termino:
 		return
 	_cuadro += 1
-	var avanzar = "move_up"
-	var lado = "move_right"
+	var avanzar = "move_up1"
+	var lado = "move_right1"
 	if _cuadro == 1:
 		if prueba <= 3 or prueba == 5:
 			_apretar(avanzar)

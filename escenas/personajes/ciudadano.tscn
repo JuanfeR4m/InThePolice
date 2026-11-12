@@ -7,7 +7,7 @@
 radius = 0.35
 height = 1.75
 
-[node name="ciudadano" type="CharacterBody3D" unique_id=1585811737]
+[node name="ciudadano" type="CharacterBody3D" unique_id=1585811737 groups=["ciudadanos"]]
 script = ExtResource("1_umigy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1937436006]

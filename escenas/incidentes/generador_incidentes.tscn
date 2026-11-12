@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cikptugflnihk"]
+
+[ext_resource type="Script" uid="uid://blikop7fdbcxd" path="res://scripts/incidentes/generador_incidentes.gd" id="1_tue71"]
+[ext_resource type="PackedScene" uid="uid://belnjrwo4r04n" path="res://escenas/incidentes/incidente_presionado.tscn" id="2_b87qb"]
+
+[node name="GeneradorIncidentes" type="Node3D" unique_id=1268650350]
+script = ExtResource("1_tue71")
+escena_incidente = ExtResource("2_b87qb")
+
+[node name="Timer" type="Timer" parent="." unique_id=1938554874]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

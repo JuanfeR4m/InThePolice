@@ -1,6 +1,6 @@
 extends Node
 
-@export var tecla = "interactuar"
+@export var tecla = "interactuar1"
 @export var alcance = 1.5
 @onready var pj = get_parent()
 
@@ -15,7 +15,7 @@ func _physics_process(delta):
 		progreso = 0.0
 		actual = null
 		return
-	if obj != actual: # cambió de objeto: empieza de cero
+	if obj != actual:
 		actual = obj
 		progreso = 0.0
 	var antes = progreso

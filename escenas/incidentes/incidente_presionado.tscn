@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://belnjrwo4r04n"]
+
+[ext_resource type="Script" uid="uid://c3lkemjci34rm" path="res://scripts/incidentes/incidente_presionado.gd" id="1_u2tg0"]
+[ext_resource type="Shader" uid="uid://chqooar1mt0s4" path="res://shaders/alerta.gdshader" id="2_yxmia"]
+[ext_resource type="Shader" uid="uid://ceg86m5tornlg" path="res://shaders/indicador.gdshader" id="4_6t2ed"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r6318"]
+render_priority = 0
+shader = ExtResource("2_yxmia")
+shader_parameter/color_relleno = Color(0.949, 0.714, 0.196, 1)
+shader_parameter/color_borde = Color(0.106, 0.133, 0.251, 1)
+shader_parameter/velocidad = 4.0
+shader_parameter/altura_salto = 0.08
+shader_parameter/escala_pulso = 0.06
+
+[sub_resource type="QuadMesh" id="QuadMesh_hchaj"]
+size = Vector2(1.2, 1.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_uxa2c"]
+top_radius = 1.5
+bottom_radius = 1.5
+height = 0.05
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_uxa2c"]
+radius = 1.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bn13o"]
+render_priority = 0
+shader = ExtResource("4_6t2ed")
+shader_parameter/progreso = 0.0
+shader_parameter/color_fondo = Color(0.106, 0.133, 0.251, 1)
+shader_parameter/color_progreso = Color(0.373, 0.722, 0.545, 1)
+shader_parameter/color_centro = Color(0.949, 0.714, 0.196, 1)
+shader_parameter/color_flecha = Color(1, 1, 1, 1)
+shader_parameter/radio_centro = 0.3
+shader_parameter/radio_exterior = 0.45
+shader_parameter/velocidad_flecha = 6.0
+shader_parameter/salto_flecha = 0.04
+
+[sub_resource type="QuadMesh" id="QuadMesh_r6318"]
+size = Vector2(1.2, 2.4)
+
+[node name="IncidentePresionado" type="Node3D" unique_id=289719892]
+script = ExtResource("1_u2tg0")
+
+[node name="Alerta" type="MeshInstance3D" parent="." unique_id=1886393947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+material_override = SubResource("ShaderMaterial_r6318")
+mesh = SubResource("QuadMesh_hchaj")
+
+[node name="Anillo" type="MeshInstance3D" parent="." unique_id=316655996]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("CylinderMesh_uxa2c")
+
+[node name="Zona" type="Area3D" parent="." unique_id=125065852]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zona" unique_id=497673824]
+shape = SubResource("SphereShape3D_uxa2c")
+
+[node name="Indicador" type="MeshInstance3D" parent="." unique_id=873663940]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+material_override = SubResource("ShaderMaterial_bn13o")
+mesh = SubResource("QuadMesh_r6318")
+
+[node name="Label3D" type="Label3D" parent="Indicador" unique_id=475208215]
+billboard = 1
+render_priority = 1
+modulate = Color(0.105882354, 0.13333334, 0.2509804, 1)
+text = "E
+ENTER"
+font_size = 40
+
+[connection signal="body_entered" from="Zona" to="." method="_on_zona_body_entered"]
+[connection signal="body_exited" from="Zona" to="." method="_on_zona_body_exited"]
