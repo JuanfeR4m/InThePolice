@@ -1,13 +1,15 @@
 Label3D
+Node
+Label
+ProgressBar
+CanvasLayer
 MeshInstance3D
 Timer
 CollisionShape3D
 Area3D
-Label
 Node3D
 StaticBody3D
 OmniLight3D
-Node
 RayCast3D
 CharacterBody3D
 AnimationPlayer
