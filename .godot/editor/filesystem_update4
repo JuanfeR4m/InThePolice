@@ -1,3 +1,6 @@
-res://escenas/escenario/hud.tscn
-res://scripts/mundo/hud.gd
-res://escenas/main.tscn
+res://escenas/personajes/ciudadano.tscn
+res://shaders/alerta.gdshader
+res://shaders/indicador.gdshader
+res://scripts/enemigos/ciudadano.gd
+res://scripts/incidentes/generador_incidentes.gd
+res://scripts/incidentes/incidente_presionado.gd
