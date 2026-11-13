@@ -12,22 +12,28 @@ var terminada: bool = false
 
 
 func _ready():
+	
+	await get_tree().process_frame
+	var menu = get_tree().get_first_node_in_group("menu_inicio")
+	if menu != null:
+		await menu.iniciar
+
 	p_inicio = _crear_player("inicio_partida.mp3", volumen_efectos_db)
 	p_musica = _crear_player("instrumental.mp3", volumen_musica_db)
 	p_fin = _crear_player("fin_partida.mp3", volumen_efectos_db)
 
-	# La música instrumental se repite en bucle
+	
 	if p_musica.stream is AudioStreamMP3:
 		p_musica.stream.loop = true
 
-	# Suena el sonido de inicio y, al terminar, empieza la música
+	
 	p_inicio.finished.connect(_empezar_musica)
 	if p_inicio.stream != null:
 		p_inicio.play()
 	else:
 		_empezar_musica()
 
-	# Esperamos un cuadro para que el HUD ya exista y lo conectamos
+	
 	await get_tree().process_frame
 	var hud = get_tree().get_first_node_in_group("hud")
 	if hud != null:
@@ -53,12 +59,12 @@ func _empezar_musica():
 	p_musica.play()
 
 
-## Llamar cuando el jugador pierde (ya la llaman el tiempo y la ira)
+
 func derrota():
 	_terminar("fin_partida.mp3")
 
 
-## Llamar cuando el jugador gana la misión
+
 func victoria():
 	_terminar("fin_partida2.mp3")
 

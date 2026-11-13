@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="10_dg7ii"]
 [ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="10_woaio"]
 [ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="12_7an46"]
+[ext_resource type="PackedScene" uid="uid://b833if8wpd66q" path="res://menu_inicio.tscn" id="12_acisx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -109,6 +110,8 @@ automatico = true
 [node name="HUD" parent="." unique_id=126052349 instance=ExtResource("10_7an46")]
 
 [node name="Parque" parent="." unique_id=1578475930 instance=ExtResource("10_woaio")]
+
+[node name="menu_inicio" parent="." unique_id=447403003 instance=ExtResource("12_acisx")]
 
 [node name="AudioPartida" type="Node" parent="." unique_id=2076216698]
 script = ExtResource("12_7an46")
