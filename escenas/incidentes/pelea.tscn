@@ -1,0 +1,135 @@
+[gd_scene format=3 uid="uid://b06vybltr8d4q"]
+
+[ext_resource type="Texture2D" uid="uid://bmxxb18cglpj8" path="res://assets/efectos/pelea_sheet.png" id="1_sheet"]
+
+[sub_resource type="GDScript" id="GDScript_pelea"]
+script/source = "extends Node3D
+## Nube de pelea: aparece sobre los personajes, del tamano de ellos, y se repite hasta que se borra el nodo (lo hace el incidente al terminar).
+## Uso:  var p = preload(\"res://RUTA/pelea.tscn\").instantiate()
+##       get_tree().current_scene.add_child(p)
+##       p.mostrar_sobre([personaje_a, personaje_b])
+
+## Fraccion de la altura del cuadro que ocupa la nube dibujada (el resto es margen).
+@export var proporcion_visible := 0.6
+## Multiplica el tamano final (1.0 = misma altura que el personaje).
+@export var escala := 1.0
+## Sube o baja la nube respecto al centro de los personajes (en metros).
+@export var desplazamiento_y := 0.0
+
+@onready var sprite: AnimatedSprite3D = $AnimatedSprite3D
+
+
+func mostrar_sobre(personajes: Array) -> void:
+	var caja := AABB()
+	var hay_caja := false
+	for p in personajes:
+		if not (p is Node3D):
+			continue
+		var geos: Array = []
+		_juntar_geometrias(p, geos)
+		for g in geos:
+			var c: AABB = g.global_transform * g.get_aabb()
+			if hay_caja:
+				caja = caja.merge(c)
+			else:
+				caja = c
+				hay_caja = true
+	if not hay_caja:
+		push_warning(\"Pelea: los personajes no tienen mallas; usa la posicion del primero.\")
+		if personajes.size() > 0 and personajes[0] is Node3D:
+			global_position = personajes[0].global_position
+		return
+	global_position = caja.get_center() + Vector3(0, desplazamiento_y, 0)
+	var alto_cuadro := float(sprite.sprite_frames.get_frame_texture(\"default\", 0).get_height())
+	sprite.pixel_size = (caja.size.y * escala) / (alto_cuadro * proporcion_visible)
+
+
+func _juntar_geometrias(n: Node, lista: Array) -> void:
+	if n is GeometryInstance3D:
+		lista.append(n)
+	for h in n.get_children():
+		_juntar_geometrias(h, lista)
+"
+
+[sub_resource type="AtlasTexture" id="Atlas_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(256, 0, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(512, 0, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 170, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_4"]
+atlas = ExtResource("1_sheet")
+region = Rect2(256, 170, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_5"]
+atlas = ExtResource("1_sheet")
+region = Rect2(512, 170, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_6"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 340, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_7"]
+atlas = ExtResource("1_sheet")
+region = Rect2(256, 340, 256, 170)
+
+[sub_resource type="AtlasTexture" id="Atlas_8"]
+atlas = ExtResource("1_sheet")
+region = Rect2(512, 340, 256, 170)
+
+[sub_resource type="SpriteFrames" id="Frames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_8")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="Pelea" type="Node3D" unique_id=1837389761]
+script = SubResource("GDScript_pelea")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1942391808]
+pixel_size = 0.008
+billboard = 1
+no_depth_test = true
+texture_filter = 2
+render_priority = 10
+sprite_frames = SubResource("Frames")
+autoplay = "default"

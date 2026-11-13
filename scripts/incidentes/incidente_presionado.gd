@@ -20,12 +20,16 @@ const RADIO_CURIOSOS := 40.0
 const ESPERA_MAXIMA := 25.0
 const INTERVALO_RECLUTAR := 1.0
 
+# Arrastra aqui pelea.tscn desde el inspector.
+@export var escena_pelea: PackedScene
+
 @onready var anillo: MeshInstance3D = $Anillo
 @onready var alerta: MeshInstance3D = $Alerta
 @onready var indicador: MeshInstance3D = $Indicador
 
 var puestos: Array = []
 var curiosos: Array = []
+var nube_pelea: Node3D
 
 # Propiedad de compatibilidad para evitar errores si algún script lee .peleadores
 var peleadores: Array:
@@ -188,6 +192,17 @@ func revisar_llegada(delta: float) -> void:
 			todos = false
 	if todos or espera_llegada >= ESPERA_MAXIMA:
 		iniciado = true
+		mostrar_pelea()
+
+# Pone la nube de pelea encima de los peleadores, del tamano de ellos.
+# Es hija del incidente: desaparece sola cuando el incidente se resuelve o escala.
+func mostrar_pelea() -> void:
+	var activos := peleadores_activos()
+	if escena_pelea == null or activos.is_empty():
+		return
+	nube_pelea = escena_pelea.instantiate()
+	add_child(nube_pelea)
+	nube_pelea.mostrar_sobre(activos)
 
 func _exit_tree() -> void:
 	for p in peleadores_activos():
