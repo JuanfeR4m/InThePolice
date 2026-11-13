@@ -1,0 +1,357 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/ambiente_noche.gd" id="1_noche"]
+[ext_resource type="PackedScene" path="res://escenas/efectos/fuego.tscn" id="2_fuego"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Madera"]
+albedo_color = Color(0.541, 0.353, 0.169, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Papel"]
+albedo_color = Color(0.96, 0.96, 0.96, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ToldoA"]
+albedo_color = Color(0.949, 0.714, 0.196, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ToldoB"]
+albedo_color = Color(0.839, 0.227, 0.227, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ToldoC"]
+albedo_color = Color(0.373, 0.722, 0.545, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ToldoD"]
+albedo_color = Color(0.184, 0.365, 0.659, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_LataG"]
+albedo_color = Color(0.47, 0.47, 0.51, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_LataR"]
+albedo_color = Color(0.839, 0.227, 0.227, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_Tabla"]
+material = SubResource("Mat_Madera")
+size = Vector3(1.2, 0.08, 0.25)
+
+[sub_resource type="BoxMesh" id="Mesh_Caja"]
+material = SubResource("Mat_Madera")
+size = Vector3(0.4, 0.4, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_Papel"]
+material = SubResource("Mat_Papel")
+size = Vector3(0.45, 0.02, 0.35)
+
+[sub_resource type="BoxMesh" id="Mesh_ToldoA"]
+material = SubResource("Mat_ToldoA")
+size = Vector3(1.4, 0.03, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_ToldoB"]
+material = SubResource("Mat_ToldoB")
+size = Vector3(1.4, 0.03, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_ToldoC"]
+material = SubResource("Mat_ToldoC")
+size = Vector3(1.4, 0.03, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_ToldoD"]
+material = SubResource("Mat_ToldoD")
+size = Vector3(1.4, 0.03, 1)
+
+[sub_resource type="CylinderMesh" id="Mesh_LataG"]
+material = SubResource("Mat_LataG")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.4
+
+[sub_resource type="CylinderMesh" id="Mesh_LataR"]
+material = SubResource("Mat_LataR")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.4
+
+[node name="AmbienteNoche" type="Node3D"]
+script = ExtResource("1_noche")
+
+[node name="Fuegos" type="Node3D" parent="."]
+
+[node name="FuegoCaneca1" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -2.6, 0.4, 6.6)
+
+[node name="FuegoCaneca2" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 2.6, 0.4, -6.6)
+
+[node name="FuegoComida1" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, -8, 0.4, -7)
+
+[node name="FuegoDardos1" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 8, 0.4, -7)
+
+[node name="FuegoGlobos" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, -8, 0.4, 7)
+
+[node name="FuegoFuerza" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 8, 0.4, 7)
+
+[node name="FuegoComida2" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, -10.5, 0.4, 0)
+
+[node name="FuegoDardos2" parent="Fuegos" instance=ExtResource("2_fuego")]
+visible = false
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 10.5, 0.4, 0)
+
+[node name="Basura" type="Node3D" parent="."]
+
+[node name="Pieza01" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.433, 0, -0.901, 0, 1, 0, 0.901, 0, 0.433, -11.447, 0.03, -4.065)
+mesh = SubResource("Mesh_ToldoC")
+
+[node name="Pieza02" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.22, -0.24, 0.946, 0, 0.969, 0.246, -0.976, -0.054, 0.213, 3.345, 0.2, -2.913)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza03" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.932, 0, 0.363, 0, 1, 0, -0.363, 0, 0.932, -10.334, 0.03, 7.459)
+mesh = SubResource("Mesh_ToldoD")
+
+[node name="Pieza04" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.925, 0.019, 0.378, 0, 0.999, -0.051, -0.379, 0.047, 0.924, 4.376, 0.2, 6.247)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza05" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.246, 0, 0.969, 0, 1, 0, -0.969, 0, -0.246, -0.881, 0.06, 8.726)
+mesh = SubResource("Mesh_Tabla")
+
+[node name="Pieza06" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.414, 0, -0.91, 0, 1, 0, 0.91, 0, -0.414, 8.638, 0.02, 7.542)
+mesh = SubResource("Mesh_Papel")
+
+[node name="Pieza07" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.923, -0.1, 0.371, 0, 0.965, 0.261, -0.384, -0.241, 0.891, -4.348, 0.2, 5.93)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza08" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.392, 0, 0.92, 0, 1, 0, -0.92, 0, -0.392, -13.376, 0.03, -0.652)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza09" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0, 0.315, -0.949, 1, 0, 0, 0, -0.949, -0.315, 0.798, 0.15, -3.951)
+mesh = SubResource("Mesh_LataG")
+
+[node name="Pieza10" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.708, 0, -0.706, 0, 1, 0, 0.706, 0, 0.708, -7.33, 0.03, 7.227)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza11" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0, 0.997, -0.075, 1, 0, 0, 0, -0.075, -0.997, 4.181, 0.15, -9.341)
+mesh = SubResource("Mesh_LataG")
+
+[node name="Pieza12" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.97, 0, 0.244, 0, 1, 0, -0.244, 0, 0.97, -5.732, 0.02, 6.501)
+mesh = SubResource("Mesh_Papel")
+
+[node name="Pieza13" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-1, 0.004, 0.021, 0, 0.984, -0.177, -0.021, -0.177, -0.984, -4.039, 0.2, 5.252)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza14" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.514, 0.224, -0.828, 0, 0.965, 0.261, 0.858, 0.134, -0.496, -3.998, 0.2, 6.767)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza15" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.489, 0, -0.872, 0, 1, 0, 0.872, 0, -0.489, 13.061, 0.03, -1.028)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza16" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.999, 0, 0.04, 0, 1, 0, -0.04, 0, -0.999, 13.699, 0.06, 0.998)
+mesh = SubResource("Mesh_Tabla")
+
+[node name="Pieza17" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.774, 0, 0.633, 0, 1, 0, -0.633, 0, -0.774, -0.136, 0.03, -7.771)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza18" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0, 0.174, 0.985, 1, 0, 0, -0, 0.985, -0.174, -11.003, 0.15, 6.115)
+mesh = SubResource("Mesh_LataG")
+
+[node name="Pieza19" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.862, 0, 0.507, 0, 1, 0, -0.507, 0, -0.862, 3.276, 0.02, 13.006)
+mesh = SubResource("Mesh_Papel")
+
+[node name="Pieza20" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.447, 0, 0.894, 0, 1, 0, -0.894, 0, 0.447, 4.12, 0.03, -18.142)
+mesh = SubResource("Mesh_ToldoC")
+
+[node name="Pieza21" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.412, 0, 0.911, 0, 1, 0, -0.911, 0, 0.412, -1.191, 0.03, 8.48)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza22" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.771, 0, -0.637, 0, 1, 0, 0.637, 0, -0.771, -11.189, 0.03, -6.689)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza23" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.739, 0, -0.673, 0, 1, 0, 0.673, 0, -0.739, -8.786, 0.03, 0.139)
+mesh = SubResource("Mesh_ToldoC")
+
+[node name="Pieza24" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.705, 0, -0.709, 0, 1, 0, 0.709, 0, 0.705, 18.596, 0.06, 2.52)
+mesh = SubResource("Mesh_Tabla")
+
+[node name="Pieza25" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0, 0.993, 0.116, 1, 0, 0, -0, 0.116, -0.993, -0.917, 0.15, -15.953)
+mesh = SubResource("Mesh_LataR")
+
+[node name="Pieza26" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.931, 0, 0.364, 0, 1, 0, -0.364, 0, -0.931, 5.215, 0.03, -2.638)
+mesh = SubResource("Mesh_ToldoD")
+
+[node name="Pieza27" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.913, -0.009, -0.407, 0, 1, -0.022, 0.407, -0.02, -0.913, -1.693, 0.2, 3.021)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza28" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.713, 0, 0.702, 0, 1, 0, -0.702, 0, -0.713, -11.867, 0.03, -9.628)
+mesh = SubResource("Mesh_ToldoC")
+
+[node name="Pieza29" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.749, 0, 0.663, 0, 1, 0, -0.663, 0, 0.749, 3.521, 0.03, -6.833)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza30" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0, -0.617, 0.787, 1, 0, 0, -0, 0.787, 0.617, 14.824, 0.15, -1.693)
+mesh = SubResource("Mesh_LataG")
+
+[node name="Pieza31" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.995, 0, -0.102, 0, 1, 0, 0.102, 0, -0.995, -3.392, 0.03, -3.771)
+mesh = SubResource("Mesh_ToldoC")
+
+[node name="Pieza32" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.986, 0, 0.169, 0, 1, 0, -0.169, 0, 0.986, -0.581, 0.03, -6.211)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza33" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0, 0.332, -0.943, 1, 0, 0, 0, -0.943, -0.332, 7.507, 0.15, -2.23)
+mesh = SubResource("Mesh_LataR")
+
+[node name="Pieza34" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.17, 0, 0.985, 0, 1, 0, -0.985, 0, 0.17, 6.274, 0.03, -7.899)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza35" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0, -0.239, -0.971, 1, 0, 0, 0, -0.971, 0.239, -1.372, 0.15, 7.619)
+mesh = SubResource("Mesh_LataR")
+
+[node name="Pieza36" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.146, 0, 0.989, 0, 1, 0, -0.989, 0, 0.146, 6.065, 0.03, 7.659)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza37" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0, -0.985, 0.175, 1, 0, 0, -0, 0.175, 0.985, -16.3, 0.15, -4.239)
+mesh = SubResource("Mesh_LataR")
+
+[node name="Pieza38" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.963, 0, -0.27, 0, 1, 0, 0.27, 0, 0.963, -17.167, 0.03, 1.733)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza39" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0, -0.185, 0.983, 1, 0, 0, -0, 0.983, 0.185, 6.695, 0.15, -7.818)
+mesh = SubResource("Mesh_LataG")
+
+[node name="Pieza40" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.711, 0, -0.703, 0, 1, 0, 0.703, 0, -0.711, -17.73, 0.03, -2.661)
+mesh = SubResource("Mesh_ToldoA")
+
+[node name="Pieza41" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.622, 0, -0.783, 0, 1, 0, 0.783, 0, -0.622, -11.317, 0.06, -1.404)
+mesh = SubResource("Mesh_Tabla")
+
+[node name="Pieza42" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.99, -0.026, 0.135, 0, 0.981, 0.192, -0.138, 0.19, -0.972, 2.541, 0.2, -12.749)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza43" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.793, 0, 0.609, 0, 1, 0, -0.609, 0, -0.793, -5.293, 0.03, 11.245)
+mesh = SubResource("Mesh_ToldoC")
+
+[node name="Pieza44" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.698, 0, 0.716, 0, 1, 0, -0.716, 0, 0.698, -5.977, 0.03, 4.03)
+mesh = SubResource("Mesh_ToldoD")
+
+[node name="Pieza45" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.462, 0, -0.887, 0, 1, 0, 0.887, 0, 0.462, 17.759, 0.02, -3.184)
+mesh = SubResource("Mesh_Papel")
+
+[node name="Pieza46" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0, -0.991, 0.134, 1, 0, 0, -0, 0.134, 0.991, -0.497, 0.15, -6.165)
+mesh = SubResource("Mesh_LataG")
+
+[node name="Pieza47" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0.46, 0.153, -0.874, 0, 0.985, 0.173, 0.888, -0.079, 0.454, -11.096, 0.2, 3.346)
+mesh = SubResource("Mesh_Caja")
+
+[node name="Pieza48" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.856, 0, -0.517, 0, 1, 0, 0.517, 0, -0.856, -5.063, 0.03, 3.165)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza49" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(-0.063, 0, -0.998, 0, 1, 0, 0.998, 0, -0.063, 3.008, 0.03, 11.048)
+mesh = SubResource("Mesh_ToldoB")
+
+[node name="Pieza50" type="MeshInstance3D" parent="Basura"]
+visible = false
+transform = Transform3D(0, -0.681, 0.732, 1, 0, 0, -0, 0.732, 0.681, 2.944, 0.15, 18.404)
+mesh = SubResource("Mesh_LataG")

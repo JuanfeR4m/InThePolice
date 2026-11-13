@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://b833if8wpd66q" path="res://menu_inicio.tscn" id="12_acisx"]
 [ext_resource type="PackedScene" uid="uid://d2th30bl64q15" path="res://escenas/escenario/hud.tscn" id="13_hud"]
 [ext_resource type="Script" uid="uid://lgw8aoh6vie6" path="res://scripts/generador_ciudadanos.gd" id="16_ymkly"]
+[ext_resource type="PackedScene" path="res://escenas/entorno/ambiente_noche.tscn" id="17_jwie6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -221,5 +222,7 @@ gizmo_extents = 1.0
 [node name="Centro" type="Marker3D" parent="." unique_id=360746727]
 
 [connection signal="timeout" from="NavigationRegion3D/GeneradorCiudadanos/Timer" to="NavigationRegion3D/GeneradorCiudadanos" method="_on_timer_timeout"]
+[node name="AmbienteNoche" parent="." unique_id=1646390021 instance=ExtResource("17_jwie6")]
+vista_previa = true
 
 [editable path="ZonaA"]
