@@ -4,7 +4,16 @@
 [ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/ticket_gate.glb" id="2"]
 [ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/queue_rails.glb" id="3"]
 
-[node name="Entrada" type="Node3D"]
+[sub_resource type="BoxShape3D" id="Pilar"]
+size = Vector3(0.6, 4.98, 0.6)
+
+[sub_resource type="BoxShape3D" id="LadoTorniquete"]
+size = Vector3(1.0, 3.35, 0.6)
+
+[sub_resource type="BoxShape3D" id="Rieles"]
+size = Vector3(3.17, 1.0, 0.2)
+
+[node name="Entrada" type="StaticBody3D"]
 
 [node name="Arco" parent="." instance=ExtResource("1")]
 
@@ -16,3 +25,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 2.5)
 
 [node name="Rieles" parent="." instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 1.8)
+
+[node name="ColisionPilarO" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.49, 0)
+shape = SubResource("Pilar")
+
+[node name="ColisionPilarE" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.49, 0)
+shape = SubResource("Pilar")
+
+[node name="ColisionTorniqueteA_Ext" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.675, 2.5)
+shape = SubResource("LadoTorniquete")
+
+[node name="ColisionTorniqueteA_Int" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 1.675, 2.5)
+shape = SubResource("LadoTorniquete")
+
+[node name="ColisionTorniqueteB_Int" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 1.675, 2.5)
+shape = SubResource("LadoTorniquete")
+
+[node name="ColisionTorniqueteB_Ext" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.675, 2.5)
+shape = SubResource("LadoTorniquete")
+
+[node name="ColisionRieles" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, 1.8)
+shape = SubResource("Rieles")

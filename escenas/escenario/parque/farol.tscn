@@ -2,7 +2,11 @@
 
 [ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/park_lamp.glb" id="1"]
 
-[node name="Farol" type="Node3D"]
+[sub_resource type="CylinderShape3D" id="Poste"]
+height = 3.58
+radius = 0.2
+
+[node name="Farol" type="StaticBody3D"]
 
 [node name="Modelo" parent="." instance=ExtResource("1")]
 
@@ -11,3 +15,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
 light_color = Color(1, 0.85, 0.55, 1)
 light_energy = 1.5
 omni_range = 8.0
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.79, 0)
+shape = SubResource("Poste")

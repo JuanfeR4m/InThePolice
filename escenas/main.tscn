@@ -11,14 +11,11 @@
 [ext_resource type="PackedScene" uid="uid://c6eumbcxuf3ss" path="res://hud.tscn" id="10_7an46"]
 [ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="10_dg7ii"]
 [ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="10_woaio"]
-<<<<<<< HEAD
-[ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="12_7an46"]
-[ext_resource type="PackedScene" uid="uid://b833if8wpd66q" path="res://menu_inicio.tscn" id="12_acisx"]
-=======
 [ext_resource type="Script" uid="uid://b4wqsucg04mb1" path="res://scripts/mundo/juego.gd" id="11_7an46"]
 [ext_resource type="PackedScene" uid="uid://cikptugflnihk" path="res://escenas/incidentes/generador_incidentes.tscn" id="11_woaio"]
-[ext_resource type="PackedScene" uid="uid://d2th30bl64q15" path="res://escenas/escenario/hud.tscn" id="12_acisx"]
->>>>>>> 13308144b242c07f0fb151788df29d1333d1f4ef
+[ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="12_7an46"]
+[ext_resource type="PackedScene" uid="uid://b833if8wpd66q" path="res://menu_inicio.tscn" id="12_acisx"]
+[ext_resource type="PackedScene" uid="uid://d2th30bl64q15" path="res://escenas/escenario/hud.tscn" id="13_hud"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -44,7 +41,6 @@ albedo_color = Color(0.85, 0.55, 0.25, 1)
 [node name="Main" type="Node3D" unique_id=1034632057]
 
 [node name="Personaje" parent="." unique_id=2144265238 instance=ExtResource("1_lyxkq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 
 [node name="Personaje2" parent="." unique_id=320145559 instance=ExtResource("1_lyxkq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
@@ -85,17 +81,15 @@ sol = NodePath("../../Sol")
 entorno = NodePath("../../WorldEnvironment")
 automatico = true
 
-<<<<<<< HEAD
 [node name="HUD" parent="." unique_id=126052349 instance=ExtResource("10_7an46")]
 
-[node name="Parque" parent="." unique_id=1578475930 instance=ExtResource("10_woaio")]
-=======
 [node name="GeneradorIncidentes" parent="." unique_id=1268650350 instance=ExtResource("11_woaio")]
 
 [node name="Juego" type="Node" parent="." unique_id=2222872]
 script = ExtResource("11_7an46")
 
-[node name="HUD" parent="." unique_id=1930543901 instance=ExtResource("12_acisx")]
+[node name="HUDJuego" parent="." unique_id=1930543901 instance=ExtResource("13_hud")]
+visible = false
 
 [node name="ciudadano2" parent="." unique_id=473483946 instance=ExtResource("5_acisx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
@@ -146,7 +140,6 @@ surface_material_override/0 = SubResource("CajaMat")
 shape = SubResource("CajaForma")
 
 [node name="Parque" parent="NavigationRegion3D" unique_id=1578475930 instance=ExtResource("10_woaio")]
->>>>>>> 13308144b242c07f0fb151788df29d1333d1f4ef
 
 [node name="menu_inicio" parent="." unique_id=447403003 instance=ExtResource("12_acisx")]
 

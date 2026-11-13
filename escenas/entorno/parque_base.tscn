@@ -32,7 +32,7 @@ size = Vector3(30, 0.2, 30)
 size = Vector3(300, 0.2, 300)
 
 [sub_resource type="PlaneMesh" id="FondoM"]
-size = Vector2(120, 120)
+size = Vector2(200, 200)
 
 [sub_resource type="StandardMaterial3D" id="M_Fondo"]
 albedo_color = Color(0.31, 0.478, 0.278, 1)
@@ -95,6 +95,85 @@ height = 0.5
 albedo_color = Color(0.949, 0.714, 0.196, 1)
 emission_enabled = true
 emission = Color(0.949, 0.714, 0.196, 1)
+
+[sub_resource type="BoxShape3D" id="ColEdif1"]
+size = Vector3(0.88, 1.29, 0.94)
+
+[sub_resource type="BoxShape3D" id="ColEdif2"]
+size = Vector3(0.97, 1.29, 0.94)
+
+[sub_resource type="BoxShape3D" id="ColEdif3"]
+size = Vector3(0.88, 0.89, 1.09)
+
+[sub_resource type="BoxShape3D" id="ColEdif4"]
+size = Vector3(0.84, 1.29, 0.9)
+
+[sub_resource type="BoxShape3D" id="ColEdif5"]
+size = Vector3(1.64, 0.89, 1.01)
+
+[sub_resource type="BoxShape3D" id="ColEdif6"]
+size = Vector3(0.84, 1.69, 1.03)
+
+[sub_resource type="BoxShape3D" id="ColEdif7"]
+size = Vector3(0.97, 1.69, 0.92)
+
+[sub_resource type="BoxShape3D" id="ColEdif8"]
+size = Vector3(0.88, 1.29, 1.01)
+
+[sub_resource type="BoxShape3D" id="ColEdif9"]
+size = Vector3(1.24, 1.68, 1.3)
+
+[sub_resource type="BoxShape3D" id="ColEdif10"]
+size = Vector3(2.08, 1.47, 0.94)
+
+[sub_resource type="BoxShape3D" id="ColEdif11"]
+size = Vector3(1.37, 2.27, 1.4)
+
+[sub_resource type="BoxShape3D" id="ColEdif12"]
+size = Vector3(1.24, 3.15, 1.24)
+
+[sub_resource type="BoxShape3D" id="ColEdif13"]
+size = Vector3(2.32, 2.48, 1.82)
+
+[sub_resource type="BoxShape3D" id="ColEdif14"]
+size = Vector3(1.36, 2.88, 1.36)
+
+[sub_resource type="BoxShape3D" id="ColEdif15"]
+size = Vector3(1.28, 4.08, 1.39)
+
+[sub_resource type="BoxShape3D" id="ColEdif16"]
+size = Vector3(2.08, 1.69, 1.34)
+
+[sub_resource type="BoxShape3D" id="ColEdif17"]
+size = Vector3(0.35, 0.45, 0.4)
+
+[sub_resource type="BoxShape3D" id="ColEdif18"]
+size = Vector3(0.35, 0.45, 0.4)
+
+[sub_resource type="CylinderShape3D" id="ColPosteFoco"]
+height = 3.0
+radius = 0.12
+
+[sub_resource type="StandardMaterial3D" id="M_Asfalto"]
+albedo_color = Color(0.2, 0.21, 0.24, 1)
+
+[sub_resource type="StandardMaterial3D" id="M_Acera"]
+albedo_color = Color(0.78, 0.74, 0.66, 1)
+
+[sub_resource type="StandardMaterial3D" id="M_LineaBlanca"]
+albedo_color = Color(0.95, 0.95, 0.92, 1)
+
+[sub_resource type="PlaneMesh" id="AsfaltoM"]
+size = Vector2(36.4, 8)
+
+[sub_resource type="PlaneMesh" id="AceraM"]
+size = Vector2(36.4, 2.5)
+
+[sub_resource type="PlaneMesh" id="BordeM"]
+size = Vector2(36.4, 0.25)
+
+[sub_resource type="PlaneMesh" id="RayaM"]
+size = Vector2(3, 0.3)
 
 [node name="Feria" type="Node3D" unique_id=260571915]
 
@@ -422,3 +501,213 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 light_color = Color(0.949, 0.714, 0.196, 1)
 light_energy = 0.8
 omni_range = 9.0
+
+[node name="Colision" type="StaticBody3D" parent="EdifNorteA1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifNorteA1/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.645, 0)
+shape = SubResource("ColEdif1")
+
+[node name="Colision" type="StaticBody3D" parent="EdifNorteA2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifNorteA2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.645, 0)
+shape = SubResource("ColEdif2")
+
+[node name="Colision" type="StaticBody3D" parent="EdifNorteA3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifNorteA3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.445, 0)
+shape = SubResource("ColEdif3")
+
+[node name="Colision" type="StaticBody3D" parent="EdifNorteB1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifNorteB1/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.645, 0)
+shape = SubResource("ColEdif4")
+
+[node name="Colision" type="StaticBody3D" parent="EdifNorteB2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifNorteB2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.445, 0)
+shape = SubResource("ColEdif5")
+
+[node name="Colision" type="StaticBody3D" parent="EdifNorteB3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifNorteB3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.845, 0)
+shape = SubResource("ColEdif6")
+
+[node name="Colision" type="StaticBody3D" parent="EdifOesteA1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifOesteA1/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.845, 0)
+shape = SubResource("ColEdif7")
+
+[node name="Colision" type="StaticBody3D" parent="EdifOesteA2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifOesteA2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.645, 0)
+shape = SubResource("ColEdif8")
+
+[node name="Colision" type="StaticBody3D" parent="EdifOesteA3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifOesteA3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.84, 0)
+shape = SubResource("ColEdif9")
+
+[node name="Colision" type="StaticBody3D" parent="EdifOesteB1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifOesteB1/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.735, 0)
+shape = SubResource("ColEdif10")
+
+[node name="Colision" type="StaticBody3D" parent="EdifOesteB2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifOesteB2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.135, 0)
+shape = SubResource("ColEdif11")
+
+[node name="Colision" type="StaticBody3D" parent="EdifOesteB3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifOesteB3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.575, 0)
+shape = SubResource("ColEdif12")
+
+[node name="Colision" type="StaticBody3D" parent="EdifEsteA1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifEsteA1/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24, 0)
+shape = SubResource("ColEdif13")
+
+[node name="Colision" type="StaticBody3D" parent="EdifEsteA2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifEsteA2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.44, 0)
+shape = SubResource("ColEdif14")
+
+[node name="Colision" type="StaticBody3D" parent="EdifEsteA3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifEsteA3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.04, 0)
+shape = SubResource("ColEdif15")
+
+[node name="Colision" type="StaticBody3D" parent="EdifEsteB1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifEsteB1/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.845, 0)
+shape = SubResource("ColEdif16")
+
+[node name="Colision" type="StaticBody3D" parent="EdifEsteB2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifEsteB2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.645, 0)
+shape = SubResource("ColEdif1")
+
+[node name="Colision" type="StaticBody3D" parent="EdifEsteB3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EdifEsteB3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.645, 0)
+shape = SubResource("ColEdif2")
+
+[node name="Colision" type="StaticBody3D" parent="Sombrilla2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sombrilla2/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+shape = SubResource("ColEdif17")
+
+[node name="Colision" type="StaticBody3D" parent="Sombrilla3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sombrilla3/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+shape = SubResource("ColEdif18")
+
+[node name="Colision" type="StaticBody3D" parent="Sombrilla4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sombrilla4/Colision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+shape = SubResource("ColEdif18")
+
+[node name="Colision" type="StaticBody3D" parent="Focos/FocoNorte/Poste"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Focos/FocoNorte/Poste/Colision"]
+shape = SubResource("ColPosteFoco")
+
+[node name="Colision" type="StaticBody3D" parent="Focos/FocoSur/Poste"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Focos/FocoSur/Poste/Colision"]
+shape = SubResource("ColPosteFoco")
+
+[node name="Colision" type="StaticBody3D" parent="Focos/FocoEste/Poste"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Focos/FocoEste/Poste/Colision"]
+shape = SubResource("ColPosteFoco")
+
+[node name="Colision" type="StaticBody3D" parent="Focos/FocoOeste/Poste"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Focos/FocoOeste/Poste/Colision"]
+shape = SubResource("ColPosteFoco")
+
+[node name="CercaNorteA" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.4, -15)
+
+[node name="Malla" type="MeshInstance3D" parent="CercaNorteA"]
+mesh = SubResource("B0M")
+surface_material_override/0 = SubResource("M_Amarillo")
+
+[node name="Colision" type="CollisionShape3D" parent="CercaNorteA"]
+shape = SubResource("B0S")
+
+[node name="Carretera" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.23846, 0, 0, -0.3846)
+
+[node name="Asfalto" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -68.0)
+mesh = SubResource("AsfaltoM")
+surface_material_override/0 = SubResource("M_Asfalto")
+
+[node name="AceraSur" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -62.75)
+mesh = SubResource("AceraM")
+surface_material_override/0 = SubResource("M_Acera")
+
+[node name="AceraNorte" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -73.25)
+mesh = SubResource("AceraM")
+surface_material_override/0 = SubResource("M_Acera")
+
+[node name="BordeSur" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, -64.5)
+mesh = SubResource("BordeM")
+surface_material_override/0 = SubResource("M_LineaBlanca")
+
+[node name="BordeNorte" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, -71.5)
+mesh = SubResource("BordeM")
+surface_material_override/0 = SubResource("M_LineaBlanca")
+
+[node name="Raya14" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 0.035, -68.0)
+mesh = SubResource("RayaM")
+surface_material_override/0 = SubResource("M_Amarillo")
+
+[node name="Raya15" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0, 0.035, -68.0)
+mesh = SubResource("RayaM")
+surface_material_override/0 = SubResource("M_Amarillo")
+
+[node name="Raya16" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.035, -68.0)
+mesh = SubResource("RayaM")
+surface_material_override/0 = SubResource("M_Amarillo")
+
+[node name="Raya17" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0.035, -68.0)
+mesh = SubResource("RayaM")
+surface_material_override/0 = SubResource("M_Amarillo")
+
+[node name="Raya18" type="MeshInstance3D" parent="Carretera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0, 0.035, -68.0)
+mesh = SubResource("RayaM")
+surface_material_override/0 = SubResource("M_Amarillo")
+
