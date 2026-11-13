@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="12_7an46"]
 [ext_resource type="PackedScene" uid="uid://b833if8wpd66q" path="res://menu_inicio.tscn" id="12_acisx"]
 [ext_resource type="PackedScene" uid="uid://d2th30bl64q15" path="res://escenas/escenario/hud.tscn" id="13_hud"]
+[ext_resource type="PackedScene" path="res://escenas/entorno/ambiente_noche.tscn" id="17_jwie6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -52,9 +53,8 @@ environment = SubResource("Entorno")
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 6, 0)
 shadow_enabled = true
 
-[node name="Camera3D" parent="." unique_id=1147277627 node_paths=PackedStringArray("objetivo") instance=ExtResource("4_7an46")]
+[node name="Camera3D" parent="." unique_id=1147277627 instance=ExtResource("4_7an46")]
 transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.8191518, 0, 5, 7)
-objetivo = NodePath("../Personaje")
 
 [node name="ciudadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("5_acisx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
@@ -145,5 +145,8 @@ shape = SubResource("CajaForma")
 
 [node name="AudioPartida" type="Node" parent="." unique_id=2076216698]
 script = ExtResource("12_7an46")
+
+[node name="AmbienteNoche" parent="." unique_id=1646390021 instance=ExtResource("17_jwie6")]
+vista_previa = true
 
 [editable path="ZonaA"]
