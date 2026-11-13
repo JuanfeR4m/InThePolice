@@ -34,3 +34,6 @@ tiempo_necesario = 3.0
 
 [node name="Modelo" parent="." unique_id=1292492849 instance=ExtResource("6_cx4ix")]
 transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2.6, 0, 0, 0)
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=913766440]
+radius = 0.6

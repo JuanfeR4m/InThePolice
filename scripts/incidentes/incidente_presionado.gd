@@ -13,29 +13,22 @@ const VELOCIDAD_ALERTA := 10.0
 const PELEADORES := 2
 const RADIO_FORMACION := 1.0
 const CURIOSOS := 3
-const DISTANCIA_MIRAR_MIN := 1.5
-const DISTANCIA_MIRAR_MAX := 2.5
+const DISTANCIA_MIRAR := 2.2
 const RADIO_RECLUTAR := 70.0
 const RADIO_CURIOSOS := 40.0
 const ESPERA_MAXIMA := 25.0
 const INTERVALO_RECLUTAR := 1.0
 
-# Arrastra aqui pelea.tscn desde el inspector.
 @export var escena_pelea: PackedScene
 
 @onready var anillo: MeshInstance3D = $Anillo
+@onready var zona: Area3D = $Zona
 @onready var alerta: MeshInstance3D = $Alerta
 @onready var indicador: MeshInstance3D = $Indicador
 
 var puestos: Array = []
-var curiosos: Array = []
+var puestos_curiosos: Array = []
 var nube_pelea: Node3D
-
-# Propiedad de compatibilidad para evitar errores si algún script lee .peleadores
-var peleadores: Array:
-	get: return peleadores_activos()
-	set(v): pass
-
 var reclutados := false
 var iniciado := false
 var espera_llegada := 0.0
@@ -52,14 +45,17 @@ var material_indicador: ShaderMaterial
 func _ready() -> void:
 	add_to_group("incidentes")
 	puestos.resize(PELEADORES)
+	puestos_curiosos.resize(CURIOSOS)
 	material_anillo.albedo_color = COLOR_NORMAL
 	anillo.material_override = material_anillo
 	material_alerta = alerta.material_override.duplicate()
 	alerta.material_override = material_alerta
 	material_indicador = indicador.material_override.duplicate()
 	indicador.material_override = material_indicador
+	anillo.visible = false
 	alerta.visible = false
 	indicador.visible = false
+	zona.monitoring = false
 
 func _process(delta: float) -> void:
 	reloj_reclutar -= delta
@@ -89,66 +85,88 @@ func _process(delta: float) -> void:
 		resuelto.emit(self)
 		queue_free()
 
+func esta_mas_cerca(a: Node3D, b: Node3D) -> bool:
+	return a.global_position.distance_squared_to(global_position) < b.global_position.distance_squared_to(global_position)
+
 func ordenar_por_cercania(lista: Array[Node3D]) -> void:
-	lista.sort_custom(func(a, b):
-		return a.global_position.distance_squared_to(global_position) < b.global_position.distance_squared_to(global_position))
+	lista.sort_custom(esta_mas_cerca)
 
 func peleadores_activos() -> Array:
 	var activos := []
 	for p in puestos:
-		if p != null and is_instance_valid(p) and p.incidente == self:
+		if is_instance_valid(p) and p.incidente == self:
 			activos.append(p)
 	return activos
 
-func indice_libre() -> int:
-	for i in PELEADORES:
-		var p = puestos[i]
-		if p == null or not is_instance_valid(p) or p.incidente != self:
+func curiosos_activos() -> Array:
+	var activos := []
+	for c in puestos_curiosos:
+		if is_instance_valid(c) and c.incidente == self:
+			activos.append(c)
+	return activos
+
+func puesto_libre(lista: Array, i: int) -> bool:
+	var c = lista[i]
+	return not is_instance_valid(c) or c.incidente != self
+
+func indice_libre(lista: Array) -> int:
+	for i in lista.size():
+		if puesto_libre(lista, i):
 			return i
 	return -1
 
-func limpiar_curiosos() -> void:
-	curiosos = curiosos.filter(func(c):
-		return is_instance_valid(c) and c.incidente == self)
+func posicion_puesto(i: int) -> Vector3:
+	var angulo := TAU * i / PELEADORES
+	return global_position + Vector3(cos(angulo), 0.0, sin(angulo)) * RADIO_FORMACION
 
-func pide_curioso() -> bool:
-	limpiar_curiosos()
-	return curiosos.size() < CURIOSOS
+func posicion_mirar(i: int) -> Vector3:
+	var angulo := PI / 2.0 + TAU * i / CURIOSOS
+	return global_position + Vector3(cos(angulo), 0.0, sin(angulo)) * DISTANCIA_MIRAR
+
+func indice_cercano(c: Node3D) -> int:
+	var mejor := -1
+	var menor := INF
+	for i in PELEADORES:
+		if not puesto_libre(puestos, i):
+			continue
+		var d := c.global_position.distance_squared_to(posicion_puesto(i))
+		if d < menor:
+			menor = d
+			mejor = i
+	return mejor
 
 func acepta_peleador(c: Node3D) -> bool:
-	return not iniciado and indice_libre() != -1 \
+	return not iniciado and indice_libre(puestos) != -1 \
 		and c.global_position.distance_to(global_position) <= RADIO_RECLUTAR
 
 func acepta_curioso(c: Node3D) -> bool:
-	return pide_curioso() \
+	return iniciado and indice_libre(puestos_curiosos) != -1 \
 		and c.global_position.distance_to(global_position) <= RADIO_CURIOSOS
 
 func inscribir_peleador(c: Node3D) -> bool:
-	var i := indice_libre()
+	var i := indice_cercano(c)
 	if i == -1:
 		return false
 	puestos[i] = c
-	var angulo := TAU * i / PELEADORES
-	var offset := Vector3(cos(angulo), 0.0, sin(angulo)) * RADIO_FORMACION
-	c.ir_a_pelea(global_position + offset, self)
+	c.ir_a_pelea(posicion_puesto(i), self)
 	actualizar_rivales()
 	return true
 
 func inscribir_curioso(c: Node3D) -> bool:
-	if not pide_curioso():
+	var i := indice_libre(puestos_curiosos)
+	if i == -1:
 		return false
-	var ang := randf() * TAU
-	var dist := randf_range(DISTANCIA_MIRAR_MIN, DISTANCIA_MIRAR_MAX)
-	var puesto := global_position + Vector3(cos(ang), 0.0, sin(ang)) * dist
-	c.curiosear(puesto, global_position, self)
-	curiosos.append(c)
+	puestos_curiosos[i] = c
+	c.curiosear(posicion_mirar(i), global_position, self)
 	return true
 
 func liberar(c: Node3D) -> void:
 	for i in puestos.size():
 		if puestos[i] == c:
 			puestos[i] = null
-	curiosos.erase(c)
+	for i in puestos_curiosos.size():
+		if puestos_curiosos[i] == c:
+			puestos_curiosos[i] = null
 	actualizar_rivales()
 
 func actualizar_rivales() -> void:
@@ -170,6 +188,8 @@ func reclutar() -> void:
 		for c in candidatos:
 			if not inscribir_peleador(c):
 				break
+		reclutados = true
+		return
 	var mirones: Array[Node3D] = []
 	for c in get_tree().get_nodes_in_group("ciudadanos"):
 		if c.has_method("puede_mirar") and c.puede_mirar() \
@@ -179,23 +199,31 @@ func reclutar() -> void:
 	for c in mirones:
 		if not inscribir_curioso(c):
 			break
-	reclutados = true
+
+func llegaron_todos() -> bool:
+	var activos := peleadores_activos()
+	if activos.size() < PELEADORES:
+		return false
+	for p in activos:
+		if not p.llego:
+			return false
+	return true
 
 func revisar_llegada(delta: float) -> void:
 	if not reclutados:
 		return
 	espera_llegada += delta
-	var activos := peleadores_activos()
-	var todos := not activos.is_empty()
-	for p in activos:
-		if not p.llego:
-			todos = false
-	if todos or espera_llegada >= ESPERA_MAXIMA:
-		iniciado = true
-		mostrar_pelea()
+	if llegaron_todos():
+		iniciar()
+	elif espera_llegada >= ESPERA_MAXIMA:
+		queue_free()
 
-# Pone la nube de pelea encima de los peleadores, del tamano de ellos.
-# Es hija del incidente: desaparece sola cuando el incidente se resuelve o escala.
+func iniciar() -> void:
+	iniciado = true
+	anillo.visible = true
+	zona.monitoring = true
+	mostrar_pelea()
+
 func mostrar_pelea() -> void:
 	var activos := peleadores_activos()
 	if escena_pelea == null or activos.is_empty():
@@ -207,8 +235,7 @@ func mostrar_pelea() -> void:
 func _exit_tree() -> void:
 	for p in peleadores_activos():
 		p.terminar_pelea()
-	limpiar_curiosos()
-	for c in curiosos:
+	for c in curiosos_activos():
 		c.dejar_de_curiosear()
 
 func pasar_a_rojo() -> void:

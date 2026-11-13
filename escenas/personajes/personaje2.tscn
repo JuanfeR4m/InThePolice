@@ -13,8 +13,6 @@ height = 1.75
 
 [node name="Personaje2" type="CharacterBody3D" unique_id=2144265238 groups=["jugador", "jugador2"]]
 script = ExtResource("1_gox41")
-prueba = 1
-accion_prueba = ""
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1178244521]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
@@ -36,3 +34,6 @@ tiempo_necesario = 3.0
 
 [node name="Modelo" parent="." unique_id=1292492849 instance=ExtResource("6_ynauj")]
 transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2.6, 0, 0, 0)
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=1562774660]
+radius = 0.6

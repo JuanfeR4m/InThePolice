@@ -1,8 +1,11 @@
+class_name Ciudadano
 extends CharacterBody3D
 
 enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO }
 
 const INTERVALO_REVISAR := 0.5
+const TIEMPO_ATASCO := 1.5
+const DISTANCIA_ATASCO := 3.0
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -13,8 +16,6 @@ const INTERVALO_REVISAR := 0.5
 @export var pausa_max := 3.0
 @export var rapidez_acudir := 4.0
 @export var margen_cambio := 4.0
-@export var evitar_personas := true
-@export var radio_cuerpo := 0.5
 @export var tiempo_max_ruta := 40.0
 @export var vida = 100
 @export var rapidez = 2.0
@@ -23,6 +24,7 @@ const INTERVALO_REVISAR := 0.5
 @export var puntos: Array[Vector3] = [
 	Vector3(-6, 0, -3), Vector3(6, 0, -3)]
 @onready var anim = $Modelo/AnimationPlayer
+@onready var agente: NavigationAgent3D = $NavigationAgent3D
 
 var estado = Estado.PATRULLA
 var punto = 0
@@ -32,11 +34,12 @@ var rival: Node3D
 var llego := false
 var enfriamiento := 0.0
 var origen := Vector3.ZERO
+var entrada := Vector3.ZERO
+var viene_de_afuera := false
 var destino_azar := Vector3.ZERO
 var pausa := 0.0
 var tiempo_ruta := 0.0
 var incidente = null
-var agente: NavigationAgent3D
 var listo := false
 var usa_malla := false
 var quiere_moverse := false
@@ -53,30 +56,19 @@ static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3,
 	return pow(ndot_h, brillo)
 
 func _ready() -> void:
-	origen = global_position
-	agente = NavigationAgent3D.new()
-	agente.radius = radio_cuerpo
-	agente.path_desired_distance = 0.5
-	agente.target_desired_distance = 0.5
-	agente.avoidance_enabled = evitar_personas
-	agente.max_speed = maxf(rapidez, rapidez_acudir)
-	agente.velocity_computed.connect(_al_velocidad_calculada)
-	add_child(agente)
-	
+	if not viene_de_afuera:
+		origen = global_position
 	reloj_revisar = randf() * INTERVALO_REVISAR
-	
-	# Espera segura y acotada para sincronizar el mapa de navegación
 	for i in range(10):
 		await get_tree().physics_frame
 		var mapa = agente.get_navigation_map()
 		if NavigationServer3D.map_get_iteration_id(mapa) > 0:
 			usa_malla = NavigationServer3D.map_get_regions(mapa).size() > 0
 			break
-	
 	elegir_destino()
+	if viene_de_afuera:
+		destino_azar = ajustar_a_malla(entrada)
 	listo = true
-	
-	# Forzar el primer movimiento inmediato para que no se queden quietos al iniciar
 	if estado == Estado.PATRULLA:
 		patrullar(0.0)
 
@@ -116,6 +108,15 @@ func revisar_atasco(delta: float) -> void:
 	if global_position.distance_to(ultima_pos) < 0.3:
 		elegir_destino()
 	ultima_pos = global_position
+
+func atascado_cerca(delta: float) -> bool:
+	reloj_atasco += delta
+	if reloj_atasco < TIEMPO_ATASCO:
+		return false
+	reloj_atasco = 0.0
+	var quieto := global_position.distance_to(ultima_pos) < 0.3
+	ultima_pos = global_position
+	return quieto and distancia_plana(destino_incidente) < DISTANCIA_ATASCO
 
 func patrullar(delta: float) -> void:
 	if not patrulla_aleatoria:
@@ -161,7 +162,7 @@ func _physics_process(delta):
 				print("lo perdió a ", snappedf(distancia, 0.01), " m")
 			ir_a(objetivo.global_position)
 		Estado.ACUDIR:
-			if llego_a(destino_incidente):
+			if llego_a(destino_incidente) or atascado_cerca(delta):
 				llego = true
 				estado = Estado.PELEA
 			else:
@@ -176,12 +177,14 @@ func _physics_process(delta):
 			if persigue_policia and distancia < radio_ver:
 				soltar_incidente()
 				estado = Estado.PERSEGUIR
-			elif not llego_a(destino_incidente):
-				ir_a(destino_incidente, rapidez_acudir)
 			else:
-				detenerse()
-				mirar_hacia(centro_incidente)
-	
+				if not llego and (llego_a(destino_incidente) or atascado_cerca(delta)):
+					llego = true
+				if llego:
+					detenerse()
+					mirar_hacia(centro_incidente)
+				else:
+					ir_a(destino_incidente, rapidez_acudir)
 	move_and_slide()
 
 func revisar_cercania(delta: float) -> void:
@@ -190,7 +193,7 @@ func revisar_cercania(delta: float) -> void:
 		return
 	reloj_revisar = INTERVALO_REVISAR
 	var yendo_a_pelear: bool = estado == Estado.ACUDIR and not llego
-	var yendo_a_mirar: bool = estado == Estado.CURIOSO
+	var yendo_a_mirar: bool = estado == Estado.CURIOSO and not llego
 	if not (yendo_a_pelear or yendo_a_mirar):
 		return
 	if incidente == null or not is_instance_valid(incidente):
@@ -241,6 +244,8 @@ func ir_a_pelea(pos: Vector3, inc) -> void:
 	incidente = inc
 	destino_incidente = ajustar_a_malla(pos)
 	llego = false
+	reloj_atasco = 0.0
+	ultima_pos = global_position
 	estado = Estado.ACUDIR
 
 func curiosear(puesto: Vector3, centro: Vector3, inc) -> void:
@@ -248,6 +253,8 @@ func curiosear(puesto: Vector3, centro: Vector3, inc) -> void:
 	destino_incidente = ajustar_a_malla(puesto)
 	centro_incidente = centro
 	llego = false
+	reloj_atasco = 0.0
+	ultima_pos = global_position
 	estado = Estado.CURIOSO
 
 func soltar_incidente() -> void:
@@ -267,6 +274,7 @@ func terminar_pelea() -> void:
 
 func dejar_de_curiosear() -> void:
 	incidente = null
+	llego = false
 	if estado == Estado.CURIOSO:
 		pausa = 0.0
 		estado = Estado.PATRULLA

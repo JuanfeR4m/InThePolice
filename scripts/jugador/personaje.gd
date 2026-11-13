@@ -20,7 +20,6 @@ var ruido = 0.0
 
 
 func _ready():
-	# El segundo jugador usa las acciones con sufijo "2" (move_left2, correr2, etc.)
 	if name == "Personaje2":
 		sufijo = "2"
 	if sufijo == "2":
@@ -33,8 +32,6 @@ func _ready():
 		aplicar_color(color_uniforme)
 
 
-# Jugador 1: move_left1, interactuar1... y "correr" (sin numero).
-# Jugador 2: todo con "2" (move_left2, correr2, interactuar2...).
 func _accion(base: String) -> String:
 	if sufijo == "2":
 		return base + "2"
@@ -43,8 +40,6 @@ func _accion(base: String) -> String:
 	return base + "1"
 
 
-# Los nodos Interactuar, Fuerza y Apuntar traen la tecla del jugador 1;
-# al jugador 2 se le cambia por la suya.
 func _poner_tecla(nodo: String, accion: String):
 	var n = get_node_or_null(nodo)
 	if n != null:
