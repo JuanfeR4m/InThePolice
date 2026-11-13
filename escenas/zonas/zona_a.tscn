@@ -5,10 +5,8 @@
 
 [node name="ZonaA" type="Node3D" unique_id=773773640]
 
-[node name="SistemaSol" type="Node3D" parent="." unique_id=2125741162 node_paths=PackedStringArray("sol", "entorno")]
+[node name="SistemaSol" type="Node3D" parent="." unique_id=2125741162]
 script = ExtResource("1_l7qun")
-sol = NodePath("")
-entorno = NodePath("")
 
 [node name="CicloDia" type="Node3D" parent="SistemaSol" unique_id=931191903]
 script = ExtResource("2_fntjl")

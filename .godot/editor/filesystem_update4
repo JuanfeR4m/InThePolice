@@ -1,8 +1,0 @@
-res://escenas/main.tscn
-res://scripts/jugador/personaje.gd
-res://escenas/personajes/personaje.tscn
-res://scripts/enemigos/manifestante.gd
-res://hud.tscn
-res://hud.gd
-res://scripts/audio_partida.gd
-res://scripts/menu_inicio.gd

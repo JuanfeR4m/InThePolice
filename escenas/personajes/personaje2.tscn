@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bs7tcsr0c57vh"]
+
+[ext_resource type="Script" uid="uid://cchv43eug6720" path="res://scripts/jugador/personaje.gd" id="1_gox41"]
+[ext_resource type="Script" uid="uid://67g8ul8ywidy" path="res://scripts/prototipos/rodar.gd" id="2_2ol06"]
+[ext_resource type="Script" uid="uid://csa4pg43r5vaf" path="res://scripts/jugador/fuerza.gd" id="3_x3tj3"]
+[ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://scripts/prototipos/apuntar.gd" id="4_o288t"]
+[ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://scripts/jugador/interactuar.gd" id="5_r04eg"]
+[ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/modelos_kenney/GLB format/character-male-c.glb" id="6_ynauj"]
+
+[sub_resource type="CapsuleShape3D" id="Capsula"]
+radius = 0.35
+height = 1.75
+
+[node name="Personaje2" type="CharacterBody3D" unique_id=2144265238 groups=["jugador", "jugador2"]]
+script = ExtResource("1_gox41")
+prueba = 1
+accion_prueba = ""
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1178244521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("Capsula")
+
+[node name="Rodar" type="Node" parent="." unique_id=881688414]
+script = ExtResource("2_2ol06")
+
+[node name="Fuerza" type="Node" parent="." unique_id=2031832373]
+script = ExtResource("3_x3tj3")
+
+[node name="Apuntar" type="Node" parent="." unique_id=238888928]
+script = ExtResource("4_o288t")
+alcance = 2.0
+
+[node name="Interactuar" type="Node" parent="." unique_id=1684086891]
+script = ExtResource("5_r04eg")
+tiempo_necesario = 3.0
+
+[node name="Modelo" parent="." unique_id=1292492849 instance=ExtResource("6_ynauj")]
+transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2.6, 0, 0, 0)

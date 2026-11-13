@@ -11,7 +11,7 @@
 radius = 0.35
 height = 1.75
 
-[node name="Personaje" type="CharacterBody3D" unique_id=2144265238 groups=["jugador"]]
+[node name="Personaje" type="CharacterBody3D" unique_id=2144265238 groups=["jugador", "jugador1"]]
 script = ExtResource("1_rnc3r")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1178244521]
