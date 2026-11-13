@@ -1,6 +1,9 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1794482965
-zona_a.tscn::PackedScene::3759200937013881406::1794482849::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://sistema_sol.gd<>uid://c3f1w6y7ay111::::res://ciclo_dia.gd<>uid://bss3wrijjf7fg::::res://personaje.tscn<>uid://d1lvgx2fcg3ee::::res://suelo.tscn<>uid://bpoe64ckmnffe::::res://camera_3d.tscn
+::res://::1794571927
+bomba.png::CompressedTexture2D::1095421616577942576::1794571927::1794571927::1::::<><><>0<>0<>30c8a66c0ce73566c77e694af2484573<>res://.godot/imported/bomba.png-31874339323eec6d1b308ebe6671291c.ctex::
+hud.gd::GDScript::7655725132944482518::1794571920::0::1::::<>CanvasLayer<><>0<>0<><>::
+hud.tscn::PackedScene::-1::1794571909::0::1::::<><><>0<>0<><>::
+zona_a.tscn::PackedScene::4316812428646384800::1794482849::0::1::::<><><>0<>0<><>::uid://cy80y0cs687eh::::res://scripts/mundo/sistema_sol.gd<>uid://c3f1w6y7ay111::::res://scripts/mundo/ciclo_dia.gd
 ::res://assets/::1794482965
 ::res://assets/modelos_kenney/::1794482849
 ::res://assets/modelos_kenney/GLB format/::1794482849
@@ -110,7 +113,7 @@ swing_chair_ride.glb::PackedScene::5950056857199024555::1794482849::1794482849::
 ticket_balloon_cart.glb::PackedScene::5499368591784818175::1794482849::1794482849::1::::<><><>0<>0<>5491b909bf831a5d5d6586c3984b3f8b<>res://.godot/imported/ticket_balloon_cart.glb-d001106d03bafea42bf299032408059e.scn::
 ticket_gate.glb::PackedScene::739272241653940085::1794482849::1794482849::1::::<><><>0<>0<>5223f4b413a0309f9c1886f27112e11e<>res://.godot/imported/ticket_gate.glb-23233edf3cfb79034cb9c0f82c4cc68d.scn::
 trash_bin.glb::PackedScene::8831702809399317162::1794482849::1794482849::1::::<><><>0<>0<>2907a1156bcc48127dadf64e489879ce<>res://.godot/imported/trash_bin.glb-728336f6d0f14308822bf41ba760c90c.scn::
-::res://assets/sonidos/::1794482959
+::res://assets/sonidos/::1794482970
 caerse_muchas.mp3::AudioStreamMP3::2745211006370094056::1794479191::1794482970::1::::<><><>0<>0<>85c29dfaf35903cc71756a7235000adb<>res://.godot/imported/caerse_muchas.mp3-053dbdfdaeb44350fada650194aca4f3.mp3str::
 carse_una.mp3::AudioStreamMP3::7656857149146510811::1794479111::1794482970::1::::<><><>0<>0<>7a855bdc12e6a703c8bdcb65dbfd65ae<>res://.godot/imported/carse_una.mp3-ca4e4b8f1d14ae003f2f0d6aaa73d306.mp3str::
 cronometro.mp3::AudioStreamMP3::5082404788446714002::1794480059::1794482970::1::::<><><>0<>0<>96f822bb8dfd6d31a1f39426efe08a17<>res://.godot/imported/cronometro.mp3-390f74684db9586e6af183e7bd1f7a10.mp3str::
@@ -129,8 +132,8 @@ police.mp3::AudioStreamMP3::6133334196124645633::1794482303::1794482970::1::::<>
 ::res://docs/::1794482849
 icon.svg::CompressedTexture2D::1082983283144382342::1794482849::1794482849::1::::<><><>0<>0<>22b970c2077b0970cb4211d4eb30c2fc<>res://.godot/imported/icon.svg-d74203da674a59f31ae118bcc76df45e.ctex::
 LEEME.txt::TextFile::-1::1794482849::0::1::::<><><>0<>0<><>::
-::res://escenas/::1794482849
-main.tscn::PackedScene::183890259676159850::1794482849::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://bjekt0e1nvewt::::res://escenas/personajes/ciudadano.tscn<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://bts8qwxctvwti::::res://escenas/zonas/zona_a.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn<>uid://b33i6k8jqj7f8::::res://scripts/partida.gd<>res://escenas/entorno/parque.tscn
+::res://escenas/::1794570953
+main.tscn::PackedScene::183890259676159850::1794570953::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://bjekt0e1nvewt::::res://escenas/personajes/ciudadano.tscn<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://bts8qwxctvwti::::res://escenas/zonas/zona_a.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn<>uid://b33i6k8jqj7f8::::res://scripts/partida.gd<>uid://71fg8epyucis::::res://escenas/entorno/parque.tscn
 ::res://escenas/entorno/::1794482849
 camera_3d.tscn::PackedScene::3468454381140211498::1794482849::0::1::::<><><>0<>0<><>::uid://c4ncpqjuna8wv::::res://scripts/mundo/camara_sigue.gd
 feria.tscn::PackedScene::1323637516961470814::1794482849::0::1::::<><><>0<>0<><>::uid://dhthf26r4e62t::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-a.glb<>uid://bkivdtrog6gv0::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-b.glb<>uid://droqywwayfxuc::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-c.glb<>uid://54inxbqd3afw::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-d.glb<>uid://k85gcgqa1f6t::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-e.glb<>uid://g4j0pfwb7vy4::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-f.glb<>uid://dkjcmhdiadaui::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-g.glb<>uid://blnuqqqgrvcnq::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-h.glb<>uid://dii0ib3csyheu::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-i.glb<>uid://bb6mqxpblawfw::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-k.glb<>uid://c50r3xg5hkffu::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-l.glb<>uid://dsla5hribwit5::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-m.glb<>uid://606tofguto7i::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-n.glb<>uid://b1tmknh2xi1rn::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-a.glb<>uid://cr0eye7t17xqx::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-skyscraper-c.glb<>uid://7vjrqm4hj8cp::::res://assets/modelos_kenney_ciudad/Models/GLB format/building-j.glb<>uid://cdsrcduw8ooyi::::res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-a.glb<>uid://b4wrdbbgrruv::::res://assets/modelos_kenney_ciudad/Models/GLB format/detail-parasol-b.glb
@@ -170,12 +173,12 @@ pirate_ship_swing.tscn::PackedScene::-1::1794482849::0::1::::<><><>0<>0<><>::res
 roller_coaster_track.tscn::PackedScene::-1::1794482849::0::1::::<><><>0<>0<><>::res://assets/modelos_parque/GLB/roller_coaster_track.glb
 spinning_teacups.tscn::PackedScene::-1::1794482849::0::1::::<><><>0<>0<><>::res://assets/modelos_parque/GLB/spinning_teacups.glb
 swing_chair_ride.tscn::PackedScene::-1::1794482849::0::1::::<><><>0<>0<><>::res://assets/modelos_parque/GLB/swing_chair_ride.glb
-::res://escenas/personajes/::1794482849
+::res://escenas/personajes/::1794571463
 ciudadano.tscn::PackedScene::3027020207925984711::1794482849::0::1::::<><><>0<>0<><>::uid://bqarkse6nhueg::::res://scripts/enemigos/ciudadano.gd<>uid://kt8lkvi5bed1::::res://assets/modelos_kenney/GLB format/character-male-d.glb
 curioso.tscn::PackedScene::2935521281573025366::1794482849::0::1::::<><><>0<>0<><>::uid://dh6c1kv407v3u::::res://scripts/enemigos/curioso.gd<>uid://35hwdhmmevhu::::res://assets/modelos_kenney/GLB format/character-male-e.glb
 guardia.tscn::PackedScene::5438618299913828742::1794482849::0::1::::<><><>0<>0<><>::uid://bj4jjjasqwirw::::res://scripts/enemigos/guardia.gd<>uid://c3r14fxs6w8c0::::res://assets/modelos_kenney/GLB format/character-male-f.glb
 manifestante.tscn::PackedScene::6782523737467407470::1794482849::0::1::::<><><>0<>0<><>::uid://d0pm7nhq8tcuy::::res://scripts/enemigos/manifestante.gd<>uid://b2d6ms0qpq2yb::::res://assets/modelos_kenney/GLB format/character-male-b.glb
-personaje.tscn::PackedScene::3688718937690695944::1794482849::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://c6ahemttr3fhi::::res://assets/modelos_kenney/GLB format/character-male-c.glb
+personaje.tscn::PackedScene::3688718937690695944::1794571463::0::1::::<><><>0<>0<><>::uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://c6ahemttr3fhi::::res://assets/modelos_kenney/GLB format/character-male-c.glb
 ::res://escenas/prototipos/::1794482849
 prueba_felipe.tscn::PackedScene::2381025468113338126::1794482849::0::1::::<><><>0<>0<><>::uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://cmfd0gglkasgd::::res://scripts/mundo/incidente.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://cchv43eug6720::::res://scripts/jugador/personaje.gd<>uid://cjqripveonc8u::::res://escenas/personajes/guardia.tscn<>res://personaje/character-male-a.glb<>uid://67g8ul8ywidy::::res://scripts/prototipos/rodar.gd<>uid://csa4pg43r5vaf::::res://scripts/jugador/fuerza.gd<>uid://d3oyghjp2e16o::::res://scripts/prototipos/apuntar.gd<>uid://ciqkdsc7x5rl2::::res://scripts/jugador/interactuar.gd<>uid://biyljgujvggl4::::res://escenas/zonas/zona_b.tscn<>uid://c3vrf7k4qf5i5::::res://escenas/personajes/manifestante.tscn
 prueba_paola.tscn::PackedScene::8930022208089202896::1794482849::0::1::::<><><>0<>0<><>::uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://bhwk4dav4gp6u::::res://scripts/jugador/ruido.gd<>uid://bh28uvixpvqmg::::res://escenas/personajes/curioso.tscn<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn
@@ -185,15 +188,15 @@ zona_b.tscn::PackedScene::2998160804433784139::1794482849::0::1::::<><><>0<>0<><
 zona_c.tscn::PackedScene::633945155365601340::1794482849::0::1::::<><><>0<>0<><>::uid://clahgnnril28::::res://scripts/prototipos/color_rect.gd<>uid://bpoe64ckmnffe::::res://escenas/entorno/camera_3d.tscn<>uid://d1lvgx2fcg3ee::::res://escenas/entorno/suelo.tscn<>uid://bss3wrijjf7fg::::res://escenas/personajes/personaje.tscn<>uid://c1ylyjuojfa61::::res://scripts/prototipos/luz_jugador.gd
 ::res://scripts/::1794482849
 partida.gd::GDScript::4410052554867603315::1794482849::0::1::::<>Node<><>0<>0<><>::
-::res://scripts/enemigos/::1794482849
+::res://scripts/enemigos/::1794571462
 ciudadano.gd::GDScript::3510493181743387206::1794482849::0::1::::<>CharacterBody3D<><>0<>0<><>::
 curioso.gd::GDScript::7714748090575155984::1794482849::0::1::::<>CharacterBody3D<><>0<>0<><>::
 guardia.gd::GDScript::3078550229933413096::1794482849::0::1::::<>CharacterBody3D<><>0<>0<><>::
-manifestante.gd::GDScript::8945735252048162096::1794482849::0::1::::<>CharacterBody3D<><>0<>0<><>::
-::res://scripts/jugador/::1794482849
+manifestante.gd::GDScript::8945735252048162096::1794571462::0::1::::<>CharacterBody3D<><>0<>0<><>::
+::res://scripts/jugador/::1794571364
 fuerza.gd::GDScript::6038028493805127833::1794482849::0::1::::<>Node<><>0<>0<><>::
 interactuar.gd::GDScript::5367995637860576821::1794482849::0::1::::<>Node<><>0<>0<><>::
-personaje.gd::GDScript::4928998021563027591::1794482849::0::1::::<>CharacterBody3D<><>0<>0<><>::
+personaje.gd::GDScript::4928998021563027591::1794571364::0::1::::<>CharacterBody3D<><>0<>0<><>::
 ruido.gd::GDScript::2923818016262751758::1794482849::0::1::::<>Node<><>0<>0<><>::
 salud.gd::GDScript::7196834913738582884::1794482849::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/mundo/::1794482849

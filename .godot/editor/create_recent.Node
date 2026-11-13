@@ -1,9 +1,9 @@
+Node
 MeshInstance3D
 CollisionShape3D
 StaticBody3D
 OmniLight3D
 Node3D
-Node
 RayCast3D
 CharacterBody3D
 AnimationPlayer
