@@ -3,35 +3,59 @@ extends Node
 
 const GRUPO_CIUDADANOS := "ciudadanos"
 const GRUPO_JUGADOR := "jugador"
-const DISTANCIA_LIBRE := 1.5
+const DISTANCIA_LIBRE := 2.0
 const DISTANCIA_JUGADOR := 4.0
-const INTENTOS := 15
+const INTENTOS := 40
+const TOLERANCIA_MALLA := 1.0
+const TOLERANCIA_RELAJADA := 6.0
 const RAPIDEZ_MIN := 1.5
 const RAPIDEZ_MAX := 2.5
+const FRAMES_ESPERA := 10
 
 @export var escenas: Array[PackedScene]
 @export var puntos: Node3D
 @export var centro: Node3D
 @export var objetivo: Node3D
 @export var inicial := 25
-@export var maximo := 30
+@export var maximo := 35
 @export var radio_entrada := 8.0
-@export var radio_inicial := 15.0
+@export var area_inicial := Vector2(15.0, 15.0)
+@export var radio_deambular := 10.0
 
-var hay_malla := false
+var rechazos := {"malla": 0, "lista": 0, "libre": 0}
 
 func _ready() -> void:
 	if escenas.is_empty() or centro == null:
 		return
 	var mapa := centro.get_world_3d().navigation_map
-	NavigationServer3D.map_force_update(mapa)
-	hay_malla = not NavigationServer3D.map_get_regions(mapa).is_empty()
-	if not hay_malla:
+	for i in FRAMES_ESPERA:
+		if malla_lista(mapa):
+			break
+		await get_tree().physics_frame
+	if not malla_lista(mapa):
 		print("Sin malla de navegación: hornee el NavigationRegion3D")
+	var usados: Array[Vector3] = []
 	for i in inicial:
-		var posicion := posicion_inicial(mapa)
+		var posicion := posicion_inicial(mapa, usados)
 		if posicion != Vector3.INF:
+			usados.append(posicion)
 			crear(posicion, posicion)
+	print("Ciudadanos iniciales: ", usados.size(), " de ", inicial)
+	if usados.size() < inicial:
+		diagnosticar(mapa)
+
+func diagnosticar(mapa: RID) -> void:
+	print("Rechazos -> lejos de la malla: ", rechazos["malla"],
+		" | muy juntos entre sí: ", rechazos["lista"],
+		" | ocupado por ciudadano/jugador: ", rechazos["libre"])
+	if not malla_lista(mapa):
+		print("Diagnóstico: el mapa de navegación está vacío o no sincronizó")
+		return
+	var c := centro.global_position
+	var cercano := NavigationServer3D.map_get_closest_point(mapa, c)
+	var d := Vector2(cercano.x, cercano.z).distance_to(Vector2(c.x, c.z))
+	print("Diagnóstico: centro=", c, " | malla más cercana=", cercano,
+		" | distancia plana=", snappedf(d, 0.1), " m")
 
 func _on_timer_timeout() -> void:
 	if escenas.is_empty() or puntos == null or centro == null:
@@ -50,22 +74,46 @@ func crear(posicion: Vector3, destino: Vector3) -> void:
 	ciudadano.entrada = destino
 	ciudadano.viene_de_afuera = true
 	ciudadano.rapidez = randf_range(RAPIDEZ_MIN, RAPIDEZ_MAX)
+	ciudadano.radio_deambular = radio_deambular
 	ciudadano.objetivo = objetivo
 	add_child(ciudadano)
 	ciudadano.global_position = posicion
 
+func malla_lista(mapa: RID) -> bool:
+	return NavigationServer3D.map_get_iteration_id(mapa) > 0 \
+		and not NavigationServer3D.map_get_regions(mapa).is_empty()
+
 func ajustar_a_malla(mapa: RID, punto: Vector3) -> Vector3:
-	if hay_malla:
+	if malla_lista(mapa):
 		return NavigationServer3D.map_get_closest_point(mapa, punto)
 	return punto
 
-func posicion_inicial(mapa: RID) -> Vector3:
-	for i in INTENTOS:
-		var punto := centro.global_position + punto_en_circulo(radio_inicial)
-		punto = ajustar_a_malla(mapa, punto)
-		if esta_libre(punto):
+func posicion_inicial(mapa: RID, usados: Array[Vector3]) -> Vector3:
+	for nivel in 2:
+		var tolerancia := TOLERANCIA_MALLA if nivel == 0 else TOLERANCIA_RELAJADA
+		for i in INTENTOS:
+			var crudo := centro.global_position + Vector3(
+				randf_range(-area_inicial.x * 0.5, area_inicial.x * 0.5),
+				0.0,
+				randf_range(-area_inicial.y * 0.5, area_inicial.y * 0.5))
+			var punto := ajustar_a_malla(mapa, crudo)
+			if Vector2(punto.x, punto.z).distance_to(Vector2(crudo.x, crudo.z)) > tolerancia:
+				rechazos["malla"] += 1
+				continue
+			if cerca_de_lista(punto, usados):
+				rechazos["lista"] += 1
+				continue
+			if not esta_libre(punto):
+				rechazos["libre"] += 1
+				continue
 			return punto
 	return Vector3.INF
+
+func cerca_de_lista(punto: Vector3, lista: Array[Vector3]) -> bool:
+	for otro in lista:
+		if otro.distance_to(punto) < DISTANCIA_LIBRE:
+			return true
+	return false
 
 func esta_libre(punto: Vector3) -> bool:
 	return not hay_cerca(punto, GRUPO_CIUDADANOS, DISTANCIA_LIBRE) \

@@ -103,14 +103,14 @@ navigation_mesh = SubResource("NavigationMesh_uxa2c")
 
 [node name="Parque" parent="NavigationRegion3D" unique_id=1578475930 instance=ExtResource("10_woaio")]
 
-[node name="GeneradorCiudadanos" type="Node3D" parent="NavigationRegion3D" unique_id=2054703464 node_paths=PackedStringArray("puntos", "centro")]
+[node name="GeneradorCiudadanos" type="Node3D" parent="." unique_id=2054703464 node_paths=PackedStringArray("puntos", "centro")]
 script = ExtResource("16_ymkly")
 escenas = Array[PackedScene]([ExtResource("5_acisx")])
-puntos = NodePath("../../PuntosCiudadanos")
-centro = NodePath("../../Centro")
-radio_inicial = 25.0
+puntos = NodePath("../PuntosCiudadanos")
+centro = NodePath("../Centro")
+radio_entrada = 1.5
 
-[node name="Timer" type="Timer" parent="NavigationRegion3D/GeneradorCiudadanos" unique_id=2049156252]
+[node name="Timer" type="Timer" parent="GeneradorCiudadanos" unique_id=2049156252]
 wait_time = 0.5
 autostart = true
 
@@ -221,8 +221,9 @@ gizmo_extents = 1.0
 
 [node name="Centro" type="Marker3D" parent="." unique_id=360746727]
 
-[connection signal="timeout" from="NavigationRegion3D/GeneradorCiudadanos/Timer" to="NavigationRegion3D/GeneradorCiudadanos" method="_on_timer_timeout"]
 [node name="AmbienteNoche" parent="." unique_id=1646390021 instance=ExtResource("17_jwie6")]
 vista_previa = true
+
+[connection signal="timeout" from="GeneradorCiudadanos/Timer" to="GeneradorCiudadanos" method="_on_timer_timeout"]
 
 [editable path="ZonaA"]
