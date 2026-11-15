@@ -100,6 +100,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 8)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1554140891]
 navigation_mesh = SubResource("NavigationMesh_uxa2c")
+navigation_layers = 3
 
 [node name="Parque" parent="NavigationRegion3D" unique_id=1578475930 instance=ExtResource("10_woaio")]
 

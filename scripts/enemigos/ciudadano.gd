@@ -11,14 +11,23 @@ const VELOCIDAD_GIRO := 8.0
 const INTENTOS_DESTINO := 12
 const TOLERANCIA_MALLA := 1.0
 const DISTANCIA_ENTRE_DESTINOS := 2.0
-const RADIO_SEPARACION := 0.9
-const FUERZA_SEPARACION := 1.0
+const RADIO_SEPARACION := 1.1
+const FUERZA_SEPARACION := 2.0
+const RADIO_ESQUIVE_PERSONAS := 1.6   # NUEVO
+const DISTANCIA_PUESTO := 1.0         # NUEVO
+const RADIO_SOLAPE := 0.6             # NUEVO
+const TIEMPO_SOLAPE := 1.5            # NUEVO
 const TOLERANCIA_PASO := 0.5
+const TOLERANCIA_ESQUINA := 0.25
 const REFRESCO_RUTA := 1.0
 const INTERVALO_PROGRESO := 2.0
 const PROGRESO_MINIMO := 0.8
 const DISTANCIA_ATASCO := 3.0
 const TIEMPO_MAX_INCIDENTE := 60.0
+const LARGO_RAYO := 1.2
+const ALTURA_RAYO := 0.5
+const ANGULO_RAYO := 0.6
+const SUAVIZADO_GIRO := 8.0
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -27,9 +36,11 @@ const TIEMPO_MAX_INCIDENTE := 60.0
 @export var radio_deambular := 25.0
 @export var pausa_min := 0.5
 @export var pausa_max := 3.0
-@export var rapidez_acudir := 4.0
+@export var rapidez_acudir := 3.0
 @export var margen_cambio := 4.0
 @export var tiempo_max_ruta := 40.0
+@export var evitar_obstaculos := true
+@export_flags_3d_physics var capas_obstaculo := 1
 @export var depurar := false
 @export var vida = 100
 @export var rapidez = 2.0
@@ -58,6 +69,7 @@ var usa_malla := false
 var reloj_revisar := 0.0
 var reloj_malla := 0.0
 var reloj_incidente := 0.0
+var reloj_solape := 0.0   # NUEVO
 var tiempo_sin_malla := 0.0
 var avisado_malla := false
 var reloj_depurar := 0.0
@@ -71,6 +83,9 @@ var ruta_agotada := false
 var quiere_avanzar := false
 var reloj_progreso := 0.0
 var pos_progreso := Vector3.ZERO
+# Esquive
+var dir_mov := Vector3.ZERO
+var lado_esquive := 0
 
 static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
 	var n = normal.normalized()
@@ -132,7 +147,7 @@ func direccion_hacia(p: Vector3) -> Vector3:
 		calcular_ruta(p)
 	if ruta.is_empty():
 		return p - global_position
-	while indice_ruta < ruta.size() - 1 and distancia_plana(ruta[indice_ruta]) < TOLERANCIA_PASO:
+	while indice_ruta < ruta.size() - 1 and distancia_plana(ruta[indice_ruta]) < TOLERANCIA_ESQUINA:
 		indice_ruta += 1
 	var paso := ruta[indice_ruta]
 	if indice_ruta == ruta.size() - 1 and distancia_plana(paso) < TOLERANCIA_PASO:
@@ -198,6 +213,137 @@ func elegir_destino() -> void:
 	reloj_progreso = 0.0
 	pos_progreso = global_position
 
+# ---------- Puestos de incidente (NUEVO) ----------
+
+func puesto_ocupado(p: Vector3) -> bool:
+	if not is_inside_tree():
+		return false
+	for nodo in get_tree().get_nodes_in_group(GRUPO):
+		var otro := nodo as Ciudadano
+		if otro == null or otro == self or not otro.is_inside_tree():
+			continue
+		var parado: bool = otro.estado == Estado.PELEA or otro.estado == Estado.CURIOSO
+		var yendo: bool = otro.estado == Estado.ACUDIR
+		if not (parado or yendo):
+			continue
+		if distancia_a_punto(otro.destino_incidente, p) < DISTANCIA_PUESTO:
+			return true
+		if parado and distancia_a_punto(otro.global_position, p) < DISTANCIA_PUESTO:
+			return true
+	return false
+
+func puesto_libre(base: Vector3) -> Vector3:
+	var mejor := ajustar_a_malla(base)
+	if not puesto_ocupado(mejor):
+		return mejor
+	for radio in [1.0, 1.8, 2.6]:
+		var inicio := randf() * TAU
+		for k in 8:
+			var ang := inicio + TAU * k / 8.0
+			var p := ajustar_a_malla(base + Vector3(cos(ang), 0.0, sin(ang)) * radio)
+			if puesto_ocupado(p):
+				continue
+			if usa_malla and not alcanzable(p):
+				continue
+			return p
+	return mejor
+
+func solapado() -> bool:
+	for nodo in get_tree().get_nodes_in_group(GRUPO):
+		var otro := nodo as Node3D
+		if otro == null or otro == self:
+			continue
+		if distancia_a_punto(otro.global_position, global_position) < RADIO_SOLAPE:
+			return true
+	return false
+
+func reubicar_curioso() -> void:
+	reloj_solape = 0.0
+	destino_incidente = puesto_libre(global_position)
+	llego = false
+	ruta = PackedVector3Array()
+	reloj_progreso = 0.0
+	pos_progreso = global_position
+
+# ---------- Esquive de obstáculos ----------
+
+func rayo(dir: Vector3, largo: float) -> Dictionary:
+	var desde := global_position + Vector3.UP * ALTURA_RAYO
+	var consulta := PhysicsRayQueryParameters3D.create(desde, desde + dir * largo, capas_obstaculo)
+	consulta.exclude = [get_rid()]
+	var golpe := get_world_3d().direct_space_state.intersect_ray(consulta)
+	if not golpe.is_empty() and golpe["collider"] is CharacterBody3D:
+		return {}
+	return golpe
+
+func peso_rayo(desde: Vector3, golpe: Dictionary, largo: float) -> float:
+	return 1.0 - clampf(desde.distance_to(golpe["position"]) / largo, 0.0, 1.0)
+
+func esquivar(dir: Vector3) -> Vector3:
+	if not evitar_obstaculos or not is_inside_tree():
+		return dir
+	var desde := global_position + Vector3.UP * ALTURA_RAYO
+	var lado_a := dir.rotated(Vector3.UP, ANGULO_RAYO)
+	var lado_b := dir.rotated(Vector3.UP, -ANGULO_RAYO)
+	var largo_lado := LARGO_RAYO * 0.8
+	var hc := rayo(dir, LARGO_RAYO)
+	var ha := rayo(lado_a, largo_lado)
+	var hb := rayo(lado_b, largo_lado)
+	if hc.is_empty() and ha.is_empty() and hb.is_empty():
+		lado_esquive = 0
+		return dir
+	var giro := Vector3.ZERO
+	if not ha.is_empty():
+		giro += lado_b * peso_rayo(desde, ha, largo_lado)
+	if not hb.is_empty():
+		giro += lado_a * peso_rayo(desde, hb, largo_lado)
+	if not hc.is_empty():
+		var n: Vector3 = hc["normal"]
+		n.y = 0.0
+		if n.length() > 0.01:
+			n = n.normalized()
+			var t := Vector3(-n.z, 0.0, n.x)
+			if t.dot(dir) < 0.0:
+				t = -t
+			if absf(t.dot(dir)) < 0.25:
+				if lado_esquive == 0:
+					lado_esquive = 1 if randf() < 0.5 else -1
+				t = dir.rotated(Vector3.UP, lado_esquive * PI * 0.5)
+			giro += t * peso_rayo(desde, hc, LARGO_RAYO) * 1.5
+	var resultado := dir + giro * 1.5
+	resultado.y = 0.0
+	if resultado.length() < 0.05:
+		return dir
+	return resultado.normalized()
+
+# ---------- Esquive de personas (NUEVO) ----------
+
+func esquivar_personas(dir: Vector3) -> Vector3:
+	var giro := Vector3.ZERO
+	for nodo in get_tree().get_nodes_in_group(GRUPO):
+		var otro := nodo as Node3D
+		if otro == null or otro == self:
+			continue
+		var rel := otro.global_position - global_position
+		rel.y = 0.0
+		var d := rel.length()
+		if d > RADIO_ESQUIVE_PERSONAS or d < 0.01:
+			continue
+		var frente := dir.dot(rel / d)
+		if frente < 0.3:
+			continue
+		var lateral := Vector3(-dir.z, 0.0, dir.x)
+		if lateral.dot(rel) > 0.0:
+			lateral = -lateral
+		giro += lateral * (1.0 - d / RADIO_ESQUIVE_PERSONAS) * frente
+	if giro.length() < 0.01:
+		return dir
+	var resultado := dir + giro * 1.5
+	resultado.y = 0.0
+	if resultado.length() < 0.05:
+		return dir
+	return resultado.normalized()
+
 # ---------- Movimiento ----------
 
 func ir_a(p: Vector3, vel := -1.0) -> void:
@@ -210,7 +356,15 @@ func ir_a(p: Vector3, vel := -1.0) -> void:
 		velocity.x = 0.0
 		velocity.z = 0.0
 		return
-	dir = dir.normalized()
+	dir = esquivar(dir.normalized())
+	dir = esquivar_personas(dir)
+	if dir_mov.length() < 0.05:
+		dir_mov = dir
+	else:
+		dir_mov = dir_mov.lerp(dir, clampf(get_physics_process_delta_time() * SUAVIZADO_GIRO, 0.0, 1.0))
+	if dir_mov.length() < 0.05:
+		dir_mov = dir
+	dir = dir_mov.normalized()
 	velocity.x = dir.x * vel
 	velocity.z = dir.z * vel
 	girar_hacia(dir)
@@ -272,6 +426,7 @@ func al_atascarse() -> void:
 	if depurar:
 		print(name, ": atascado en ", Estado.keys()[estado], ", cambia de plan")
 	ruta = PackedVector3Array()
+	lado_esquive = -lado_esquive if lado_esquive != 0 else 0
 	match estado:
 		Estado.PATRULLA:
 			elegir_destino()
@@ -389,6 +544,12 @@ func _physics_process(delta):
 				if llego:
 					detenerse()
 					mirar_hacia(centro_incidente)
+					if solapado():
+						reloj_solape += delta
+						if reloj_solape >= TIEMPO_SOLAPE:
+							reubicar_curioso()
+					else:
+						reloj_solape = 0.0
 				else:
 					ir_a(destino_incidente, rapidez_acudir)
 	aplicar_separacion()
@@ -403,7 +564,7 @@ func _physics_process(delta):
 				" | vel=", snappedf(Vector2(velocity.x, velocity.z).length(), 0.01),
 				" | ruta=", indice_ruta, "/", ruta.size(),
 				" | a destino=", snappedf(distancia_plana(destino_azar), 0.1),
-				" | pausa=", snappedf(pausa, 0.1))
+				" | esquive=", lado_esquive, " | solape=", snappedf(reloj_solape, 0.1))
 
 func revisar_cercania(delta: float) -> void:
 	reloj_revisar -= delta
@@ -449,21 +610,23 @@ func puede_mirar() -> bool:
 
 func ir_a_pelea(pos: Vector3, inc) -> void:
 	incidente = inc
-	destino_incidente = ajustar_a_malla(pos)
+	destino_incidente = puesto_libre(pos)
 	llego = false
 	ruta = PackedVector3Array()
 	reloj_incidente = 0.0
+	reloj_solape = 0.0
 	reloj_progreso = 0.0
 	pos_progreso = global_position
 	estado = Estado.ACUDIR
 
 func curiosear(puesto: Vector3, centro: Vector3, inc) -> void:
 	incidente = inc
-	destino_incidente = ajustar_a_malla(puesto)
+	destino_incidente = puesto_libre(puesto)
 	centro_incidente = centro
 	llego = false
 	ruta = PackedVector3Array()
 	reloj_incidente = 0.0
+	reloj_solape = 0.0
 	reloj_progreso = 0.0
 	pos_progreso = global_position
 	estado = Estado.CURIOSO
