@@ -1,0 +1,85 @@
+[gd_scene format=3]
+
+[sub_resource type="Gradient" id="G_suave"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="Tex_suave"]
+gradient = SubResource("G_suave")
+width = 64
+height = 64
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="M_llama"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("Tex_suave")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="StandardMaterial3D" id="M_humo"]
+transparency = 1
+blend_mode = 0
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("Tex_suave")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="Q_llama"]
+material = SubResource("M_llama")
+size = Vector2(0.7, 0.7)
+
+[sub_resource type="QuadMesh" id="Q_humo"]
+material = SubResource("M_humo")
+size = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="G_llama"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.7, 0.2, 0.85, 1, 0.32, 0.05, 0.65, 0.45, 0.06, 0, 0)
+
+[sub_resource type="Gradient" id="G_humo"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(0.3, 0.3, 0.33, 0, 0.3, 0.3, 0.33, 0.4, 0.25, 0.25, 0.28, 0)
+
+[node name="Fuego" type="Node3D"]
+
+[node name="Llamas" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 36
+mesh = SubResource("Q_llama")
+emission_shape = 1
+emission_sphere_radius = 0.35
+direction = Vector3(0, 1, 0)
+spread = 12.0
+gravity = Vector3(0, 1.6, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+scale_amount_min = 0.9
+scale_amount_max = 1.6
+color_ramp = SubResource("G_llama")
+
+[node name="Humo" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+emitting = false
+amount = 10
+lifetime = 3.0
+mesh = SubResource("Q_humo")
+direction = Vector3(0, 1, 0)
+spread = 20.0
+gravity = Vector3(0, 0.8, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 1.0
+scale_amount_min = 0.8
+scale_amount_max = 1.4
+color_ramp = SubResource("G_humo")
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+light_color = Color(1, 0.5, 0.15, 1)
+light_energy = 4.0
+omni_range = 9.0

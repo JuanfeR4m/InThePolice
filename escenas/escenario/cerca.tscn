@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://d3s0q88gy52u0"]
+
+[ext_resource type="Material" uid="uid://bigi10ro8wygt" path="res://escenas/escenario/mat_amarillo.tres" id="1_gnlis"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lhnf2"]
+material = ExtResource("1_gnlis")
+size = Vector3(12, 0.8, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhnf2"]
+size = Vector3(12, 0.8, 0.2)
+
+[node name="Cerca" type="StaticBody3D" unique_id=2085368556]
+
+[node name="Malla" type="MeshInstance3D" parent="." unique_id=688536373]
+mesh = SubResource("BoxMesh_lhnf2")
+
+[node name="Colision" type="CollisionShape3D" parent="." unique_id=834989837]
+shape = SubResource("BoxShape3D_lhnf2")

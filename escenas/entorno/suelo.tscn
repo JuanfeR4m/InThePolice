@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://d1lvgx2fcg3ee"]
 
 [sub_resource type="PlaneMesh" id="PisoMalla"]
-size = Vector2(30, 30)
+size = Vector2(300, 300)
 
 [sub_resource type="BoxShape3D" id="PisoForma"]
-size = Vector3(30, 0.2, 30)
+size = Vector3(300, 0.2, 300)
 
 [node name="Suelo" type="StaticBody3D" unique_id=440831347]
 

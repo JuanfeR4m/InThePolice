@@ -19,11 +19,18 @@ var jugador = null
 @onready var anim = $Modelo/AnimationPlayer
 
 func _ready():
-	jugador = get_tree().get_first_node_in_group("jugador")
+	jugador = policia_mas_cercano()
 
 func _physics_process(delta):
 	velocity += get_gravity() * delta
 	reloj = maxf(reloj - delta, 0.0)
+
+	# Durante el aviso y el golpe se mantiene el mismo objetivo;
+	# en los demás estados se elige al policía más cercano.
+	if estado != Estado.AVISO and estado != Estado.GOLPE:
+		jugador = policia_mas_cercano()
+	if jugador == null:
+		return
 
 	# BORRAR antes del commit
 	if Input.is_action_just_pressed("ui_accept"):
@@ -48,6 +55,18 @@ func _physics_process(delta):
 			ir_a(global_position + lejos)
 
 	move_and_slide()
+
+func policia_mas_cercano():
+	var mejor = null
+	var mejor_dist = INF
+	for p in get_tree().get_nodes_in_group("jugador"):
+		if not is_instance_valid(p):
+			continue
+		var d = global_position.distance_squared_to(p.global_position)
+		if d < mejor_dist:
+			mejor_dist = d
+			mejor = p
+	return mejor
 
 func decidir():
 	if vida <= vida_huida:
@@ -97,7 +116,8 @@ func ir_a(destino):
 	var dir = hacia.normalized()
 	velocity.x = dir.x * rapidez
 	velocity.z = dir.z * rapidez
-	basis = Basis.looking_at(dir)
+	if dir.length() > 0.0:
+		basis = Basis.looking_at(dir)
 	anim.play("walk")
 
 func frenar(animacion):

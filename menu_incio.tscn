@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://lwl74xitkoti"]
+
+[ext_resource type="Script" uid="uid://cmgbha8ppv2k3" path="res://scripts/menu_inicio.gd" id="1_odtn0"]
+
+[node name="menu_incio" type="CanvasLayer" unique_id=5443904]
+script = ExtResource("1_odtn0")

@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/modelos_parque/GLB/ferris_wheel.glb" id="1"]
+
+[sub_resource type="BoxShape3D" id="Caja"]
+size = Vector3(7.58, 16.38, 11)
+
+[node name="FerrisWheel" type="StaticBody3D"]
+
+[node name="Modelo" parent="." instance=ExtResource("1")]
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.19, 0)
+shape = SubResource("Caja")

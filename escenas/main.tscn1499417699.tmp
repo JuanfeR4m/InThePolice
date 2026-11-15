@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://cvcv7o80bsde"]
+
+[ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://escenas/personajes/personaje.tscn" id="1_lyxkq"]
+[ext_resource type="Script" uid="uid://cmfd0gglkasgd" path="res://scripts/mundo/incidente.gd" id="3_woaio"]
+[ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://escenas/entorno/camera_3d.tscn" id="4_7an46"]
+[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://escenas/personajes/ciudadano.tscn" id="5_acisx"]
+[ext_resource type="PackedScene" uid="uid://cjqripveonc8u" path="res://escenas/personajes/guardia.tscn" id="6_a5wrc"]
+[ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://escenas/zonas/zona_b.tscn" id="7_ueiap"]
+[ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://escenas/zonas/zona_a.tscn" id="8_ymkly"]
+[ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://escenas/personajes/manifestante.tscn" id="9_jwie6"]
+[ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="10_dg7ii"]
+[ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="10_woaio"]
+
+[sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
+
+[sub_resource type="Sky" id="Cielo"]
+sky_material = SubResource("CieloMat")
+
+[sub_resource type="Environment" id="Entorno"]
+background_mode = 2
+sky = SubResource("Cielo")
+
+[sub_resource type="BoxMesh" id="CajaMalla"]
+
+[sub_resource type="StandardMaterial3D" id="CajaMat"]
+albedo_color = Color(0.85, 0.55, 0.25, 1)
+
+[sub_resource type="BoxShape3D" id="CajaForma"]
+
+[node name="Main" type="Node3D" unique_id=1034632057]
+
+[node name="Personaje" parent="." unique_id=2144265238 node_paths=PackedStringArray("camara") instance=ExtResource("1_lyxkq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+camara = NodePath("../Camera3D")
+
+[node name="Personaje2" parent="." unique_id=320145559 instance=ExtResource("1_lyxkq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1776246404]
+environment = SubResource("Entorno")
+
+[node name="Sol" type="DirectionalLight3D" parent="." unique_id=1775150563]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 6, 0)
+shadow_enabled = true
+
+[node name="Cajas" type="Node3D" parent="." unique_id=849168194]
+
+[node name="Caja1" type="StaticBody3D" parent="Cajas" unique_id=24474419 groups=["interactivos"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -4)
+script = ExtResource("3_woaio")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja1" unique_id=581659405]
+mesh = SubResource("CajaMalla")
+surface_material_override/0 = SubResource("CajaMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja1" unique_id=1392492599]
+shape = SubResource("CajaForma")
+
+[node name="Caja2" type="StaticBody3D" parent="Cajas" unique_id=241773662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja2" unique_id=1533147405]
+mesh = SubResource("CajaMalla")
+surface_material_override/0 = SubResource("CajaMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja2" unique_id=141793354]
+shape = SubResource("CajaForma")
+
+[node name="Caja3" type="StaticBody3D" parent="Cajas" unique_id=2002946793]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cajas/Caja3" unique_id=2141450005]
+mesh = SubResource("CajaMalla")
+surface_material_override/0 = SubResource("CajaMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cajas/Caja3" unique_id=65109076]
+shape = SubResource("CajaForma")
+
+[node name="Camera3D" parent="." unique_id=1147277627 node_paths=PackedStringArray("objetivo") instance=ExtResource("4_7an46")]
+transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.8191518, 0, 5, 7)
+objetivo = NodePath("../Personaje")
+
+[node name="ciudadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("5_acisx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
+objetivo = NodePath("../Personaje")
+
+[node name="Guardia" parent="." unique_id=1604311321 instance=ExtResource("6_a5wrc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
+rango_vision = 4.0
+
+[node name="ZonaB" parent="." unique_id=1052851359 instance=ExtResource("7_ueiap")]
+
+[node name="Manifestante" parent="." unique_id=1403517617 instance=ExtResource("9_jwie6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
+
+[node name="Partida" type="Node" parent="." unique_id=1240064146 node_paths=PackedStringArray("sistema_sol") groups=["partida"]]
+process_mode = 3
+script = ExtResource("10_dg7ii")
+sistema_sol = NodePath("../ZonaA/SistemaSol")
+
+[node name="ZonaA" parent="." unique_id=773773640 instance=ExtResource("8_ymkly")]
+
+[node name="SistemaSol" parent="ZonaA" index="0" unique_id=2125741162 node_paths=PackedStringArray("sol", "entorno")]
+sol = NodePath("../../Sol")
+entorno = NodePath("../../WorldEnvironment")
+automatico = true
+
+[node name="Parque" parent="." unique_id=1578475930 instance=ExtResource("10_woaio")]
+
+[editable path="ZonaA"]

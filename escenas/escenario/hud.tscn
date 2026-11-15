@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://d2th30bl64q15"]
+
+[ext_resource type="Script" uid="uid://38wyhcv1a8k7" path="res://scripts/mundo/hud.gd" id="1_6va4n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c0np2"]
+bg_color = Color(0.8392157, 0.22745098, 0.22745098, 1)
+
+[node name="HUD" type="CanvasLayer" unique_id=1930543901]
+script = ExtResource("1_6va4n")
+
+[node name="Reloj" type="Label" parent="." unique_id=156156771]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 32
+text = "195
+"
+horizontal_alignment = 1
+
+[node name="BarraIra" type="ProgressBar" parent="." unique_id=575384745]
+custom_minimum_size = Vector2(250, 28)
+offset_right = 4.0
+offset_bottom = 27.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_c0np2")
+show_percentage = false
+
+[node name="Administrativos" type="Label" parent="." unique_id=843113483]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Mensaje" type="Label" parent="." unique_id=825569386]
+offset_right = 40.0
+offset_bottom = 23.0
