@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://7injxgh1ixif" path="res://escenas/menu/estacion_policia.tscn" id="4_msw0b"]
 [ext_resource type="PackedScene" uid="uid://ckc6o22kla6" path="res://escenas/menu/cartel_menu.tscn" id="7_aemwv"]
 [ext_resource type="AudioStream" uid="uid://b1k8escv0i7vr" path="res://assets/sonidos/instrumental.mp3" id="7_e7qrj"]
+[ext_resource type="Script" uid="uid://b3uscs1hgf3kc" path="res://escenas/menu/intro.gd" id="8_tx7mg"]
+[ext_resource type="Texture2D" uid="uid://dwnymypxu4arn" path="res://escenas/menu/Marco policial de cómic con sirena y esposas.png" id="10_fmjah"]
+[ext_resource type="VideoStream" uid="uid://skm3vqcd6phs" path="res://escenas/menu/persecucion_policial_hd.ogv" id="10_xwa0r"]
 
 [sub_resource type="Environment" id="Environment_ikrs5"]
 background_mode = 2
@@ -24,12 +27,12 @@ transform = Transform3D(-0.9063078, 0, -0.42261827, 0, 1, 0, 0.42261827, 0, -0.9
 transform = Transform3D(-1.6080735, 0, 2.0430627, 0, 2.6, 0, -2.0430627, 0, -1.6080735, -6.526461, 0.41585398, 0.46916592)
 
 [node name="Personaje2" parent="Escenario" unique_id=1463013495 instance=ExtResource("2_8qhkl")]
-transform = Transform3D(-0.9871119, 0, -0.16003135, 0, 1, 0, 0.16003135, 0, -0.9871119, 0.51251674, 0, 0.27633023)
+transform = Transform3D(-0.9871119, 0, -0.16003135, 0, 1, 0, 0.16003135, 0, -0.9871119, -0.3755262, 0, 0.7451031)
 
 [node name="EstacionPolicia" parent="Escenario" unique_id=1451237788 instance=ExtResource("4_msw0b")]
 
 [node name="CartelMenu" parent="Escenario" unique_id=1338713764 instance=ExtResource("7_aemwv")]
-transform = Transform3D(0.48252288, 0, -0.35661143, 0, 0.6, 0, 0.35661143, 0, 0.48252288, 2.6190348, 0, 1.8298771)
+transform = Transform3D(0.48252288, 0, -0.35661143, 0, 0.6, 0, 0.35661143, 0, 0.48252288, 2.3409863, 0, 1.4088438)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=162532918]
 transform = Transform3D(0.9696958, 0.10402125, -0.22106482, 1.3832775e-08, 0.9048333, 0.42576605, 0.24431553, -0.41286358, 0.87741303, 0.45055747, 2.1819391, 3.015841)
@@ -39,22 +42,43 @@ script = ExtResource("3_msw0b")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1589768262]
 transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64278764, 0, 0, 0)
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=463688893]
-
-[node name="Logo" type="TextureRect" parent="UI" unique_id=1937862747]
-custom_minimum_size = Vector2(500, 250)
-propagate_maximum_size = true
-anchors_preset = -1
-offset_right = 2172.0
-offset_bottom = 724.0
-expand_mode = 1
-stretch_mode = 3
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=966284047]
 environment = SubResource("Environment_ikrs5")
 
-[node name="Musica" type="AudioStreamPlayer3D" parent="." unique_id=1640429292]
+[node name="Musica" type="AudioStreamPlayer" parent="." unique_id=251992104]
 stream = ExtResource("7_e7qrj")
 autoplay = true
+
+[node name="Intro" type="CanvasLayer" parent="." unique_id=1180579808]
+layer = 100
+scale = Vector2(1.6, 1.6)
+transform = Transform2D(1.6, 0, 0, 1.6, 0, 0)
+script = ExtResource("8_tx7mg")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="Intro" unique_id=1395630291]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1152.0
+offset_bottom = -648.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.57, 1.57)
+stream = ExtResource("10_xwa0r")
+autoplay = true
+expand = true
+
+[node name="InterfazMenu" type="CanvasLayer" parent="." unique_id=1650091232]
+
+[node name="TextureRect" type="TextureRect" parent="InterfazMenu" unique_id=578646327]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_fmjah")
+expand_mode = 1
+
+[connection signal="finished" from="Intro/VideoStreamPlayer" to="Intro" method="_on_video_stream_player_finished"]
 
 [editable path="Escenario/Personaje"]
