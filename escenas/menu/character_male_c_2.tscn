@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b8obgh5kt78vk"]
+
+[ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/modelos_kenney/GLB format/character-male-c.glb" id="1_s0nn4"]
+
+[node name="character-male-c2" unique_id=468387001 instance=ExtResource("1_s0nn4")]
+
+[node name="Skeleton3D" parent="character-male-c" parent_id_path=PackedInt32Array(732458170) index="0" unique_id=1588218911]
+bones/4/rotation = Quaternion(0, 0, -0.38268346, 0.9238795)
+bones/5/rotation = Quaternion(0, 0, 0.3826835, 0.92387956)

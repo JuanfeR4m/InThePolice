@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://ckc6o22kla6"]
+
+[ext_resource type="Script" uid="uid://cl5setlxt55b2" path="res://escenas/menu/cartel_menu.gd" id="1_55ikg"]
+
+[sub_resource type="BoxMesh" id="m_pata"]
+size = Vector3(0.12, 0.15, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="mat_pata"]
+albedo_color = Color(0.12, 0.12, 0.15, 1)
+
+[sub_resource type="BoxMesh" id="m_marco"]
+size = Vector3(1.9, 2.1, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="mat_amarillo"]
+albedo_color = Color(0.95, 0.8, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="m_panel"]
+size = Vector3(1.76, 1.94, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="mat_panel"]
+albedo_color = Color(0.06, 0.13, 0.35, 1)
+
+[sub_resource type="BoxMesh" id="m_header"]
+size = Vector3(1.76, 0.5, 0.09)
+
+[sub_resource type="BoxMesh" id="m_placa"]
+size = Vector3(1.5, 0.36, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="mat_placa"]
+albedo_color = Color(0.1, 0.25, 0.6, 1)
+
+[sub_resource type="BoxShape3D" id="shape_boton"]
+size = Vector3(1.5, 0.36, 0.2)
+
+[node name="CartelMenu" type="Node3D" unique_id=840082483]
+script = ExtResource("1_55ikg")
+
+[node name="PataIzquierda" type="MeshInstance3D" parent="." unique_id=909878216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.075, 0.1)
+mesh = SubResource("m_pata")
+surface_material_override/0 = SubResource("mat_pata")
+
+[node name="PataDerecha" type="MeshInstance3D" parent="." unique_id=22330768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.075, 0.1)
+mesh = SubResource("m_pata")
+surface_material_override/0 = SubResource("mat_pata")
+
+[node name="Marco" type="MeshInstance3D" parent="." unique_id=1886516005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("m_marco")
+surface_material_override/0 = SubResource("mat_amarillo")
+
+[node name="Panel" type="MeshInstance3D" parent="." unique_id=345235644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.02)
+mesh = SubResource("m_panel")
+surface_material_override/0 = SubResource("mat_panel")
+
+[node name="Header" type="MeshInstance3D" parent="." unique_id=1106446472]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92, 0.05)
+mesh = SubResource("m_header")
+surface_material_override/0 = SubResource("mat_amarillo")
+
+[node name="TextoHeader" type="Label3D" parent="." unique_id=1116520963]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.92, 0.105)
+pixel_size = 0.006
+modulate = Color(0.1, 0.1, 0.1, 1)
+text = "COMISARÍA"
+font_size = 48
+outline_size = 0
+
+[node name="OpcionJugar" type="Area3D" parent="." unique_id=1822401901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0.07)
+
+[node name="Placa" type="MeshInstance3D" parent="OpcionJugar" unique_id=628270628]
+mesh = SubResource("m_placa")
+surface_material_override/0 = SubResource("mat_placa")
+
+[node name="Texto" type="Label3D" parent="OpcionJugar" unique_id=625909814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.035)
+text = "JUGAR"
+font_size = 56
+outline_size = 0
+
+[node name="Colision" type="CollisionShape3D" parent="OpcionJugar" unique_id=1877254969]
+shape = SubResource("shape_boton")
+
+[node name="OpcionOpciones" type="Area3D" parent="." unique_id=859639328]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0.07)
+
+[node name="Placa" type="MeshInstance3D" parent="OpcionOpciones" unique_id=611383482]
+mesh = SubResource("m_placa")
+surface_material_override/0 = SubResource("mat_placa")
+
+[node name="Texto" type="Label3D" parent="OpcionOpciones" unique_id=1729293546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.035)
+text = "OPCIONES"
+font_size = 56
+outline_size = 0
+
+[node name="Colision" type="CollisionShape3D" parent="OpcionOpciones" unique_id=1421561503]
+shape = SubResource("shape_boton")
+
+[node name="OpcionSalir" type="Area3D" parent="." unique_id=673471325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, 0.07)
+
+[node name="Placa" type="MeshInstance3D" parent="OpcionSalir" unique_id=1743498518]
+mesh = SubResource("m_placa")
+surface_material_override/0 = SubResource("mat_placa")
+
+[node name="Texto" type="Label3D" parent="OpcionSalir" unique_id=1142824005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.035)
+text = "SALIR"
+font_size = 56
+outline_size = 0
+
+[node name="Colision" type="CollisionShape3D" parent="OpcionSalir" unique_id=1447434552]
+shape = SubResource("shape_boton")
