@@ -24,7 +24,7 @@ const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 @export var margen_cambio := 4.0
 @export var tiempo_max_ruta := 40.0
 @export var vida = 100
-## Si es true, se le ilumina el borde en verde para saber que hay que defenderlo
+## Si es true, es de los que hay que defender: su borde se ilumina en verde, pero solo cuando cae la noche
 @export var es_administrativo := false:
 	set(valor):
 		es_administrativo = valor
@@ -74,6 +74,7 @@ var reloj_revisar := 0.0
 var reloj_atasco := 0.0
 var ultima_pos := Vector3.ZERO
 var es_noche := false
+var contorno_visible := false
 var reloj_noche := 0.0
 var partida = null
 
@@ -89,13 +90,21 @@ func aplicar_contorno() -> void:
 	if not is_inside_tree():
 		return
 	var material: ShaderMaterial = null
-	if es_administrativo:
+	if es_administrativo and contorno_visible:
 		material = ShaderMaterial.new()
 		material.shader = SHADER_CONTORNO
 	for malla in find_children("*", "MeshInstance3D", true, false):
 		(malla as MeshInstance3D).material_overlay = material
 
+func mostrar_contorno_noche() -> void:
+	contorno_visible = true
+	aplicar_contorno()
+
 func _ready() -> void:
+	# Si nace cuando ya es de noche, el contorno se enciende de una vez
+	var ambiente = get_tree().get_first_node_in_group("ambiente_noche")
+	if ambiente != null and ambiente.activa:
+		contorno_visible = true
 	aplicar_contorno()
 	# Avoidance: conectar la señal y configurar el agente
 	if not agente.velocity_computed.is_connected(_al_velocidad_calculada):
@@ -221,6 +230,7 @@ func actualizar_noche(delta: float) -> void:
 	var noche: bool = partida.tiempo > 0.0 and partida.tiempo < partida.noche_en
 	if noche and not es_noche:
 		es_noche = true
+		mostrar_contorno_noche()
 		if estado == Estado.PATRULLA:
 			pausa = 0.0
 			elegir_destino()

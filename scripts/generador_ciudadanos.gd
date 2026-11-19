@@ -21,7 +21,7 @@ const FRAMES_ESPERA := 180
 @export var radio_entrada := 8.0
 @export var area_inicial := Vector2(15.0, 15.0)
 @export var radio_deambular := 10.0
-## Cuántos ciudadanos nacen como administrativos (contorno verde, los que hay que defender)
+## Cuántos ciudadanos nacen como administrativos (contorno verde solo de noche, los que hay que defender)
 @export var administrativos := 10
 
 var marcados := 0

@@ -66,6 +66,7 @@ func _ready() -> void:
 		return
 	_poner_previa(false)
 	set_process(false)
+	add_to_group("ambiente_noche")
 	var raiz: Node = owner if owner != null else get_parent()
 	if sistema_sol == null:
 		sistema_sol = raiz.find_child("SistemaSol", true, false) as SistemaSol
@@ -119,6 +120,10 @@ func iniciar_noche() -> void:
 
 	_cielo_y_niebla()
 	_parpadear_luces()
+	# Los ciudadanos a defender se marcan en verde justo ahora
+	for c in get_tree().get_nodes_in_group("ciudadanos"):
+		if c.has_method("mostrar_contorno_noche"):
+			c.mostrar_contorno_noche()
 	_tumbar_mobiliario(d)
 	_encender_fuegos()
 	_mostrar_basura(d)
