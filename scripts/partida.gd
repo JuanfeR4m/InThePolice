@@ -8,6 +8,9 @@ const ESCENA_MENU := "res://escenas/main.tscn"
 const MINIMO_SALVADOS := 5
 const TOTAL_ADMINISTRATIVOS := 10
 
+
+@export var ira_maxima_pierde := true
+
 @export var tiempo_limite = 180.0
 @export var metas = 0
 @export var noche_en = 80.0
@@ -25,6 +28,8 @@ var tiempo = 0.0
 var hechas = 0
 var noche_avisada = false
 var motivo_fin := ""
+var hud = null
+var generador_incidentes = null
 
 
 func _ready():
@@ -38,6 +43,8 @@ func _physics_process(delta):
 
 	tiempo = maxf(tiempo - delta, 0.0)
 	actualizar_sol()
+	sincronizar_hud()
+	conectar_ira()
 	revisar_administrativos()
 	if estado != Estado.JUGANDO:
 		return
@@ -85,6 +92,31 @@ func perder(motivo: String):
 	terminar(Estado.PERDIO, motivo)
 
 
+
+func sincronizar_hud():
+	if hud == null:
+		hud = get_tree().get_first_node_in_group("hud")
+		if hud == null:
+			return
+		hud.tiempo_total = tiempo_limite
+	hud.tiempo = tiempo
+
+
+func conectar_ira():
+	if generador_incidentes != null:
+		return
+	generador_incidentes = get_parent().get_node_or_null("GeneradorIncidentes")
+	if generador_incidentes != null:
+		generador_incidentes.ira_cambio.connect(_al_cambiar_ira)
+
+
+func _al_cambiar_ira(valor):
+	if hud != null:
+		hud.poner_ira(valor)
+	if ira_maxima_pierde and valor >= generador_incidentes.IRA_MAXIMA:
+		perder("La Ira llegó al máximo: se ignoraron demasiados incidentes")
+
+
 func revisar_administrativos():
 	var j = _juego()
 	if j != null and j.administrativos < MINIMO_SALVADOS:
@@ -117,7 +149,7 @@ func _sonido_fin():
 	var audio = get_parent().get_node_or_null("AudioPartida")
 	if audio == null or audio.get("p_inicio") == null:
 		return
-
+	# El audio se pausaría junto con el árbol y el sonido final no se oiría
 	audio.process_mode = Node.PROCESS_MODE_ALWAYS
 	if estado == Estado.GANO:
 		audio.victoria()

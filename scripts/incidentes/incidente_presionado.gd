@@ -52,6 +52,9 @@ func _ready() -> void:
 	material_indicador = indicador.material_override.duplicate()
 	indicador.material_override = material_indicador
 	anillo.visible = false
+	var nube_hija := get_node_or_null("Pelea")
+	if nube_hija != null:
+		nube_hija.visible = false
 	alerta.visible = false
 	indicador.visible = false
 	zona.monitoring = false
@@ -225,10 +228,17 @@ func iniciar() -> void:
 
 func mostrar_pelea() -> void:
 	var activos := peleadores_activos()
-	if escena_pelea == null or activos.is_empty():
+	if activos.is_empty():
 		return
-	nube_pelea = escena_pelea.instantiate()
-	add_child(nube_pelea)
+	if escena_pelea != null:
+		nube_pelea = escena_pelea.instantiate()
+		add_child(nube_pelea)
+	else:
+		# En la escena la nube ya viene como nodo hijo "Pelea" (escena_pelea no se asigna)
+		nube_pelea = get_node_or_null("Pelea")
+	if nube_pelea == null:
+		return
+	nube_pelea.visible = true
 	nube_pelea.mostrar_sobre(activos)
 
 func _exit_tree() -> void:

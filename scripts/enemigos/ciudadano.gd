@@ -29,6 +29,15 @@ const FUERZA_SEPARACION := 3.0
 @export var puntos: Array[Vector3] = [
 	Vector3(-6, 0, -3), Vector3(6, 0, -3)]
 
+@export_group("Noche")
+## De noche corren (en vez de pasear) entre puntos repartidos por todo el mapa
+@export var rapidez_noche := 3.5
+@export var centro_noche := Vector3.ZERO
+## Los destinos de la noche caen en un anillo entre estos dos radios: lejos del centro
+@export var radio_minimo_noche := 10.0
+@export var radio_noche := 26.0
+@export var pausa_noche_max := 0.3
+
 # Ajustes de avoidance (puedes tocarlos desde el inspector)
 @export var radio_avoidance := 0.65
 @export var distancia_vecinos := 6.0
@@ -58,6 +67,9 @@ var quiere_moverse := false
 var reloj_revisar := 0.0
 var reloj_atasco := 0.0
 var ultima_pos := Vector3.ZERO
+var es_noche := false
+var reloj_noche := 0.0
+var partida = null
 
 static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
 	var n = normal.normalized()
@@ -83,6 +95,7 @@ func _ready() -> void:
 	if not viene_de_afuera:
 		origen = global_position
 	reloj_revisar = randf() * INTERVALO_REVISAR
+	reloj_noche = randf() * INTERVALO_REVISAR
 	for i in range(10):
 		await get_tree().physics_frame
 		var mapa = agente.get_navigation_map()
@@ -102,6 +115,8 @@ func _al_velocidad_calculada(v: Vector3) -> void:
 		velocity.z = v.z
 
 func ajustar_a_malla(p: Vector3) -> Vector3:
+	if not is_inside_tree():
+		return p
 	if usa_malla:
 		var mapa = agente.get_navigation_map()
 		if NavigationServer3D.map_get_iteration_id(mapa) > 0:
@@ -117,9 +132,16 @@ func llego_a(p: Vector3, tolerancia := 0.5) -> bool:
 	return usa_malla and agente.is_navigation_finished() and distancia_plana(p) < 2.5
 
 func elegir_destino() -> void:
+	if not is_inside_tree():
+		return
 	var ang := randf() * TAU
-	var dist := sqrt(randf()) * radio_deambular
-	destino_azar = ajustar_a_malla(origen + Vector3(cos(ang), 0.0, sin(ang)) * dist)
+	if es_noche:
+		# Anillo alrededor del centro: nadie se queda amontonado en medio
+		var dist_n := randf_range(radio_minimo_noche, radio_noche)
+		destino_azar = ajustar_a_malla(centro_noche + Vector3(cos(ang), 0.0, sin(ang)) * dist_n)
+	else:
+		var dist := sqrt(randf()) * radio_deambular
+		destino_azar = ajustar_a_malla(origen + Vector3(cos(ang), 0.0, sin(ang)) * dist)
 	tiempo_ruta = 0.0
 	reloj_atasco = 0.0
 	ultima_pos = global_position
@@ -163,12 +185,28 @@ func patrullar(delta: float) -> void:
 		return
 	tiempo_ruta += delta
 	if llego_a(destino_azar, 0.6) or tiempo_ruta > tiempo_max_ruta:
-		pausa = randf_range(pausa_min, pausa_max)
+		pausa = randf_range(0.0, pausa_noche_max) if es_noche else randf_range(pausa_min, pausa_max)
 		detenerse()
 		elegir_destino()
 		return
 	revisar_atasco(delta)
-	ir_a(destino_azar)
+	ir_a(destino_azar, rapidez_noche if es_noche else -1.0)
+
+func actualizar_noche(delta: float) -> void:
+	reloj_noche -= delta
+	if reloj_noche > 0.0:
+		return
+	reloj_noche = INTERVALO_REVISAR
+	if partida == null or not is_instance_valid(partida):
+		partida = get_tree().get_first_node_in_group("partida")
+		if partida == null:
+			return
+	var noche: bool = partida.tiempo > 0.0 and partida.tiempo < partida.noche_en
+	if noche and not es_noche:
+		es_noche = true
+		if estado == Estado.PATRULLA:
+			pausa = 0.0
+			elegir_destino()
 
 func actualizar_prioridad_avoidance() -> void:
 	# Los que están quietos peleando o mirando pesan más: los demás los rodean
@@ -210,6 +248,7 @@ func _physics_process(delta):
 	if objetivo:
 		distancia = global_position.distance_to(objetivo.global_position)
 	revisar_cercania(delta)
+	actualizar_noche(delta)
 	match estado:
 		Estado.PATRULLA:
 			if persigue_policia and distancia < radio_ver:
@@ -376,4 +415,4 @@ func ir_a(p, vel := -1.0, umbral := UMBRAL_RUTA):
 		velocity.x = dir.x * vel
 		velocity.z = dir.z * vel
 	basis = Basis.looking_at(dir)
-	anim.play("walk")
+	anim.play("sprint" if es_noche and vel >= rapidez_noche else "walk")
