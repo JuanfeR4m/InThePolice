@@ -84,7 +84,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasEsfera_8")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 9.0
 }]
@@ -119,7 +119,6 @@ mesh = SubResource("QuadMesh_hchaj")
 [node name="Anillo" type="AnimatedSprite3D" parent="." unique_id=316655996]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.03, 0)
 pixel_size = 0.032
-shaded = false
 texture_filter = 1
 render_priority = -20
 sprite_frames = SubResource("FramesEsfera")

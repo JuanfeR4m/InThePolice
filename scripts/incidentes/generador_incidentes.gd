@@ -6,6 +6,17 @@ signal ira_cambio(valor: int)
 const IRA_MAXIMA := 100
 const IRA_ESCALADO := 8
 const IRA_RESUELTO := 5
+const IRA_DIFICIL := 40
+const MODOS_FACILES := [
+	IncidentePresionado.Modo.MANTENER,
+	IncidentePresionado.Modo.ESPICHAR,
+	IncidentePresionado.Modo.ALTERNAR,
+]
+const MODOS_DIFICILES := [
+	IncidentePresionado.Modo.JUNTOS,
+	IncidentePresionado.Modo.ESPICHAR_JUNTOS,
+	IncidentePresionado.Modo.SECUENCIA,
+]
 
 @export var escena_incidente: PackedScene
 @export var puntos: Node3D
@@ -26,11 +37,18 @@ func _on_timer_timeout() -> void:
 		return
 	var elegido := libres.pick_random() as Node3D
 	var incidente: IncidentePresionado = escena_incidente.instantiate()
+	incidente.modo = elegir_modo()
 	incidente.resuelto.connect(_on_incidente_resuelto)
 	incidente.escalado.connect(_on_incidente_escalado)
 	add_child(incidente)
 	incidente.global_position = elegido.global_position
 	ocupados[elegido] = incidente
+
+func elegir_modo() -> IncidentePresionado.Modo:
+	var modos: Array = MODOS_FACILES.duplicate()
+	if ira >= IRA_DIFICIL:
+		modos.append_array(MODOS_DIFICILES)
+	return modos.pick_random()
 
 func limpiar_ocupados() -> void:
 	for punto in ocupados.keys():

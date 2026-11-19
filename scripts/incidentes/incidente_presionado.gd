@@ -4,6 +4,8 @@ extends Node3D
 signal resuelto(incidente: IncidentePresionado)
 signal escalado(incidente: IncidentePresionado)
 
+enum Modo { MANTENER, ESPICHAR, JUNTOS, ESPICHAR_JUNTOS, ALTERNAR, SECUENCIA }
+
 const TIEMPO_RESOLVER := 3.0
 const TIEMPO_ALERTA := 10.0
 const TIEMPO_LIMITE := 15.0
@@ -20,13 +22,27 @@ const RADIO_RECLUTAR := 70.0
 const RADIO_CURIOSOS := 40.0
 const ESPERA_MAXIMA := 25.0
 const INTERVALO_RECLUTAR := 1.0
+const PRESIONES := 12
+const CAIDA_PRESIONES := 0.25
+const VENTANA_JUNTOS := 0.3
+const SECUENCIA := [1, 2, 2, 1, 2]
+const TEXTOS := [
+	"E\nENTER",
+	"E x12\nENTER x12",
+	"E + ENTER",
+	"E + ENTER\nx12",
+	"E / ENTER\nx12",
+	"E ENTER ENTER\nE ENTER",
+]
 
+@export var modo := Modo.MANTENER
 @export var escena_pelea: PackedScene
 
 @onready var anillo: AnimatedSprite3D = $Anillo
 @onready var zona: Area3D = $Zona
 @onready var alerta: MeshInstance3D = $Alerta
 @onready var indicador: MeshInstance3D = $Indicador
+@onready var texto: Label3D = $Indicador/Label3D
 
 var puestos: Array = []
 var puestos_curiosos: Array = []
@@ -38,6 +54,10 @@ var reloj_reclutar := 0.0
 var jugador1_cerca := false
 var jugador2_cerca := false
 var progreso := 0.0
+var paso := 0
+var ultimo := 0
+var reloj1 := 0.0
+var reloj2 := 0.0
 var espera := 0.0
 var en_rojo := false
 var material_alerta: ShaderMaterial
@@ -57,6 +77,7 @@ func _ready() -> void:
 		nube_hija.visible = false
 	alerta.visible = false
 	indicador.visible = false
+	texto.text = TEXTOS[modo]
 	zona.monitoring = false
 
 func _process(delta: float) -> void:
@@ -75,15 +96,12 @@ func _process(delta: float) -> void:
 	if espera >= TIEMPO_ALERTA and not en_rojo:
 		en_rojo = true
 		pasar_a_rojo()
-	if estan_resolviendo():
-		progreso += delta
-	else:
-		progreso = 0.0
+	actualizar_progreso(delta)
 	var cerca := jugador1_cerca or jugador2_cerca
 	alerta.visible = not cerca
 	indicador.visible = cerca
-	material_indicador.set_shader_parameter("progreso", progreso / TIEMPO_RESOLVER)
-	if progreso >= TIEMPO_RESOLVER:
+	material_indicador.set_shader_parameter("progreso", progreso)
+	if progreso >= 1.0:
 		resuelto.emit(self)
 		queue_free()
 
@@ -259,6 +277,61 @@ func estan_resolviendo() -> bool:
 	if jugador2_cerca and Input.is_action_pressed("interactuar2"):
 		return true
 	return false
+
+func presiono1() -> bool:
+	return jugador1_cerca and Input.is_action_just_pressed("interactuar1")
+
+func presiono2() -> bool:
+	return jugador2_cerca and Input.is_action_just_pressed("interactuar2")
+
+func sostienen_los_dos() -> bool:
+	return jugador1_cerca and jugador2_cerca \
+		and Input.is_action_pressed("interactuar1") \
+		and Input.is_action_pressed("interactuar2")
+
+func actualizar_progreso(delta: float) -> void:
+	match modo:
+		Modo.MANTENER:
+			if estan_resolviendo():
+				progreso += delta / TIEMPO_RESOLVER
+			else:
+				progreso = 0.0
+		Modo.ESPICHAR:
+			progreso = maxf(progreso - CAIDA_PRESIONES * delta, 0.0)
+			if presiono1() or presiono2():
+				progreso += 1.0 / PRESIONES
+		Modo.JUNTOS:
+			if sostienen_los_dos():
+				progreso += delta / TIEMPO_RESOLVER
+			else:
+				progreso = 0.0
+		Modo.ESPICHAR_JUNTOS:
+			progreso = maxf(progreso - CAIDA_PRESIONES * delta, 0.0)
+			reloj1 = maxf(reloj1 - delta, 0.0)
+			reloj2 = maxf(reloj2 - delta, 0.0)
+			if presiono1():
+				reloj1 = VENTANA_JUNTOS
+			if presiono2():
+				reloj2 = VENTANA_JUNTOS
+			if reloj1 > 0.0 and reloj2 > 0.0:
+				progreso += 1.0 / PRESIONES
+				reloj1 = 0.0
+				reloj2 = 0.0
+		Modo.ALTERNAR:
+			progreso = maxf(progreso - CAIDA_PRESIONES * delta, 0.0)
+			if presiono1() and ultimo != 1:
+				ultimo = 1
+				progreso += 1.0 / PRESIONES
+			elif presiono2() and ultimo != 2:
+				ultimo = 2
+				progreso += 1.0 / PRESIONES
+		Modo.SECUENCIA:
+			var esperado: int = SECUENCIA[paso]
+			if (esperado == 1 and presiono1()) or (esperado == 2 and presiono2()):
+				paso += 1
+			elif presiono1() or presiono2():
+				paso = 0
+			progreso = float(paso) / SECUENCIA.size()
 
 func _on_zona_body_entered(body: Node3D) -> void:
 	if body.is_in_group("jugador1"):
