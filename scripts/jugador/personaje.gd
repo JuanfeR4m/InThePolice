@@ -40,10 +40,10 @@ func _accion(base: String) -> String:
 	return base + "1"
 
 
-func _poner_tecla(nodo: String, accion: String):
+func _poner_tecla(nodo: String, nombre_accion: String):
 	var n = get_node_or_null(nodo)
 	if n != null:
-		n.tecla = accion
+		n.tecla = nombre_accion
 
 
 func aplicar_color(color: Color):

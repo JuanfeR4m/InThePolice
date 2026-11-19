@@ -10,7 +10,7 @@ const TOLERANCIA_MALLA := 1.0
 const TOLERANCIA_RELAJADA := 6.0
 const RAPIDEZ_MIN := 1.5
 const RAPIDEZ_MAX := 2.5
-const FRAMES_ESPERA := 10
+const FRAMES_ESPERA := 180
 
 @export var escenas: Array[PackedScene]
 @export var puntos: Node3D
@@ -28,8 +28,10 @@ func _ready() -> void:
 	if escenas.is_empty() or centro == null:
 		return
 	var mapa := centro.get_world_3d().navigation_map
+	# Al arrancar, el mapa de navegación tarda unos cuadros en incluir la malla
+	# del NavigationRegion3D: se espera a que cubra la zona de aparición.
 	for i in FRAMES_ESPERA:
-		if malla_lista(mapa):
+		if malla_lista(mapa) and malla_cubre_zona(mapa):
 			break
 		await get_tree().physics_frame
 	if not malla_lista(mapa):
@@ -69,7 +71,7 @@ func _on_timer_timeout() -> void:
 	crear(ajustar_a_malla(mapa, punto.global_position), entrada_al_azar())
 
 func crear(posicion: Vector3, destino: Vector3) -> void:
-	var ciudadano: Ciudadano = escenas.pick_random().instantiate()
+	var ciudadano = escenas.pick_random().instantiate()
 	ciudadano.origen = centro.global_position
 	ciudadano.entrada = destino
 	ciudadano.viene_de_afuera = true
@@ -82,6 +84,16 @@ func crear(posicion: Vector3, destino: Vector3) -> void:
 func malla_lista(mapa: RID) -> bool:
 	return NavigationServer3D.map_get_iteration_id(mapa) > 0 \
 		and not NavigationServer3D.map_get_regions(mapa).is_empty()
+
+func malla_cubre_zona(mapa: RID) -> bool:
+	# Hay malla de verdad si un punto de la zona (fuera del centro) cae sobre ella
+	var cubiertos := 0
+	for desplazamiento in [Vector3(4, 0, 4), Vector3(-4, 0, 4), Vector3(4, 0, -4), Vector3(-4, 0, -4)]:
+		var crudo: Vector3 = centro.global_position + desplazamiento
+		var punto := NavigationServer3D.map_get_closest_point(mapa, crudo)
+		if Vector2(punto.x, punto.z).distance_to(Vector2(crudo.x, crudo.z)) <= TOLERANCIA_MALLA:
+			cubiertos += 1
+	return cubiertos >= 2
 
 func ajustar_a_malla(mapa: RID, punto: Vector3) -> Vector3:
 	if malla_lista(mapa):

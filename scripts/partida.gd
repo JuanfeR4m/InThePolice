@@ -1,11 +1,16 @@
 extends Node
 
-enum Estado { JUGANDO, GANO }
+enum Estado { JUGANDO, GANO, PERDIO }
+
+const PANTALLA_FIN := preload("res://scripts/mundo/fin_partida.gd")
+const ESCENA_MENU := "res://escenas/main.tscn"
+
+const MINIMO_SALVADOS := 5
+const TOTAL_ADMINISTRATIVOS := 10
 
 @export var tiempo_limite = 180.0
 @export var metas = 0
 @export var noche_en = 80.0
-@export var espera_reinicio = 15.0
 
 @export var sistema_sol: SistemaSol
 @export var hora_inicio = 9.0
@@ -19,7 +24,7 @@ var estado = Estado.JUGANDO
 var tiempo = 0.0
 var hechas = 0
 var noche_avisada = false
-var reloj = 0.0
+var motivo_fin := ""
 
 
 func _ready():
@@ -29,13 +34,13 @@ func _ready():
 
 func _physics_process(delta):
 	if estado != Estado.JUGANDO:
-		reloj -= delta
-		if reloj <= 0.001:
-			reiniciar()
 		return
 
 	tiempo = maxf(tiempo - delta, 0.0)
 	actualizar_sol()
+	revisar_administrativos()
+	if estado != Estado.JUGANDO:
+		return
 
 	if not noche_avisada and tiempo < noche_en:
 		noche_avisada = true
@@ -68,23 +73,80 @@ func avisar_meta():
 
 
 func ganar():
-	terminar(Estado.GANO, "ganó")
+	var j = _juego()
+	if j != null and j.administrativos < MINIMO_SALVADOS:
+		perder("Se perdieron demasiados administrativos")
+		return
+	terminar(Estado.GANO, "Llegaron al amanecer con el edificio a salvo")
 
 
-func terminar(nuevo, motivo):
+
+func perder(motivo: String):
+	terminar(Estado.PERDIO, motivo)
+
+
+func revisar_administrativos():
+	var j = _juego()
+	if j != null and j.administrativos < MINIMO_SALVADOS:
+		perder("Se perdieron 6 administrativos")
+
+
+func _juego():
+	return get_tree().get_first_node_in_group("juego")
+
+
+func terminar(nuevo, texto):
 	if estado != Estado.JUGANDO:
 		return
 	estado = nuevo
+	motivo_fin = texto
 	print("fin: ", Estado.keys()[estado], " cuadro ",
-		Engine.get_physics_frames(), " (", motivo, ")")
+		Engine.get_physics_frames(), " (", texto, ")")
 	get_tree().paused = true
-	reloj = espera_reinicio
 	var usado = tiempo_limite - tiempo
 	if estado == Estado.GANO and (mejor == 0.0 or usado < mejor):
 		mejor = usado
+	_sonido_fin()
+	_mostrar_pantalla(usado)
+
+
+func _sonido_fin():
+	var hud = get_tree().get_first_node_in_group("hud")
+	if hud != null:
+		hud.detener_tiempo()
+	var audio = get_parent().get_node_or_null("AudioPartida")
+	if audio == null or audio.get("p_inicio") == null:
+		return
+
+	audio.process_mode = Node.PROCESS_MODE_ALWAYS
+	if estado == Estado.GANO:
+		audio.victoria()
+	else:
+		audio.derrota()
+
+
+func _mostrar_pantalla(usado):
+	var j = _juego()
+	var pantalla = PANTALLA_FIN.new()
+	pantalla.configurar({
+		"gano": estado == Estado.GANO,
+		"motivo": motivo_fin,
+		"salvados": j.administrativos if j != null else -1,
+		"total_administrativos": TOTAL_ADMINISTRATIVOS,
+		"tiempo_usado": usado,
+		"mejor_tiempo": mejor,
+	})
+	pantalla.reintentar.connect(reiniciar)
+	pantalla.ir_al_menu.connect(volver_al_menu)
+	get_parent().add_child(pantalla)
 
 
 func reiniciar():
 	intentos += 1
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+
+
+func volver_al_menu():
+	get_tree().paused = false
+	get_tree().change_scene_to_file(ESCENA_MENU)

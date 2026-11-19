@@ -101,7 +101,7 @@ func _construir():
 	raiz.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(raiz)
 
-	# --- Bomba + medidor de ira (arriba a la izquierda) ---
+
 	var caja = HBoxContainer.new()
 	caja.position = Vector2(20, 16)
 	caja.add_theme_constant_override("separation", 10)
@@ -134,7 +134,7 @@ func _construir():
 	barra.add_theme_stylebox_override("fill", relleno)
 	caja.add_child(barra)
 
-	# --- Tiempo: reloj + cuadro oscuro (arriba a la derecha) ---
+
 	var panel = PanelContainer.new()
 	panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
@@ -189,14 +189,14 @@ func _process(delta):
 
 func _actualizar_tiempo():
 	var seg = int(ceil(tiempo))
-	etiqueta_tiempo.text = "%02d:%02d" % [seg / 60, seg % 60]
+	etiqueta_tiempo.text = "%02d:%02d" % [floori(seg / 60.0), seg % 60]
 	if tiempo <= 10.0:
 		etiqueta_tiempo.add_theme_color_override("font_color", Color("#ff4d4d"))
 	else:
 		etiqueta_tiempo.add_theme_color_override("font_color", Color.WHITE)
 
 
-# Verde (0%) -> amarillo (50%) -> rojo (100%)
+
 func _actualizar_color():
 	var r = barra.value / ira_max
 	if r < 0.5:
@@ -205,7 +205,7 @@ func _actualizar_color():
 		relleno.bg_color = color_medio.lerp(color_alto, (r - 0.5) / 0.5)
 
 
-# La bomba late más rápido cuanta más ira hay
+
 func _animar_bomba():
 	var r = barra.value / ira_max
 	if r < 0.6:
@@ -218,7 +218,7 @@ func _animar_bomba():
 
 # --- Funciones que llaman las misiones ---
 
-## Llámala cuando un incidente NO se resuelve
+
 func incidente_sin_resolver():
 	aumentar_ira(ira_por_incidente)
 
@@ -227,7 +227,7 @@ func aumentar_ira(cantidad: float):
 	poner_ira(barra.value + cantidad)
 
 
-## Llámala cuando se resuelve un incidente
+
 func bajar_ira(cantidad: float):
 	poner_ira(barra.value - cantidad)
 

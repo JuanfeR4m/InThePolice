@@ -8,6 +8,9 @@ const TIEMPO_ATASCO := 1.5
 const DISTANCIA_ATASCO := 3.0
 const UMBRAL_RUTA := 0.3
 const UMBRAL_RUTA_PERSECUCION := 1.0
+const GRUPO_CIUDADANOS := "ciudadanos"
+const DISTANCIA_SEPARACION := 1.1
+const FUERZA_SEPARACION := 3.0
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -27,10 +30,10 @@ const UMBRAL_RUTA_PERSECUCION := 1.0
 	Vector3(-6, 0, -3), Vector3(6, 0, -3)]
 
 # Ajustes de avoidance (puedes tocarlos desde el inspector)
-@export var radio_avoidance := 0.5
-@export var distancia_vecinos := 5.0
-@export var max_vecinos := 10
-@export var horizonte_agentes := 1.5
+@export var radio_avoidance := 0.65
+@export var distancia_vecinos := 6.0
+@export var max_vecinos := 12
+@export var horizonte_agentes := 2.5
 
 @onready var anim = $Modelo/AnimationPlayer
 @onready var agente: NavigationAgent3D = $NavigationAgent3D
@@ -169,8 +172,28 @@ func patrullar(delta: float) -> void:
 
 func actualizar_prioridad_avoidance() -> void:
 	# Los que están quietos peleando o mirando pesan más: los demás los rodean
-	var quieto := estado == Estado.PELEA or (estado == Estado.CURIOSO and llego)
+	# También cuenta como quieto el que está en pausa: los demás lo rodean
+	var quieto := not quiere_moverse or estado == Estado.PELEA or (estado == Estado.CURIOSO and llego)
 	agente.avoidance_priority = 1.0 if quieto else 0.5
+
+func separar_de_vecinos() -> void:
+	# Empuje suave: si alguien (ciudadano o curioso) está muy cerca, se aleja
+	var empuje := Vector3.ZERO
+	for nodo in get_tree().get_nodes_in_group(GRUPO_CIUDADANOS):
+		var otro := nodo as Node3D
+		if otro == null or otro == self:
+			continue
+		var d := global_position - otro.global_position
+		d.y = 0.0
+		var dist := d.length()
+		if dist >= DISTANCIA_SEPARACION:
+			continue
+		if dist < 0.01:
+			d = Vector3(randf_range(-1.0, 1.0), 0.0, randf_range(-1.0, 1.0))
+			dist = maxf(d.length(), 0.01)
+		empuje += d / dist * ((DISTANCIA_SEPARACION - dist) / DISTANCIA_SEPARACION)
+	velocity.x += empuje.x * FUERZA_SEPARACION
+	velocity.z += empuje.z * FUERZA_SEPARACION
 
 func _physics_process(delta):
 	if not listo:
@@ -224,6 +247,7 @@ func _physics_process(delta):
 				else:
 					ir_a(destino_incidente, rapidez_acudir)
 	actualizar_prioridad_avoidance()
+	separar_de_vecinos()
 	move_and_slide()
 
 func revisar_cercania(delta: float) -> void:

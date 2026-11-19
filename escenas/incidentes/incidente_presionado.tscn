@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://chqooar1mt0s4" path="res://shaders/alerta.gdshader" id="2_yxmia"]
 [ext_resource type="Shader" uid="uid://ceg86m5tornlg" path="res://shaders/indicador.gdshader" id="4_6t2ed"]
 [ext_resource type="PackedScene" uid="uid://b06vybltr8d4q" path="res://escenas/incidentes/pelea.tscn" id="4_yxmia"]
+[ext_resource type="Texture2D" uid="uid://c1jo1urwet0te" path="res://assets/efectos/esfera_sheet.png" id="5_esfera"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r6318"]
 render_priority = 0
@@ -17,10 +18,76 @@ shader_parameter/escala_pulso = 0.06
 [sub_resource type="QuadMesh" id="QuadMesh_hchaj"]
 size = Vector2(1.2, 1.2)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_uxa2c"]
-top_radius = 1.5
-bottom_radius = 1.5
-height = 0.05
+[sub_resource type="AtlasTexture" id="AtlasEsfera_0"]
+atlas = ExtResource("5_esfera")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_1"]
+atlas = ExtResource("5_esfera")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_2"]
+atlas = ExtResource("5_esfera")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_3"]
+atlas = ExtResource("5_esfera")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_4"]
+atlas = ExtResource("5_esfera")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_5"]
+atlas = ExtResource("5_esfera")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_6"]
+atlas = ExtResource("5_esfera")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_7"]
+atlas = ExtResource("5_esfera")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasEsfera_8"]
+atlas = ExtResource("5_esfera")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="FramesEsfera"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasEsfera_8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_uxa2c"]
 radius = 1.5
@@ -49,9 +116,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
 material_override = SubResource("ShaderMaterial_r6318")
 mesh = SubResource("QuadMesh_hchaj")
 
-[node name="Anillo" type="MeshInstance3D" parent="." unique_id=316655996]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
-mesh = SubResource("CylinderMesh_uxa2c")
+[node name="Anillo" type="AnimatedSprite3D" parent="." unique_id=316655996]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.03, 0)
+pixel_size = 0.032
+shaded = false
+texture_filter = 1
+sprite_frames = SubResource("FramesEsfera")
+autoplay = "default"
 
 [node name="Zona" type="Area3D" parent="." unique_id=125065852]
 

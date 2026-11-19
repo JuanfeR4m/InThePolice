@@ -9,6 +9,8 @@ const TIEMPO_ALERTA := 10.0
 const TIEMPO_LIMITE := 15.0
 const COLOR_NORMAL := Color("F2B632")
 const COLOR_ALERTA := Color("D63A3A")
+# El dibujo del anillo es amarillo; este tinte lo vuelve rojo al entrar en alerta
+const TINTE_ANILLO_ALERTA := Color(0.9, 0.12, 0.12)
 const VELOCIDAD_ALERTA := 10.0
 const PELEADORES := 2
 const RADIO_FORMACION := 1.0
@@ -21,7 +23,7 @@ const INTERVALO_RECLUTAR := 1.0
 
 @export var escena_pelea: PackedScene
 
-@onready var anillo: MeshInstance3D = $Anillo
+@onready var anillo: AnimatedSprite3D = $Anillo
 @onready var zona: Area3D = $Zona
 @onready var alerta: MeshInstance3D = $Alerta
 @onready var indicador: MeshInstance3D = $Indicador
@@ -38,7 +40,6 @@ var jugador2_cerca := false
 var progreso := 0.0
 var espera := 0.0
 var en_rojo := false
-var material_anillo := StandardMaterial3D.new()
 var material_alerta: ShaderMaterial
 var material_indicador: ShaderMaterial
 
@@ -46,8 +47,6 @@ func _ready() -> void:
 	add_to_group("incidentes")
 	puestos.resize(PELEADORES)
 	puestos_curiosos.resize(CURIOSOS)
-	material_anillo.albedo_color = COLOR_NORMAL
-	anillo.material_override = material_anillo
 	material_alerta = alerta.material_override.duplicate()
 	alerta.material_override = material_alerta
 	material_indicador = indicador.material_override.duplicate()
@@ -239,7 +238,7 @@ func _exit_tree() -> void:
 		c.dejar_de_curiosear()
 
 func pasar_a_rojo() -> void:
-	material_anillo.albedo_color = COLOR_ALERTA
+	anillo.modulate = TINTE_ANILLO_ALERTA
 	material_alerta.set_shader_parameter("color_relleno", COLOR_ALERTA)
 	material_alerta.set_shader_parameter("velocidad", VELOCIDAD_ALERTA)
 	material_indicador.set_shader_parameter("color_centro", COLOR_ALERTA)
