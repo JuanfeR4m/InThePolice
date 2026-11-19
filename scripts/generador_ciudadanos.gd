@@ -21,7 +21,10 @@ const FRAMES_ESPERA := 180
 @export var radio_entrada := 8.0
 @export var area_inicial := Vector2(15.0, 15.0)
 @export var radio_deambular := 10.0
+## Cuántos ciudadanos nacen como administrativos (contorno verde, los que hay que defender)
+@export var administrativos := 10
 
+var marcados := 0
 var rechazos := {"malla": 0, "lista": 0, "libre": 0}
 
 func _ready() -> void:
@@ -78,6 +81,9 @@ func crear(posicion: Vector3, destino: Vector3) -> void:
 	ciudadano.rapidez = randf_range(RAPIDEZ_MIN, RAPIDEZ_MAX)
 	ciudadano.radio_deambular = radio_deambular
 	ciudadano.objetivo = objetivo
+	if marcados < administrativos:
+		ciudadano.es_administrativo = true
+		marcados += 1
 	add_child(ciudadano)
 	ciudadano.global_position = posicion
 

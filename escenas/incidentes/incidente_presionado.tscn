@@ -121,6 +121,7 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.03, 0)
 pixel_size = 0.032
 shaded = false
 texture_filter = 1
+render_priority = -20
 sprite_frames = SubResource("FramesEsfera")
 autoplay = "default"
 

@@ -11,6 +11,7 @@ const UMBRAL_RUTA_PERSECUCION := 1.0
 const GRUPO_CIUDADANOS := "ciudadanos"
 const DISTANCIA_SEPARACION := 1.1
 const FUERZA_SEPARACION := 3.0
+const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -23,6 +24,11 @@ const FUERZA_SEPARACION := 3.0
 @export var margen_cambio := 4.0
 @export var tiempo_max_ruta := 40.0
 @export var vida = 100
+## Si es true, se le ilumina el borde en verde para saber que hay que defenderlo
+@export var es_administrativo := false:
+	set(valor):
+		es_administrativo = valor
+		aplicar_contorno()
 @export var rapidez = 2.0
 @export var radio_ver = 6.0
 @export var radio_perder = 9.0
@@ -79,7 +85,18 @@ static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3,
 	var ndot_h = max(0.0, n.dot(h))
 	return pow(ndot_h, brillo)
 
+func aplicar_contorno() -> void:
+	if not is_inside_tree():
+		return
+	var material: ShaderMaterial = null
+	if es_administrativo:
+		material = ShaderMaterial.new()
+		material.shader = SHADER_CONTORNO
+	for malla in find_children("*", "MeshInstance3D", true, false):
+		(malla as MeshInstance3D).material_overlay = material
+
 func _ready() -> void:
+	aplicar_contorno()
 	# Avoidance: conectar la señal y configurar el agente
 	if not agente.velocity_computed.is_connected(_al_velocidad_calculada):
 		agente.velocity_computed.connect(_al_velocidad_calculada)
