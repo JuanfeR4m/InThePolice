@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://puvo0xhxlwk3"
-path="res://.godot/imported/bomba.png-31874339323eec6d1b308ebe6671291c.ctex"
+uid="uid://d03kmmwgfxaly"
+path="res://.godot/imported/cronometro_spritesheet_128.png-28bef43bd158535e6bbe098a24f56454.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://bomba.png"
-dest_files=["res://.godot/imported/bomba.png-31874339323eec6d1b308ebe6671291c.ctex"]
+source_file="res://assets/hub/cronometro_spritesheet_128.png"
+dest_files=["res://.godot/imported/cronometro_spritesheet_128.png-28bef43bd158535e6bbe098a24f56454.ctex"]
 
 [params]
 

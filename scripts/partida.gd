@@ -143,9 +143,9 @@ func terminar(nuevo, texto):
 
 
 func _sonido_fin():
-	var hud = get_tree().get_first_node_in_group("hud")
-	if hud != null:
-		hud.detener_tiempo()
+	var hud_actual = get_tree().get_first_node_in_group("hud")
+	if hud_actual != null:
+		hud_actual.detener_tiempo()
 	var audio = get_parent().get_node_or_null("AudioPartida")
 	if audio == null or audio.get("p_inicio") == null:
 		return

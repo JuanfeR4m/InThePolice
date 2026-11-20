@@ -8,13 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://escenas/personajes/manifestante.tscn" id="6_8he2b"]
 [ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="7_wh2m3"]
 [ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://escenas/zonas/zona_a.tscn" id="8_7562m"]
-[ext_resource type="PackedScene" uid="uid://c6eumbcxuf3ss" path="res://hud.tscn" id="9_iatsr"]
 [ext_resource type="PackedScene" uid="uid://cikptugflnihk" path="res://escenas/incidentes/generador_incidentes.tscn" id="10_622t7"]
-[ext_resource type="Script" uid="uid://b4wqsucg04mb1" path="res://scripts/mundo/juego.gd" id="11_14whf"]
-[ext_resource type="PackedScene" uid="uid://d2th30bl64q15" path="res://escenas/escenario/hud.tscn" id="12_8n3lj"]
+[ext_resource type="Script" uid="uid://dyoj5k78bc5t8" path="res://scripts/hub/juego.gd" id="11_lgf0p"]
 [ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="13_dt1ax"]
 [ext_resource type="Script" uid="uid://lgw8aoh6vie6" path="res://scripts/generador_ciudadanos.gd" id="14_vpnp5"]
 [ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="15_2sgaa"]
+[ext_resource type="PackedScene" uid="uid://b85qskgtbjx2y" path="res://escenas/escenario/cronometro_hud.tscn" id="16_bvwj0"]
 [ext_resource type="PackedScene" path="res://escenas/entorno/ambiente_noche.tscn" id="17_c6c8x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
@@ -74,16 +73,11 @@ sol = NodePath("../../Sol")
 entorno = NodePath("../../WorldEnvironment")
 automatico = true
 
-[node name="HUD" parent="." unique_id=126052349 instance=ExtResource("9_iatsr")]
-
 [node name="GeneradorIncidentes" parent="." unique_id=1268650350 node_paths=PackedStringArray("puntos") instance=ExtResource("10_622t7")]
 puntos = NodePath("../PuntosIncidentes")
 
 [node name="Juego" type="Node" parent="." unique_id=2222872]
-script = ExtResource("11_14whf")
-
-[node name="HUDJuego" parent="." unique_id=1930543901 instance=ExtResource("12_8n3lj")]
-visible = false
+script = ExtResource("11_lgf0p")
 
 [node name="ciudadano2" parent="." unique_id=473483946 instance=ExtResource("3_xqdpg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
@@ -221,6 +215,13 @@ gizmo_extents = 1.0
 
 [node name="AmbienteNoche" parent="." unique_id=1646390021 instance=ExtResource("17_c6c8x")]
 vista_previa = true
+
+[node name="Node2D" type="Node2D" parent="." unique_id=437779903]
+
+[node name="capacronometro" type="CanvasLayer" parent="Node2D" unique_id=487617422]
+
+[node name="Cronometro" parent="Node2D/capacronometro" unique_id=690824458 instance=ExtResource("16_bvwj0")]
+position = Vector2(1050, 70)
 
 [connection signal="timeout" from="GeneradorCiudadanos/Timer" to="GeneradorCiudadanos" method="_on_timer_timeout"]
 
