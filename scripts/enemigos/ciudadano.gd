@@ -1,7 +1,10 @@
 class_name Ciudadano
 extends CharacterBody3D
 
-enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO }
+enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO, HUIR }
+
+signal ladron_atrapado(ciudadano: Ciudadano)
+signal ladron_escapo(ciudadano: Ciudadano)
 
 const INTERVALO_REVISAR := 0.5
 const TIEMPO_ATASCO := 1.5
@@ -11,6 +14,13 @@ const TRAMO_MIN := 8.0
 const TRAMO_MAX := 20.0
 const GIRO_MAX := PI / 3.0
 const PROBABILIDAD_PAUSA := 0.2
+
+const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
+const COLOR_LADRON := Color(0.95, 0.1, 0.1)
+const RADIO_CAPTURA := 1.3
+const INTERVALO_HUIDA := 0.8
+const DISTANCIA_HUIDA := 14.0
+const DURACION_ROBO := 0.7
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -27,6 +37,8 @@ const PROBABILIDAD_PAUSA := 0.2
 @export var tiempo_max_ruta := 40.0
 @export var vida = 100
 @export var rapidez = 2.0
+## Velocidad del ladron: menor que la de correr de los jugadores (7), asi que alcanzarlo es posible
+@export var rapidez_huida := 5.5
 @export var radio_ver = 6.0
 @export var radio_perder = 9.0
 @export var puntos: Array[Vector3] = [
@@ -56,6 +68,11 @@ var reloj_atasco := 0.0
 var ultima_pos := Vector3.ZERO
 var rumbo := randf() * TAU
 var ya_entro := false
+var es_ladron := false
+var reloj_huida := 0.0
+var reloj_robo := 0.0
+var reloj_destino_huida := 0.0
+var destino_huida := Vector3.ZERO
 
 static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
 	var n = normal.normalized()
@@ -222,8 +239,11 @@ func _physics_process(delta):
 				estado = Estado.PELEA
 			else:
 				ir_a(destino_incidente, rapidez_acudir)
+		Estado.HUIR:
+			huir(delta)
 		Estado.PELEA:
-			detenerse()
+			frenar()
+			forcejear()
 			var mira := destino_incidente
 			if is_instance_valid(rival):
 				mira = rival.global_position
@@ -277,12 +297,134 @@ func revisar_cercania(delta: float) -> void:
 		mejor.inscribir_curioso(self)
 	print(name, " cambia a ", mejor.name, " (", snappedf(d_actual, 0.1), " -> ", snappedf(mejor_d, 0.1), " m)")
 
-func detenerse() -> void:
+func frenar() -> void:
 	velocity.x = 0.0
 	velocity.z = 0.0
 	if agente.avoidance_enabled:
 		agente.velocity = Vector3.ZERO
+
+func detenerse() -> void:
+	frenar()
 	anim.stop()
+
+# ---------- Animaciones de pelea segun como se resuelve el incidente ----------
+func animaciones_del_modo(modo: int) -> Array[String]:
+	# [brazo izquierdo, brazo derecho]: cada peleador usa uno. Cambia los nombres a gusto.
+	match modo:
+		IncidentePresionado.Modo.MANTENER:
+			return ["attack-melee-left", "attack-melee-right"]
+		IncidentePresionado.Modo.ESPICHAR:
+			return ["attack-kick-left", "attack-kick-right"]
+		IncidentePresionado.Modo.JUNTOS:
+			return ["interact-left", "interact-right"]
+		IncidentePresionado.Modo.ESPICHAR_JUNTOS:
+			return ["holding-both", "holding-both"]
+		IncidentePresionado.Modo.ALTERNAR:
+			return ["holding-left", "holding-right"]
+		IncidentePresionado.Modo.SECUENCIA:
+			return ["emote-no", "emote-no"]
+	return ["attack-melee-left", "attack-melee-right"]
+
+func forcejear() -> void:
+	var modo := IncidentePresionado.Modo.MANTENER
+	var avance := 0.0
+	if is_instance_valid(incidente):
+		modo = incidente.modo
+		avance = clampf(incidente.progreso, 0.0, 1.0)
+	var lado := get_instance_id() % 2
+	var nombre: String = animaciones_del_modo(modo)[lado]
+	if not anim.has_animation(nombre):
+		return
+	# Entre mas avanza el progreso, mas cansados pelean
+	anim.speed_scale = lerpf(1.6, 0.5, avance)
+	anim.play(nombre)
+
+# ---------- Ladron ----------
+func aplicar_contorno() -> void:
+	var material: ShaderMaterial = null
+	if es_ladron:
+		material = ShaderMaterial.new()
+		material.shader = SHADER_CONTORNO
+		material.set_shader_parameter("color_contorno", COLOR_LADRON)
+		material.set_shader_parameter("grosor", 0.035)
+		material.set_shader_parameter("velocidad_pulso", 9.0)
+	for malla in find_children("*", "MeshInstance3D", true, false):
+		(malla as MeshInstance3D).material_overlay = material
+
+func volverse_ladron(tiempo: float) -> void:
+	es_ladron = true
+	reloj_huida = tiempo
+	reloj_robo = DURACION_ROBO
+	reloj_destino_huida = 0.0
+	soltar_incidente()
+	estado = Estado.HUIR
+	aplicar_contorno()
+
+func jugador_mas_cercano() -> Node3D:
+	var mejor: Node3D = null
+	var menor := INF
+	for nodo in get_tree().get_nodes_in_group("jugador"):
+		var jugador := nodo as Node3D
+		if jugador == null:
+			continue
+		var d := distancia_plana(jugador.global_position)
+		if d < menor:
+			menor = d
+			mejor = jugador
+	return mejor
+
+func elegir_destino_huida(perseguidor: Node3D) -> void:
+	# Prueba 8 direcciones al azar y se queda con la que lo deja mas lejos del jugador
+	# (asi no se arrincona contra el borde de la feria)
+	var mejor := Vector3.ZERO
+	var mejor_puntaje := -INF
+	for i in 8:
+		var angulo := randf() * TAU
+		var dir := Vector3(cos(angulo), 0.0, sin(angulo))
+		var candidato := ajustar_a_malla(global_position + dir * DISTANCIA_HUIDA)
+		if distancia_plana(candidato) < 4.0:
+			continue
+		var puntaje := distancia_plana(candidato)
+		if perseguidor != null:
+			puntaje = Vector2(candidato.x, candidato.z).distance_to(
+				Vector2(perseguidor.global_position.x, perseguidor.global_position.z))
+		if puntaje > mejor_puntaje:
+			mejor_puntaje = puntaje
+			mejor = candidato
+	if mejor_puntaje == -INF:
+		mejor = ajustar_a_malla(centro_feria)
+	destino_huida = mejor
+
+func huir(delta: float) -> void:
+	# Primero agarra lo robado (pick-up) y recien despues sale corriendo
+	if reloj_robo > 0.0:
+		reloj_robo -= delta
+		frenar()
+		anim.speed_scale = 1.0
+		if anim.has_animation("pick-up"):
+			anim.play("pick-up")
+		return
+	reloj_huida -= delta
+	if reloj_huida <= 0.0:
+		escapar()
+		return
+	var perseguidor := jugador_mas_cercano()
+	if perseguidor != null and distancia_plana(perseguidor.global_position) <= RADIO_CAPTURA:
+		atrapar()
+		return
+	reloj_destino_huida -= delta
+	if reloj_destino_huida <= 0.0 or llego_a(destino_huida, 1.0):
+		reloj_destino_huida = INTERVALO_HUIDA
+		elegir_destino_huida(perseguidor)
+	ir_a(destino_huida, rapidez_huida)
+
+func atrapar() -> void:
+	ladron_atrapado.emit(self)
+	queue_free()
+
+func escapar() -> void:
+	ladron_escapo.emit(self)
+	queue_free()
 
 func mirar_hacia(punto_mira: Vector3) -> void:
 	var dir := punto_mira - global_position
@@ -370,4 +512,5 @@ func ir_a(p, vel := -1.0):
 		velocity.x = dir.x * vel
 		velocity.z = dir.z * vel
 	basis = Basis.looking_at(dir)
-	anim.play("walk")
+	anim.speed_scale = 1.0
+	anim.play("sprint" if estado == Estado.HUIR else "walk")

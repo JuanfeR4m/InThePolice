@@ -9,6 +9,8 @@ extends Node3D
 @export var alto_personaje := 1.9
 
 @export var desplazamiento_y := 0.0
+## Transparencia de la nube: baja para que se vean pelear los ciudadanos
+@export_range(0.0, 1.0, 0.05) var opacidad := 0.45
 
 @onready var sprite: AnimatedSprite3D = $AnimatedSprite3D
 
@@ -39,3 +41,4 @@ func mostrar_sobre(personajes: Array) -> void:
 	var px_ancho := ancho * escala / (float(textura.get_width()) * proporcion_visible_ancho)
 	var px_alto := alto * escala / (float(textura.get_height()) * proporcion_visible_alto)
 	sprite.pixel_size = maxf(px_ancho, px_alto)
+	sprite.modulate.a = opacidad
