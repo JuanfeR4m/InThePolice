@@ -18,10 +18,19 @@ const MODOS_DIFICILES := [
 	IncidentePresionado.Modo.ESPICHAR_JUNTOS,
 	IncidentePresionado.Modo.SECUENCIA,
 ]
+# Estos modos necesitan a los DOS jugadores: con uno solo no avanzan
+const MODOS_COOPERATIVOS := [
+	IncidentePresionado.Modo.JUNTOS,
+	IncidentePresionado.Modo.ESPICHAR_JUNTOS,
+	IncidentePresionado.Modo.ALTERNAR,
+	IncidentePresionado.Modo.SECUENCIA,
+]
 
 @export var escena_incidente: PackedScene
 @export var puntos: Node3D
 @export var maximo_activos := 8
+## Desmarcalo para probar con UN solo jugador: solo salen incidentes que uno puede resolver solo
+@export var modos_cooperativos := true
 ## Cada cuantos segundos aparece un ladron (si no hay uno activo)
 @export var intervalo_robo := 30.0
 ## Segundos que tiene el ladron para escapar antes de que lo atrapen
@@ -90,6 +99,8 @@ func elegir_modo() -> IncidentePresionado.Modo:
 	var modos: Array = MODOS_FACILES.duplicate()
 	if ira >= IRA_DIFICIL:
 		modos.append_array(MODOS_DIFICILES)
+	if not modos_cooperativos:
+		modos = modos.filter(func(m): return not MODOS_COOPERATIVOS.has(m))
 	return modos.pick_random()
 
 func limpiar_ocupados() -> void:

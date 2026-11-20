@@ -3,14 +3,14 @@ extends Node3D
 @export var proporcion_visible_ancho := 0.58
 @export var proporcion_visible_alto := 0.62
 
-@export var escala := 1.35
+@export var escala := 0.5
 
 @export var ancho_personaje := 0.9
 @export var alto_personaje := 1.9
 
 @export var desplazamiento_y := 0.0
-## Transparencia de la nube: baja para que se vean pelear los ciudadanos
-@export_range(0.0, 1.0, 0.05) var opacidad := 0.45
+## 1.0 = opaca. Bajala si quieres ver a los peleadores a traves de la nube
+@export_range(0.0, 1.0, 0.05) var opacidad := 1.0
 
 @onready var sprite: AnimatedSprite3D = $AnimatedSprite3D
 
