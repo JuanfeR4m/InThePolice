@@ -12,32 +12,33 @@ signal iniciar
 var boton_jugar: Button
 
 
-func _ready():
+func _ready() -> void:
 	layer = 10
 	add_to_group("menu_inicio")
-
+	# El menú sigue funcionando aunque el juego esté en pausa
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().paused = true
 	_construir()
-	boton_jugar.grab_focus()
+	if boton_jugar != null:
+		boton_jugar.grab_focus()
 
 
-func _construir():
-	var fondo = ColorRect.new()
+func _construir() -> void:
+	var fondo := ColorRect.new()
 	fondo.color = color_fondo
 	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(fondo)
 
-	var centro = CenterContainer.new()
+	var centro := CenterContainer.new()
 	centro.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(centro)
 
-	var caja = VBoxContainer.new()
+	var caja := VBoxContainer.new()
 	caja.add_theme_constant_override("separation", 22)
 	caja.alignment = BoxContainer.ALIGNMENT_CENTER
 	centro.add_child(caja)
 
-	var t = Label.new()
+	var t := Label.new()
 	t.text = titulo
 	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	t.add_theme_font_size_override("font_size", 78)
@@ -46,7 +47,7 @@ func _construir():
 	t.add_theme_constant_override("outline_size", 14)
 	caja.add_child(t)
 
-	var s = Label.new()
+	var s := Label.new()
 	s.text = subtitulo
 	s.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	s.add_theme_font_size_override("font_size", 24)
@@ -57,11 +58,11 @@ func _construir():
 	boton_jugar.pressed.connect(_on_jugar)
 	caja.add_child(boton_jugar)
 
-	var salir = _boton("SALIR")
-	salir.pressed.connect(func(): get_tree().quit())
+	var salir := _boton("SALIR")
+	salir.pressed.connect(func() -> void: get_tree().quit())
 	caja.add_child(salir)
 
-	var c = Label.new()
+	var c := Label.new()
 	c.text = controles
 	c.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	c.add_theme_font_size_override("font_size", 18)
@@ -70,7 +71,7 @@ func _construir():
 
 
 func _boton(texto: String) -> Button:
-	var b = Button.new()
+	var b := Button.new()
 	b.text = texto
 	b.custom_minimum_size = Vector2(280, 64)
 	b.add_theme_font_size_override("font_size", 30)
@@ -86,7 +87,7 @@ func _boton(texto: String) -> Button:
 
 
 func _estilo(color: Color) -> StyleBoxFlat:
-	var e = StyleBoxFlat.new()
+	var e := StyleBoxFlat.new()
 	e.bg_color = color
 	e.set_corner_radius_all(12)
 	e.set_border_width_all(4)
@@ -94,7 +95,7 @@ func _estilo(color: Color) -> StyleBoxFlat:
 	return e
 
 
-func _on_jugar():
+func _on_jugar() -> void:
 	get_tree().paused = false
 	iniciar.emit()
 	queue_free()

@@ -23,6 +23,9 @@ func _ready():
 	if name == "Personaje2":
 		sufijo = "2"
 	if sufijo == "2":
+		# nivel_1 instancia personaje.tscn como "Personaje2": viene en el grupo jugador1
+		remove_from_group("jugador1")
+		add_to_group("jugador2")
 		_poner_tecla("Interactuar", "interactuar2")
 		_poner_tecla("Fuerza", "fuerza2")
 		_poner_tecla("Apuntar", "disparar2")
@@ -40,10 +43,10 @@ func _accion(base: String) -> String:
 	return base + "1"
 
 
-func _poner_tecla(nodo: String, accion: String):
+func _poner_tecla(nodo: String, nombre_accion: String):
 	var n = get_node_or_null(nodo)
 	if n != null:
-		n.tecla = accion
+		n.tecla = nombre_accion
 
 
 func aplicar_color(color: Color):

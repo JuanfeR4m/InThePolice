@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://d2jgt4oek0gan"]
+
+[ext_resource type="PackedScene" uid="uid://cf5uitkpnnvgf" path="res://escenas/nivel_1.tscn" id="1_xi31o"]
+
+[node name="Nivel1" unique_id=1034632057 instance=ExtResource("1_xi31o")]
+script = null
+
+[node name="Cronometro" parent="Node2D/capacronometro" parent_id_path=PackedInt32Array(487617422) index="0" unique_id=690824458]
+position = Vector2(1040, 115)
+
+[editable path="ZonaA"]
