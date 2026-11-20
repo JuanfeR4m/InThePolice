@@ -6,50 +6,31 @@ enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO }
 const INTERVALO_REVISAR := 0.5
 const TIEMPO_ATASCO := 1.5
 const DISTANCIA_ATASCO := 3.0
-const UMBRAL_RUTA := 0.3
-const UMBRAL_RUTA_PERSECUCION := 1.0
-const GRUPO_CIUDADANOS := "ciudadanos"
-const DISTANCIA_SEPARACION := 1.1
-const FUERZA_SEPARACION := 3.0
-const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
+
+const TRAMO_MIN := 8.0
+const TRAMO_MAX := 20.0
+const GIRO_MAX := PI / 3.0
+const PROBABILIDAD_PAUSA := 0.2
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
 @export var cooldown_pelea := 20.0
 @export var patrulla_aleatoria := true
 @export var radio_deambular := 25.0
+# La feria es un cuadrado: los ciudadanos nunca eligen destinos fuera de él
+@export var centro_feria := Vector3.ZERO
+@export var limite_feria := 13.0
 @export var pausa_min := 0.5
 @export var pausa_max := 3.0
 @export var rapidez_acudir := 4.0
 @export var margen_cambio := 4.0
 @export var tiempo_max_ruta := 40.0
 @export var vida = 100
-## Si es true, es de los que hay que defender: su borde se ilumina en verde, pero solo cuando cae la noche
-@export var es_administrativo := false:
-	set(valor):
-		es_administrativo = valor
-		aplicar_contorno()
 @export var rapidez = 2.0
 @export var radio_ver = 6.0
 @export var radio_perder = 9.0
 @export var puntos: Array[Vector3] = [
 	Vector3(-6, 0, -3), Vector3(6, 0, -3)]
-
-@export_group("Noche")
-## De noche corren (en vez de pasear) entre puntos repartidos por todo el mapa
-@export var rapidez_noche := 3.5
-@export var centro_noche := Vector3.ZERO
-## Los destinos de la noche caen en un anillo entre estos dos radios: lejos del centro
-@export var radio_minimo_noche := 10.0
-@export var radio_noche := 26.0
-@export var pausa_noche_max := 0.3
-
-# Ajustes de avoidance (puedes tocarlos desde el inspector)
-@export var radio_avoidance := 0.65
-@export var distancia_vecinos := 6.0
-@export var max_vecinos := 12
-@export var horizonte_agentes := 2.5
-
 @onready var anim = $Modelo/AnimationPlayer
 @onready var agente: NavigationAgent3D = $NavigationAgent3D
 
@@ -73,10 +54,8 @@ var quiere_moverse := false
 var reloj_revisar := 0.0
 var reloj_atasco := 0.0
 var ultima_pos := Vector3.ZERO
-var es_noche := false
-var contorno_visible := false
-var reloj_noche := 0.0
-var partida = null
+var rumbo := randf() * TAU
+var ya_entro := false
 
 static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
 	var n = normal.normalized()
@@ -86,42 +65,12 @@ static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3,
 	var ndot_h = max(0.0, n.dot(h))
 	return pow(ndot_h, brillo)
 
-func aplicar_contorno() -> void:
-	if not is_inside_tree():
-		return
-	var material: ShaderMaterial = null
-	if es_administrativo and contorno_visible:
-		material = ShaderMaterial.new()
-		material.shader = SHADER_CONTORNO
-	for malla in find_children("*", "MeshInstance3D", true, false):
-		(malla as MeshInstance3D).material_overlay = material
-
-func mostrar_contorno_noche() -> void:
-	contorno_visible = true
-	aplicar_contorno()
-
 func _ready() -> void:
-	# Si nace cuando ya es de noche, el contorno se enciende de una vez
-	var ambiente = get_tree().get_first_node_in_group("ambiente_noche")
-	if ambiente != null and ambiente.activa:
-		contorno_visible = true
-	aplicar_contorno()
-	# Avoidance: conectar la señal y configurar el agente
-	if not agente.velocity_computed.is_connected(_al_velocidad_calculada):
-		agente.velocity_computed.connect(_al_velocidad_calculada)
-	agente.avoidance_enabled = true
-	agente.radius = radio_avoidance
-	agente.neighbor_distance = distancia_vecinos
-	agente.max_neighbors = max_vecinos
-	agente.time_horizon_agents = horizonte_agentes
-	agente.path_desired_distance = 0.5
-	agente.target_desired_distance = 0.5
-	agente.avoidance_priority = 0.5
-
 	if not viene_de_afuera:
 		origen = global_position
 	reloj_revisar = randf() * INTERVALO_REVISAR
-	reloj_noche = randf() * INTERVALO_REVISAR
+	agente.avoidance_priority = randf()
+	ignorar_otros_ciudadanos()
 	for i in range(10):
 		await get_tree().physics_frame
 		var mapa = agente.get_navigation_map()
@@ -141,12 +90,11 @@ func _al_velocidad_calculada(v: Vector3) -> void:
 		velocity.z = v.z
 
 func ajustar_a_malla(p: Vector3) -> Vector3:
-	if not is_inside_tree():
-		return p
+	p = limitar_a_feria(p)
 	if usa_malla:
 		var mapa = agente.get_navigation_map()
 		if NavigationServer3D.map_get_iteration_id(mapa) > 0:
-			return NavigationServer3D.map_get_closest_point(mapa, p)
+			return limitar_a_feria(NavigationServer3D.map_get_closest_point(mapa, p))
 	return p
 
 func distancia_plana(p: Vector3) -> float:
@@ -157,28 +105,62 @@ func llego_a(p: Vector3, tolerancia := 0.5) -> bool:
 		return true
 	return usa_malla and agente.is_navigation_finished() and distancia_plana(p) < 2.5
 
-func elegir_destino() -> void:
-	if not is_inside_tree():
+func ignorar_otros_ciudadanos() -> void:
+	for otro in get_tree().get_nodes_in_group("ciudadanos"):
+		if otro != self and otro is CharacterBody3D:
+			add_collision_exception_with(otro)
+			otro.add_collision_exception_with(self)
+
+
+func limitar_a_feria(p: Vector3) -> Vector3:
+	p.x = clampf(p.x, centro_feria.x - limite_feria, centro_feria.x + limite_feria)
+	p.z = clampf(p.z, centro_feria.z - limite_feria, centro_feria.z + limite_feria)
+	return p
+
+func dentro_de_feria(p: Vector3, holgura := 0.0) -> bool:
+	return absf(p.x - centro_feria.x) <= limite_feria + holgura \
+		and absf(p.z - centro_feria.z) <= limite_feria + holgura
+
+
+func contener_en_feria() -> void:
+	if not ya_entro:
+		ya_entro = dentro_de_feria(global_position)
 		return
-	var ang := randf() * TAU
-	if es_noche:
-		# Anillo alrededor del centro: nadie se queda amontonado en medio
-		var dist_n := randf_range(radio_minimo_noche, radio_noche)
-		destino_azar = ajustar_a_malla(centro_noche + Vector3(cos(ang), 0.0, sin(ang)) * dist_n)
+	if dentro_de_feria(global_position):
+		return
+	var dentro := limitar_a_feria(global_position)
+	global_position.x = dentro.x
+	global_position.z = dentro.z
+	velocity.x = 0.0
+	velocity.z = 0.0
+
+func elegir_destino(dar_la_vuelta := false) -> void:
+	if dar_la_vuelta:
+		rumbo += randf_range(PI * 0.6, PI * 1.4)
 	else:
-		var dist := sqrt(randf()) * radio_deambular
-		destino_azar = ajustar_a_malla(origen + Vector3(cos(ang), 0.0, sin(ang)) * dist)
+		rumbo += randf_range(-GIRO_MAX, GIRO_MAX)
+	var tramo := randf_range(TRAMO_MIN, TRAMO_MAX)
+	var dir := Vector3(cos(rumbo), 0.0, sin(rumbo))
+	var candidato := global_position + dir * tramo
+
+	if absf(candidato.x - centro_feria.x) > limite_feria:
+		dir.x = -dir.x
+	if absf(candidato.z - centro_feria.z) > limite_feria:
+		dir.z = -dir.z
+	rumbo = atan2(dir.z, dir.x)
+	candidato = limitar_a_feria(global_position + dir * tramo)
+	destino_azar = ajustar_a_malla(candidato)
 	tiempo_ruta = 0.0
 	reloj_atasco = 0.0
 	ultima_pos = global_position
 
 func revisar_atasco(delta: float) -> void:
 	reloj_atasco += delta
-	if reloj_atasco < TIEMPO_ATASCO:
+	if reloj_atasco < 1.5:
 		return
 	reloj_atasco = 0.0
 	if global_position.distance_to(ultima_pos) < 0.3:
-		elegir_destino()
+		elegir_destino(true)
 	ultima_pos = global_position
 
 func atascado_cerca(delta: float) -> bool:
@@ -192,13 +174,6 @@ func atascado_cerca(delta: float) -> bool:
 
 func patrullar(delta: float) -> void:
 	if not patrulla_aleatoria:
-		# Patrulla fija: si se atasca, pasa al siguiente punto
-		reloj_atasco += delta
-		if reloj_atasco >= TIEMPO_ATASCO:
-			reloj_atasco = 0.0
-			if global_position.distance_to(ultima_pos) < 0.3:
-				punto = (punto + 1) % puntos.size()
-			ultima_pos = global_position
 		ir_a(puntos[punto])
 		if distancia_plana(puntos[punto]) < 0.3:
 			punto = (punto + 1) % puntos.size()
@@ -211,62 +186,17 @@ func patrullar(delta: float) -> void:
 		return
 	tiempo_ruta += delta
 	if llego_a(destino_azar, 0.6) or tiempo_ruta > tiempo_max_ruta:
-		pausa = randf_range(0.0, pausa_noche_max) if es_noche else randf_range(pausa_min, pausa_max)
-		detenerse()
 		elegir_destino()
-		return
-	revisar_atasco(delta)
-	ir_a(destino_azar, rapidez_noche if es_noche else -1.0)
-
-func actualizar_noche(delta: float) -> void:
-	reloj_noche -= delta
-	if reloj_noche > 0.0:
-		return
-	reloj_noche = INTERVALO_REVISAR
-	if partida == null or not is_instance_valid(partida):
-		partida = get_tree().get_first_node_in_group("partida")
-		if partida == null:
+		if randf() < PROBABILIDAD_PAUSA:
+			pausa = randf_range(pausa_min, pausa_max)
+			detenerse()
 			return
-	var noche: bool = partida.tiempo > 0.0 and partida.tiempo < partida.noche_en
-	if noche and not es_noche:
-		es_noche = true
-		mostrar_contorno_noche()
-		if estado == Estado.PATRULLA:
-			pausa = 0.0
-			elegir_destino()
-
-func actualizar_prioridad_avoidance() -> void:
-	# Los que están quietos peleando o mirando pesan más: los demás los rodean
-	# También cuenta como quieto el que está en pausa: los demás lo rodean
-	var quieto := not quiere_moverse or estado == Estado.PELEA or (estado == Estado.CURIOSO and llego)
-	agente.avoidance_priority = 1.0 if quieto else 0.5
-
-func separar_de_vecinos() -> void:
-	# Empuje suave: si alguien (ciudadano o curioso) está muy cerca, se aleja
-	var empuje := Vector3.ZERO
-	for nodo in get_tree().get_nodes_in_group(GRUPO_CIUDADANOS):
-		var otro := nodo as Node3D
-		if otro == null or otro == self:
-			continue
-		var d := global_position - otro.global_position
-		d.y = 0.0
-		var dist := d.length()
-		if dist >= DISTANCIA_SEPARACION:
-			continue
-		if dist < 0.01:
-			d = Vector3(randf_range(-1.0, 1.0), 0.0, randf_range(-1.0, 1.0))
-			dist = maxf(d.length(), 0.01)
-		empuje += d / dist * ((DISTANCIA_SEPARACION - dist) / DISTANCIA_SEPARACION)
-	velocity.x += empuje.x * FUERZA_SEPARACION
-	velocity.z += empuje.z * FUERZA_SEPARACION
+	revisar_atasco(delta)
+	ir_a(destino_azar)
 
 func _physics_process(delta):
 	if not listo:
 		return
-	# Si el navmesh tardó en cargar, reintentar
-	if not usa_malla:
-		var mapa = agente.get_navigation_map()
-		usa_malla = NavigationServer3D.map_get_regions(mapa).size() > 0
 	quiere_moverse = false
 	velocity += get_gravity() * delta
 	if enfriamiento > 0.0:
@@ -275,7 +205,6 @@ func _physics_process(delta):
 	if objetivo:
 		distancia = global_position.distance_to(objetivo.global_position)
 	revisar_cercania(delta)
-	actualizar_noche(delta)
 	match estado:
 		Estado.PATRULLA:
 			if persigue_policia and distancia < radio_ver:
@@ -283,11 +212,10 @@ func _physics_process(delta):
 				print("lo vio a ", snappedf(distancia, 0.01), " m")
 			patrullar(delta)
 		Estado.PERSEGUIR:
-			if distancia > radio_perder or not objetivo:
+			if distancia > radio_perder:
 				estado = Estado.PATRULLA
 				print("lo perdió a ", snappedf(distancia, 0.01), " m")
-			else:
-				ir_a(objetivo.global_position, -1.0, UMBRAL_RUTA_PERSECUCION)
+			ir_a(objetivo.global_position)
 		Estado.ACUDIR:
 			if llego_a(destino_incidente) or atascado_cerca(delta):
 				llego = true
@@ -312,9 +240,8 @@ func _physics_process(delta):
 					mirar_hacia(centro_incidente)
 				else:
 					ir_a(destino_incidente, rapidez_acudir)
-	actualizar_prioridad_avoidance()
-	separar_de_vecinos()
 	move_and_slide()
+	contener_en_feria()
 
 func revisar_cercania(delta: float) -> void:
 	reloj_revisar -= delta
@@ -418,12 +345,13 @@ func recibir_golpe(danio, direccion = Vector3.ZERO):
 	global_position += direccion * 3.0
 	print(name, ": resistencia ", vida)
 
-func ir_a(p, vel := -1.0, umbral := UMBRAL_RUTA):
+func ir_a(p, vel := -1.0):
 	if vel < 0.0:
 		vel = rapidez
+	p = limitar_a_feria(p)
 	var dir: Vector3
 	if usa_malla:
-		if agente.target_position.distance_to(p) > umbral:
+		if agente.target_position.distance_to(p) > 0.3:
 			agente.target_position = p
 		dir = agente.get_next_path_position() - global_position
 	else:
@@ -442,4 +370,4 @@ func ir_a(p, vel := -1.0, umbral := UMBRAL_RUTA):
 		velocity.x = dir.x * vel
 		velocity.z = dir.z * vel
 	basis = Basis.looking_at(dir)
-	anim.play("sprint" if es_noche and vel >= rapidez_noche else "walk")
+	anim.play("walk")
