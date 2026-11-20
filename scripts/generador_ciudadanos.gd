@@ -1,4 +1,4 @@
-class_name GeneradorCiudadanos
+
 extends Node
 
 const GRUPO_CIUDADANOS := "ciudadanos"
