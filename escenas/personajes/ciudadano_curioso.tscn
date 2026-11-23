@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_base.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://din4ide001alx" path="res://scripts/enemigos/ciudadano_curioso.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://bm0anb5g0n7n2" path="res://assets/modelos_kenney/GLB format/character-male-a.glb" id="3_skin"]
+
+[node name="CiudadanoCurioso" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+
+[node name="Skin" parent="Modelo" index="0" instance=ExtResource("3_skin")]

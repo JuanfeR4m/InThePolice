@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_base.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://c8v2jndrru2bo" path="res://scripts/enemigos/ciudadano_miedoso.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://cb4gvedpu35r6" path="res://assets/modelos_kenney/GLB format/character-female-a.glb" id="3_skin"]
+
+[node name="CiudadanoMiedoso" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+
+[node name="Skin" parent="Modelo" index="0" instance=ExtResource("3_skin")]

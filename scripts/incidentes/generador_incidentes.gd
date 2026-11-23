@@ -25,6 +25,8 @@ const MODOS_COOPERATIVOS := [
 	IncidentePresionado.Modo.ALTERNAR,
 	IncidentePresionado.Modo.SECUENCIA,
 ]
+## Distancia mínima entre dos conflictos para que no se encimen
+const DISTANCIA_ENTRE_INCIDENTES := 8.0
 
 @export var escena_incidente: PackedScene
 @export var puntos: Node3D
@@ -35,11 +37,18 @@ const MODOS_COOPERATIVOS := [
 @export var intervalo_robo := 30.0
 ## Segundos que tiene el ladron para escapar antes de que lo atrapen
 @export var tiempo_huida := 20.0
+@export_group("Conflictos espontáneos")
+## Si está activo, el conflicto nace entre dos ciudadanos cercanos (de cualquier tipo, en cualquier
+## parte del mapa). Si no encuentra pareja, usa los puntos fijos como antes.
+@export var conflictos_espontaneos := true
+## Distancia máxima entre los dos ciudadanos que se pelean
+@export var distancia_pareja := 20.0
 
 var ira := 0
 var ocupados := {}
 var reloj_robo := 30.0
 var ladron: Ciudadano = null
+var _contador := 0
 
 func _process(delta: float) -> void:
 	reloj_robo -= delta
@@ -80,6 +89,16 @@ func _on_timer_timeout() -> void:
 	limpiar_ocupados()
 	if ocupados.size() >= maximo_activos:
 		return
+	# 1) Conflicto espontáneo entre dos ciudadanos libres cercanos
+	if conflictos_espontaneos:
+		var posicion := posicion_espontanea()
+		if posicion != Vector3.INF:
+			crear_incidente(posicion, _contador)
+			_contador += 1
+			return
+	# 2) Si no hay pareja, usa los puntos fijos del mapa
+	if puntos == null:
+		return
 	var libres: Array[Node] = []
 	for hijo in puntos.get_children():
 		if not ocupados.has(hijo):
@@ -87,13 +106,50 @@ func _on_timer_timeout() -> void:
 	if libres.is_empty():
 		return
 	var elegido := libres.pick_random() as Node3D
+	crear_incidente(elegido.global_position, elegido)
+
+func crear_incidente(posicion: Vector3, llave: Variant) -> void:
 	var incidente: IncidentePresionado = escena_incidente.instantiate()
 	incidente.modo = elegir_modo()
 	incidente.resuelto.connect(_on_incidente_resuelto)
 	incidente.escalado.connect(_on_incidente_escalado)
 	add_child(incidente)
-	incidente.global_position = elegido.global_position
-	ocupados[elegido] = incidente
+	incidente.global_position = posicion
+	ocupados[llave] = incidente
+
+## Punto medio entre dos ciudadanos libres que están cerca entre sí (Vector3.INF si no hay)
+func posicion_espontanea() -> Vector3:
+	var libres: Array[Ciudadano] = []
+	for nodo in get_tree().get_nodes_in_group("ciudadanos"):
+		var c := nodo as Ciudadano
+		if c != null and c.disponible():
+			libres.append(c)
+	if libres.size() < 2:
+		return Vector3.INF
+	libres.shuffle()
+	for a in libres:
+		var pareja: Ciudadano = null
+		var menor := distancia_pareja
+		for b in libres:
+			if b == a:
+				continue
+			var d := a.global_position.distance_to(b.global_position)
+			if d < menor:
+				menor = d
+				pareja = b
+		if pareja == null:
+			continue
+		var medio := (a.global_position + pareja.global_position) * 0.5
+		if lejos_de_incidentes(medio):
+			return medio
+	return Vector3.INF
+
+func lejos_de_incidentes(posicion: Vector3) -> bool:
+	for incidente in ocupados.values():
+		if is_instance_valid(incidente) \
+		and incidente.global_position.distance_to(posicion) < DISTANCIA_ENTRE_INCIDENTES:
+			return false
+	return true
 
 func elegir_modo() -> IncidentePresionado.Modo:
 	var modos: Array = MODOS_FACILES.duplicate()
@@ -104,10 +160,10 @@ func elegir_modo() -> IncidentePresionado.Modo:
 	return modos.pick_random()
 
 func limpiar_ocupados() -> void:
-	for punto in ocupados.keys():
-		var incidente = ocupados[punto]
+	for llave in ocupados.keys():
+		var incidente = ocupados[llave]
 		if not is_instance_valid(incidente) or incidente.is_queued_for_deletion():
-			ocupados.erase(punto)
+			ocupados.erase(llave)
 
 func _on_incidente_resuelto(_incidente: IncidentePresionado) -> void:
 	cambiar_ira(-IRA_RESUELTO)

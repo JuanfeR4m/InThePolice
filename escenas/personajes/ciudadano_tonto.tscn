@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://edx03f6rl75b"]
+
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_base.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://c6aaliu1w47md" path="res://scripts/enemigos/ciudadano_tonto.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://kt8lkvi5bed1" path="res://assets/modelos_kenney/GLB format/character-male-d.glb" id="3_skin"]
+
+[node name="CiudadanoTonto" unique_id=1706144982 groups=["ciudadanos"] instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+tiempo_cambio_direccion = 2.0
+
+[node name="Skin" parent="Modelo" index="0" unique_id=657654012 instance=ExtResource("3_skin")]

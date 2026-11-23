@@ -28,5 +28,3 @@ max_neighbors = 10
 time_horizon_agents = 2.5
 time_horizon_obstacles = 0.5
 max_speed = 4.0
-
-[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_al_velocidad_calculada"]

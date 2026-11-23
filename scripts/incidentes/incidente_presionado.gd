@@ -20,7 +20,8 @@ const CURIOSOS := 3
 const DISTANCIA_MIRAR := 2.2
 const RADIO_RECLUTAR := 70.0
 const RADIO_CURIOSOS := 40.0
-const ESPERA_MAXIMA := 25.0
+const RADIO_HUIDA := 12.0   # los que no miran y están así de cerca se alejan
+const ESPERA_MAXIMA := 40.0
 const INTERVALO_RECLUTAR := 1.0
 const PRESIONES := 12
 const CAIDA_PRESIONES := 0.25
@@ -205,15 +206,20 @@ func reclutar() -> void:
 				break
 		reclutados = true
 		return
-	var mirones: Array[Node3D] = []
+	# La pelea ya empezó: unos ciudadanos cercanos van a mirar, los demás se alejan
+	var cercanos: Array[Node3D] = []
 	for c in get_tree().get_nodes_in_group("ciudadanos"):
-		if c.has_method("puede_mirar") and c.puede_mirar() \
+		if c.has_method("disponible") and c.disponible() \
 		and c.global_position.distance_to(global_position) <= RADIO_CURIOSOS:
-			mirones.append(c)
-	ordenar_por_cercania(mirones)
-	for c in mirones:
-		if not inscribir_curioso(c):
-			break
+			cercanos.append(c)
+	ordenar_por_cercania(cercanos)
+	for c in cercanos:
+		var quiere_mirar: bool = c.has_method("puede_mirar") and c.puede_mirar()
+		if quiere_mirar and indice_libre(puestos_curiosos) != -1:
+			inscribir_curioso(c)
+		elif c.has_method("alejarse_de") \
+		and c.global_position.distance_to(global_position) <= RADIO_HUIDA:
+			c.alejarse_de(global_position, RADIO_HUIDA + 6.0)
 
 func llegaron_todos() -> bool:
 	var activos := peleadores_activos()
@@ -231,6 +237,12 @@ func revisar_llegada(delta: float) -> void:
 	if llegaron_todos():
 		iniciar()
 	elif espera_llegada >= ESPERA_MAXIMA:
+		var activos := peleadores_activos()
+		var llegaron := 0
+		for p in activos:
+			if p.llego:
+				llegaron += 1
+		push_warning("Incidente cancelado: reclutados %d/%d, llegaron %d" % [activos.size(), PELEADORES, llegaron])
 		queue_free()
 
 func iniciar() -> void:

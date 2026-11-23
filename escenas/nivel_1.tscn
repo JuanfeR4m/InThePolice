@@ -15,6 +15,14 @@
 [ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="15_2sgaa"]
 [ext_resource type="PackedScene" uid="uid://b3wbnxop6qmv6" path="res://escenas/hud/hud_partida.tscn" id="16_lgf0p"]
 [ext_resource type="PackedScene" path="res://escenas/entorno/ambiente_noche.tscn" id="17_c6c8x"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_borracho.tscn" id="ciud_borracho"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_ladron.tscn" id="ciud_ladron"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_periodista.tscn" id="ciud_periodista"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_miedoso.tscn" id="ciud_miedoso"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_curioso.tscn" id="ciud_curioso"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_conflictivo.tscn" id="ciud_conflictivo"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_manifestante.tscn" id="ciud_manifestante"]
+[ext_resource type="PackedScene" path="res://escenas/personajes/ciudadano_tonto.tscn" id="ciud_tonto"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
 
@@ -97,7 +105,7 @@ navigation_layers = 3
 
 [node name="GeneradorCiudadanos" type="Node3D" parent="." unique_id=2054703464 node_paths=PackedStringArray("puntos", "centro")]
 script = ExtResource("14_vpnp5")
-escenas = Array[PackedScene]([ExtResource("3_xqdpg")])
+escenas = Array[PackedScene]([ExtResource("ciud_borracho"), ExtResource("ciud_ladron"), ExtResource("ciud_periodista"), ExtResource("ciud_miedoso"), ExtResource("ciud_curioso"), ExtResource("ciud_conflictivo"), ExtResource("ciud_manifestante"), ExtResource("ciud_tonto")])
 puntos = NodePath("../PuntosCiudadanos")
 centro = NodePath("../Centro")
 
