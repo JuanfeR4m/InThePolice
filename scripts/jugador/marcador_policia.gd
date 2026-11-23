@@ -1,8 +1,8 @@
 extends Sprite3D
 # Triángulo flotante sobre cada policía para distinguirlos de los ciudadanos.
-# Policía 1 = rojo, Policía 2 = morado.
+# Policía 1 = amarillo, Policía 2 = morado.
 
-const ROJO = preload("res://assets/hud/marcador_policia_rojo.png")
+const AMARILLO = preload("res://assets/hud/marcador_policia_amarillo.png")
 const MORADO = preload("res://assets/hud/marcador_policia_morado.png")
 
 @export var altura: float = 2.9
@@ -23,7 +23,7 @@ func _elegir_color():
 	if padre.is_in_group("jugador2") or padre.name == "Personaje2":
 		texture = MORADO
 	else:
-		texture = ROJO
+		texture = AMARILLO
 
 
 func _process(delta):

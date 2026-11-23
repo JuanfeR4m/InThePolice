@@ -1,7 +1,10 @@
 class_name Ciudadano
 extends CharacterBody3D
 
-enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO, HUIR }
+enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO, HUIR, LADRON }
+
+signal ladron_atrapado(ciudadano: Ciudadano)
+signal ladron_escapo(ciudadano: Ciudadano)
 
 const INTERVALO_REVISAR := 0.5
 const TIEMPO_ATASCO := 1.2
@@ -14,6 +17,11 @@ const FUERZA_SEPARACION := 5.2
 const VELOCIDAD_GIRO := 11.0
 const DISTANCIA_RAYO_OBSTACULO := 1.65
 const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
+const COLOR_LADRON := Color(0.95, 0.1, 0.1)
+const RADIO_CAPTURA := 1.3
+const INTERVALO_HUIDA := 0.8
+const DISTANCIA_HUIDA := 14.0
+const DURACION_ROBO := 0.7
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -41,6 +49,10 @@ const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 @export var rapidez_perseguir := 5.5
 @export var ataca_policia := false
 @export var danio_policia := 1
+
+@export_group("Ladron")
+## Velocidad del ladron: menor que la de correr de los jugadores (7), asi que alcanzarlo es posible
+@export var rapidez_ladron := 5.5
 
 @export_group("Miedo")
 @export var se_asusta := false
@@ -98,6 +110,11 @@ var empuje_externo := Vector3.ZERO
 var reloj_impacto := 0.0
 var angulo_vigilancia := 0.0
 var oculto_en_cobertura := false
+var es_ladron := false
+var reloj_huida_ladron := 0.0
+var reloj_robo := 0.0
+var reloj_destino_ladron := 0.0
+var destino_ladron := Vector3.ZERO
 
 static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
 	var n := normal.normalized()
@@ -117,7 +134,13 @@ func aplicar_contorno() -> void:
 	if not is_inside_tree():
 		return
 	var material: ShaderMaterial = null
-	if es_administrativo and contorno_visible:
+	if es_ladron:
+		material = ShaderMaterial.new()
+		material.shader = SHADER_CONTORNO
+		material.set_shader_parameter("color_contorno", COLOR_LADRON)
+		material.set_shader_parameter("grosor", 0.035)
+		material.set_shader_parameter("velocidad_pulso", 9.0)
+	elif es_administrativo and contorno_visible:
 		material = ShaderMaterial.new()
 		material.shader = SHADER_CONTORNO
 	for malla in find_children("*", "MeshInstance3D", true, false):
@@ -579,6 +602,8 @@ func _physics_process(delta: float) -> void:
 				mira = rival.global_position
 			mirar_hacia(mira, delta)
 			pelear(delta)
+		Estado.LADRON:
+			huir_ladron(delta)
 		Estado.HUIR:
 			var amenaza := amenaza_cercana(radio_deteccion_miedo * 1.5)
 			if amenaza != null:
@@ -616,6 +641,68 @@ func _physics_process(delta: float) -> void:
 			velocity.x = emp.x * 0.55
 			velocity.z = emp.z * 0.55
 	move_and_slide()
+
+# ---------- Ladron ----------
+func volverse_ladron(tiempo: float) -> void:
+	soltar_incidente()
+	es_ladron = true
+	reloj_huida_ladron = tiempo
+	reloj_robo = DURACION_ROBO
+	reloj_destino_ladron = 0.0
+	pausa = 0.0
+	estado = Estado.LADRON
+	aplicar_contorno()
+
+func elegir_destino_ladron(perseguidor: Node3D) -> void:
+	# Prueba 8 direcciones al azar y se queda con la que lo deja mas lejos del jugador
+	# (asi no se arrincona contra el borde de la feria)
+	var mejor := global_position
+	var mejor_puntaje := -INF
+	for i in 8:
+		var angulo := randf() * TAU
+		var dir := Vector3(cos(angulo), 0.0, sin(angulo))
+		var candidato := ajustar_a_malla(global_position + dir * DISTANCIA_HUIDA)
+		if distancia_plana(candidato) < 4.0:
+			continue
+		var puntaje := distancia_plana(candidato)
+		if perseguidor != null:
+			puntaje = Vector2(candidato.x, candidato.z).distance_to(
+				Vector2(perseguidor.global_position.x, perseguidor.global_position.z))
+		if puntaje > mejor_puntaje:
+			mejor_puntaje = puntaje
+			mejor = candidato
+	if mejor_puntaje == -INF:
+		mejor = ajustar_a_malla(origen)
+	destino_ladron = mejor
+
+func huir_ladron(delta: float) -> void:
+	# Primero agarra lo robado (pick-up) y recien despues sale corriendo
+	if reloj_robo > 0.0:
+		reloj_robo -= delta
+		frenar_solo()
+		reproducir_anim("pick-up")
+		return
+	reloj_huida_ladron -= delta
+	if reloj_huida_ladron <= 0.0:
+		escapar()
+		return
+	var perseguidor := buscar_policia()
+	if perseguidor != null and distancia_plana(perseguidor.global_position) <= RADIO_CAPTURA:
+		atrapar()
+		return
+	reloj_destino_ladron -= delta
+	if reloj_destino_ladron <= 0.0 or llego_a(destino_ladron, 1.0):
+		reloj_destino_ladron = INTERVALO_HUIDA
+		elegir_destino_ladron(perseguidor)
+	ir_a(destino_ladron, rapidez_ladron)
+
+func atrapar() -> void:
+	ladron_atrapado.emit(self)
+	queue_free()
+
+func escapar() -> void:
+	ladron_escapo.emit(self)
+	queue_free()
 
 func pelear(delta: float) -> void:
 	reloj_golpe -= delta
@@ -730,7 +817,7 @@ func recibir_golpe(danio, direccion = Vector3.ZERO) -> void:
 		reloj_impacto = 0.22
 	if anim != null and anim.has_animation("hurt"):
 		reproducir_anim("hurt", true)
-	if vida <= 35 and (se_asusta or es_administrativo) and estado != Estado.HUIR:
+	if vida <= 35 and (se_asusta or es_administrativo) and estado != Estado.HUIR and not es_ladron:
 		soltar_incidente()
 		estado = Estado.HUIR
 		reloj_miedo = 2.5
