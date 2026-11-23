@@ -9,11 +9,12 @@
 [ext_resource type="Script" uid="uid://b33i6k8jqj7f8" path="res://scripts/partida.gd" id="7_wh2m3"]
 [ext_resource type="PackedScene" uid="uid://bts8qwxctvwti" path="res://escenas/zonas/zona_a.tscn" id="8_7562m"]
 [ext_resource type="PackedScene" uid="uid://cikptugflnihk" path="res://escenas/incidentes/generador_incidentes.tscn" id="10_622t7"]
-[ext_resource type="Script" uid="uid://dyoj5k78bc5t8" path="res://scripts/hub/juego.gd" id="11_lgf0p"]
+[ext_resource type="Script" uid="uid://dyoj5k78bc5t8" path="res://scripts/hud/juego.gd" id="11_lgf0p"]
 [ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="13_dt1ax"]
 [ext_resource type="Script" uid="uid://lgw8aoh6vie6" path="res://scripts/generador_ciudadanos.gd" id="14_vpnp5"]
 [ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="15_2sgaa"]
 [ext_resource type="PackedScene" uid="uid://b85qskgtbjx2y" path="res://escenas/escenario/cronometro_hud.tscn" id="16_bvwj0"]
+[ext_resource type="PackedScene" path="res://escenas/hud/hud_partida.tscn" id="16_lgf0p"]
 [ext_resource type="PackedScene" path="res://escenas/entorno/ambiente_noche.tscn" id="17_c6c8x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="CieloMat"]
@@ -219,6 +220,8 @@ vista_previa = true
 
 [node name="Cronometro" parent="Node2D/capacronometro" unique_id=690824458 instance=ExtResource("16_bvwj0")]
 position = Vector2(1050, 70)
+
+[node name="HUD" parent="." unique_id=1290018793 instance=ExtResource("16_lgf0p")]
 
 [connection signal="timeout" from="GeneradorCiudadanos/Timer" to="GeneradorCiudadanos" method="_on_timer_timeout"]
 
