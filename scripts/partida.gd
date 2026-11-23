@@ -149,7 +149,6 @@ func _sonido_fin():
 	var audio = get_parent().get_node_or_null("AudioPartida")
 	if audio == null or audio.get("p_inicio") == null:
 		return
-	# El audio se pausaría junto con el árbol y el sonido final no se oiría
 	audio.process_mode = Node.PROCESS_MODE_ALWAYS
 	if estado == Estado.GANO:
 		audio.victoria()
