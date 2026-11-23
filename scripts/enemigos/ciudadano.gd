@@ -19,8 +19,12 @@ const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 const COLOR_LADRON := Color(0.95, 0.1, 0.1)
 const RADIO_CAPTURA := 1.3
 const INTERVALO_HUIDA := 0.8
-const DISTANCIA_HUIDA := 14.0
+const CANDIDATOS_HUIDA := 12
+const PASO_HUIDA := 5.0
+const PESO_CENTRO := 0.3
 const DURACION_ROBO := 0.7
+const VELOCIDAD_MIN := 0.3
+const GIRO := 10.0
 
 @export var objetivo: Node3D
 @export var persigue_policia := false
@@ -39,6 +43,7 @@ const DURACION_ROBO := 0.7
 @export var rapidez = 2.0
 ## Velocidad del ladron: menor que la de correr de los jugadores (7), asi que alcanzarlo es posible
 @export var rapidez_huida := 5.5
+@export var radio_centro_huida := 9.0
 @export var radio_ver = 6.0
 @export var radio_perder = 9.0
 @export var puntos: Array[Vector3] = [
@@ -262,6 +267,8 @@ func _physics_process(delta):
 					ir_a(destino_incidente, rapidez_acudir)
 	move_and_slide()
 	contener_en_feria()
+	orientar(delta)
+	animar_paso()
 
 func revisar_cercania(delta: float) -> void:
 	reloj_revisar -= delta
@@ -373,26 +380,29 @@ func jugador_mas_cercano() -> Node3D:
 			mejor = jugador
 	return mejor
 
+func distancia_entre(a: Vector3, b: Vector3) -> float:
+	return Vector2(a.x, a.z).distance_to(Vector2(b.x, b.z))
+
+func limitar_a_centro(p: Vector3) -> Vector3:
+	var desde := p - centro_feria
+	desde.y = 0.0
+	if desde.length() > radio_centro_huida:
+		return centro_feria + desde.normalized() * radio_centro_huida
+	return p
+
 func elegir_destino_huida(perseguidor: Node3D) -> void:
-	# Prueba 8 direcciones al azar y se queda con la que lo deja mas lejos del jugador
-	# (asi no se arrincona contra el borde de la feria)
-	var mejor := Vector3.ZERO
+	var mejor := ajustar_a_malla(centro_feria)
 	var mejor_puntaje := -INF
-	for i in 8:
+	for i in CANDIDATOS_HUIDA:
 		var angulo := randf() * TAU
-		var dir := Vector3(cos(angulo), 0.0, sin(angulo))
-		var candidato := ajustar_a_malla(global_position + dir * DISTANCIA_HUIDA)
-		if distancia_plana(candidato) < 4.0:
-			continue
-		var puntaje := distancia_plana(candidato)
+		var salto := Vector3(cos(angulo), 0.0, sin(angulo)) * PASO_HUIDA
+		var candidato := ajustar_a_malla(limitar_a_centro(global_position + salto))
+		var puntaje := -distancia_entre(candidato, centro_feria) * PESO_CENTRO
 		if perseguidor != null:
-			puntaje = Vector2(candidato.x, candidato.z).distance_to(
-				Vector2(perseguidor.global_position.x, perseguidor.global_position.z))
+			puntaje += distancia_entre(candidato, perseguidor.global_position)
 		if puntaje > mejor_puntaje:
 			mejor_puntaje = puntaje
 			mejor = candidato
-	if mejor_puntaje == -INF:
-		mejor = ajustar_a_malla(centro_feria)
 	destino_huida = mejor
 
 func huir(delta: float) -> void:
@@ -425,6 +435,25 @@ func atrapar() -> void:
 func escapar() -> void:
 	ladron_escapo.emit(self)
 	queue_free()
+
+func orientar(delta: float) -> void:
+	var plana := Vector3(velocity.x, 0.0, velocity.z)
+	if plana.length() < VELOCIDAD_MIN:
+		return
+	var angulo := atan2(-plana.x, -plana.z)
+	rotation.y = lerp_angle(rotation.y, angulo, GIRO * delta)
+
+func animar_paso() -> void:
+	if not quiere_moverse:
+		return
+	if Vector2(velocity.x, velocity.z).length() < VELOCIDAD_MIN:
+		anim.stop()
+		return
+	var nombre := "walk"
+	if estado == Estado.HUIR:
+		nombre = "sprint"
+	anim.speed_scale = 1.0
+	anim.play(nombre)
 
 func mirar_hacia(punto_mira: Vector3) -> void:
 	var dir := punto_mira - global_position
@@ -511,6 +540,3 @@ func ir_a(p, vel := -1.0):
 	else:
 		velocity.x = dir.x * vel
 		velocity.z = dir.z * vel
-	basis = Basis.looking_at(dir)
-	anim.speed_scale = 1.0
-	anim.play("sprint" if estado == Estado.HUIR else "walk")
