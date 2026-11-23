@@ -4,14 +4,15 @@ extends CharacterBody3D
 enum Estado { PATRULLA, PERSEGUIR, ACUDIR, PELEA, CURIOSO, HUIR }
 
 const INTERVALO_REVISAR := 0.5
-const TIEMPO_ATASCO := 1.5
+const TIEMPO_ATASCO := 1.2
 const DISTANCIA_ATASCO := 3.0
 const UMBRAL_RUTA := 0.3
-const UMBRAL_RUTA_PERSECUCION := 1.0
+const UMBRAL_RUTA_PERSECUCION := 0.8
 const GRUPO_CIUDADANOS := "ciudadanos"
-const DISTANCIA_SEPARACION := 1.35
-const FUERZA_SEPARACION := 4.2
-const VELOCIDAD_GIRO := 10.0
+const DISTANCIA_SEPARACION := 1.5
+const FUERZA_SEPARACION := 5.2
+const VELOCIDAD_GIRO := 11.0
+const DISTANCIA_RAYO_OBSTACULO := 1.65
 const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 
 @export var objetivo: Node3D
@@ -32,7 +33,7 @@ const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 @export var rapidez := 2.0
 @export var radio_ver := 12.0
 @export var radio_perder := 20.0
-@export var distancia_encarar := 1.75
+@export var distancia_encarar := 1.8
 @export var puntos: Array[Vector3] = [
 	Vector3(-6, 0, -3), Vector3(6, 0, -3)]
 
@@ -47,16 +48,16 @@ const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
 @export var rapidez_huida := 5.0
 
 @export_group("Noche")
-@export var rapidez_noche := 3.5
+@export var rapidez_noche := 3.8
 @export var centro_noche := Vector3.ZERO
 @export var radio_minimo_noche := 10.0
 @export var radio_noche := 26.0
-@export var pausa_noche_max := 0.3
+@export var pausa_noche_max := 1.4
 
-@export var radio_avoidance := 0.75
-@export var distancia_vecinos := 6.5
-@export var max_vecinos := 14
-@export var horizonte_agentes := 2.8
+@export var radio_avoidance := 0.85
+@export var distancia_vecinos := 7.5
+@export var max_vecinos := 16
+@export var horizonte_agentes := 3.2
 
 @onready var anim = $Modelo/AnimationPlayer
 @onready var agente: NavigationAgent3D = $NavigationAgent3D
@@ -92,8 +93,11 @@ var destino_huida := Vector3.ZERO
 var reloj_miedo := 0.0
 var factor_ritmo := 1.0
 var fase_flanqueo := 0.0
+var rol_nocturno := 0
 var empuje_externo := Vector3.ZERO
 var reloj_impacto := 0.0
+var angulo_vigilancia := 0.0
+var oculto_en_cobertura := false
 
 static func blinn_phong(normal: Vector3, hacia_luz: Vector3, hacia_ojo: Vector3, brillo: float) -> float:
 	var n := normal.normalized()
@@ -124,8 +128,9 @@ func mostrar_contorno_noche() -> void:
 	aplicar_contorno()
 
 func _ready() -> void:
-	factor_ritmo = randf_range(0.88, 1.14)
-	fase_flanqueo = randf_range(-1.0, 1.0)
+	factor_ritmo = randf_range(0.9, 1.15)
+	fase_flanqueo = [-1.0, 0.0, 1.0][randi() % 3]
+	rol_nocturno = randi() % 3
 	var ambiente = get_tree().get_first_node_in_group("ambiente_noche")
 	if ambiente != null and ambiente.activa:
 		contorno_visible = true
@@ -137,8 +142,8 @@ func _ready() -> void:
 	agente.neighbor_distance = distancia_vecinos
 	agente.max_neighbors = max_vecinos
 	agente.time_horizon_agents = horizonte_agentes
-	agente.path_desired_distance = 0.55
-	agente.target_desired_distance = 0.55
+	agente.path_desired_distance = 0.6
+	agente.target_desired_distance = 0.6
 	agente.avoidance_priority = 0.5
 
 	if not viene_de_afuera:
@@ -160,8 +165,9 @@ func _ready() -> void:
 
 func _al_velocidad_calculada(v: Vector3) -> void:
 	if quiere_moverse:
-		velocity.x = v.x
-		velocity.z = v.z
+		var sep := calcular_separacion() * 0.35
+		velocity.x = v.x + sep.x
+		velocity.z = v.z + sep.z
 
 func ajustar_a_malla(p: Vector3) -> Vector3:
 	if not is_inside_tree():
@@ -175,18 +181,105 @@ func ajustar_a_malla(p: Vector3) -> Vector3:
 func distancia_plana(p: Vector3) -> float:
 	return Vector2(global_position.x, global_position.z).distance_to(Vector2(p.x, p.z))
 
-func llego_a(p: Vector3, tolerancia := 0.5) -> bool:
+func llego_a(p: Vector3, tolerancia := 0.55) -> bool:
 	if distancia_plana(p) < tolerancia:
 		return true
-	return usa_malla and agente.is_navigation_finished() and distancia_plana(p) < 2.5
+	return usa_malla and agente.is_navigation_finished() and distancia_plana(p) < 2.2
+
+func tiene_linea_vision(objetivo_pos: Vector3) -> bool:
+	var espacio := get_world_3d().direct_space_state
+	var inicio := global_position + Vector3.UP * 1.1
+	var fin := objetivo_pos + Vector3.UP * 1.1
+	var query := PhysicsRayQueryParameters3D.create(inicio, fin)
+	query.exclude = [self]
+	var res := espacio.intersect_ray(query)
+	if res.is_empty():
+		return true
+	var collider = res.get("collider")
+	return collider != null and (collider == objetivo or (collider is Node and (collider.is_in_group("jugador") or collider.is_in_group("manifestantes"))))
+
+func evadir_obstaculos_locales(dir_deseada: Vector3) -> Vector3:
+	var espacio := get_world_3d().direct_space_state
+	var origen_rayo := global_position + Vector3.UP * 0.75
+	var dir_norm := dir_deseada.normalized()
+	var izq := dir_norm.rotated(Vector3.UP, 0.55)
+	var der := dir_norm.rotated(Vector3.UP, -0.55)
+	var izq_abierta := dir_norm.rotated(Vector3.UP, 1.15)
+	var der_abierta := dir_norm.rotated(Vector3.UP, -1.15)
+
+	var rayos := [dir_norm, izq, der, izq_abierta, der_abierta]
+	var pesos := [1.4, 1.0, 1.0, 0.7, 0.7]
+	var desvio := Vector3.ZERO
+
+	for i in range(rayos.size()):
+		var r_dir: Vector3 = rayos[i]
+		var dist_check: float = DISTANCIA_RAYO_OBSTACULO if i < 3 else DISTANCIA_RAYO_OBSTACULO * 0.75
+		var query := PhysicsRayQueryParameters3D.create(origen_rayo, origen_rayo + r_dir * dist_check)
+		query.exclude = [self]
+		var hit := espacio.intersect_ray(query)
+		if not hit.is_empty():
+			var collider = hit.get("collider")
+			if collider is Node and (collider.is_in_group(GRUPO_CIUDADANOS) or collider.is_in_group("jugador") or collider.is_in_group("manifestantes")):
+				continue
+			var normal: Vector3 = hit.get("normal", Vector3.ZERO)
+			normal.y = 0.0
+			var dist_hit := origen_rayo.distance_to(hit["position"])
+			var urgencia := clampf((dist_check - dist_hit) / dist_check, 0.0, 1.0)
+			var tangente := Vector3(-r_dir.z, 0.0, r_dir.x)
+			if normal.length() > 0.01 and tangente.dot(normal) < 0.0:
+				tangente = -tangente
+			desvio += (normal * 0.7 + tangente * 0.9).normalized() * urgencia * pesos[i]
+
+	return desvio
+
+func buscar_cobertura_nocturna(amenaza: Node3D) -> Vector3:
+	var mejor_pos := global_position
+	var mejor_puntaje := -INF
+	var poli := buscar_policia()
+	for i in range(10):
+		var ang := (TAU / 10.0) * i + randf_range(-0.2, 0.2)
+		var dist := randf_range(6.0, 15.0)
+		var candidato := ajustar_a_malla(global_position + Vector3(cos(ang), 0.0, sin(ang)) * dist)
+		var puntaje := candidato.distance_to(amenaza.global_position) * 1.4
+		if poli != null:
+			puntaje -= candidato.distance_to(poli.global_position) * 0.8
+		var espacio := get_world_3d().direct_space_state
+		var q := PhysicsRayQueryParameters3D.create(candidato + Vector3.UP * 1.1, amenaza.global_position + Vector3.UP * 1.1)
+		q.exclude = [self]
+		if not espacio.intersect_ray(q).is_empty():
+			puntaje += 12.0
+		if puntaje > mejor_puntaje:
+			mejor_puntaje = puntaje
+			mejor_pos = candidato
+	return mejor_pos
 
 func elegir_destino() -> void:
 	if not is_inside_tree():
 		return
 	var ang := randf() * TAU
 	if es_noche:
-		var dist_n := randf_range(radio_minimo_noche, radio_noche)
-		destino_azar = ajustar_a_malla(centro_noche + Vector3(cos(ang), 0.0, sin(ang)) * dist_n)
+		if es_administrativo or se_asusta:
+			var amenaza := amenaza_cercana(radio_miedo * 2.2)
+			if amenaza != null:
+				destino_azar = buscar_cobertura_nocturna(amenaza)
+			else:
+				var poli := buscar_policia()
+				if poli != null and randf() < 0.65:
+					destino_azar = ajustar_a_malla(poli.global_position + Vector3(cos(ang), 0.0, sin(ang)) * randf_range(3.5, 7.5))
+				else:
+					var dist_n := randf_range(radio_minimo_noche, radio_noche)
+					destino_azar = ajustar_a_malla(centro_noche + Vector3(cos(ang), 0.0, sin(ang)) * dist_n)
+		elif persigue_policia:
+			var poli := buscar_policia()
+			if poli != null and randf() < 0.5:
+				var ang_emboscada := ang + (rol_nocturno - 1) * 1.2
+				destino_azar = ajustar_a_malla(poli.global_position + Vector3(cos(ang_emboscada), 0.0, sin(ang_emboscada)) * randf_range(9.0, 16.0))
+			else:
+				var dist_n := randf_range(radio_minimo_noche, radio_noche)
+				destino_azar = ajustar_a_malla(centro_noche + Vector3(cos(ang), 0.0, sin(ang)) * dist_n)
+		else:
+			var dist_n := randf_range(radio_minimo_noche, radio_noche)
+			destino_azar = ajustar_a_malla(centro_noche + Vector3(cos(ang), 0.0, sin(ang)) * dist_n)
 	else:
 		var dist := sqrt(randf()) * radio_deambular
 		destino_azar = ajustar_a_malla(origen + Vector3(cos(ang), 0.0, sin(ang)) * dist)
@@ -199,7 +292,7 @@ func revisar_atasco(delta: float) -> void:
 	if reloj_atasco < TIEMPO_ATASCO:
 		return
 	reloj_atasco = 0.0
-	if global_position.distance_to(ultima_pos) < 0.3:
+	if global_position.distance_to(ultima_pos) < 0.35:
 		elegir_destino()
 	ultima_pos = global_position
 
@@ -208,7 +301,7 @@ func atascado_cerca(delta: float) -> bool:
 	if reloj_atasco < TIEMPO_ATASCO:
 		return false
 	reloj_atasco = 0.0
-	var quieto := global_position.distance_to(ultima_pos) < 0.3
+	var quieto := global_position.distance_to(ultima_pos) < 0.35
 	ultima_pos = global_position
 	return quieto and distancia_plana(destino_incidente) < DISTANCIA_ATASCO
 
@@ -217,11 +310,12 @@ func patrullar(delta: float) -> void:
 		reloj_atasco += delta
 		if reloj_atasco >= TIEMPO_ATASCO:
 			reloj_atasco = 0.0
-			if global_position.distance_to(ultima_pos) < 0.3:
+			if global_position.distance_to(ultima_pos) < 0.35:
 				punto = (punto + 1) % puntos.size()
 			ultima_pos = global_position
-		ir_a(puntos[punto], rapidez * factor_ritmo)
-		if distancia_plana(puntos[punto]) < 0.35:
+		var vel_ruta: float = (rapidez_noche if es_noche else rapidez) * factor_ritmo
+		ir_a(puntos[punto], vel_ruta)
+		if distancia_plana(puntos[punto]) < 0.4:
 			punto = (punto + 1) % puntos.size()
 		return
 	if pausa > 0.0:
@@ -229,11 +323,15 @@ func patrullar(delta: float) -> void:
 		reloj_atasco = 0.0
 		ultima_pos = global_position
 		detenerse()
+		if es_noche:
+			angulo_vigilancia += delta * 2.2
+			rotation.y += sin(angulo_vigilancia) * 0.9 * delta
 		return
 	tiempo_ruta += delta
-	if llego_a(destino_azar, 0.65) or tiempo_ruta > tiempo_max_ruta:
-		var base_pausa := randf_range(0.0, pausa_noche_max) if es_noche else randf_range(pausa_min, pausa_max)
+	if llego_a(destino_azar, 0.7) or tiempo_ruta > tiempo_max_ruta:
+		var base_pausa := randf_range(0.4, pausa_noche_max) if es_noche else randf_range(pausa_min, pausa_max)
 		pausa = base_pausa * clampf(factor_ritmo, 0.8, 1.3)
+		angulo_vigilancia = randf() * TAU
 		detenerse()
 		elegir_destino()
 		return
@@ -307,16 +405,17 @@ func amenaza_cercana(radio: float) -> Node3D:
 			mejor = m
 	return mejor
 
-func alertar_cercanos(radio := 8.0, asustar_tambien := false) -> void:
+func alertar_cercanos(radio := 8.5, asustar_tambien := false) -> void:
+	var alcance := radio * (1.25 if es_noche else 1.0)
 	for nodo in get_tree().get_nodes_in_group(GRUPO_CIUDADANOS):
 		var otro := nodo as Ciudadano
 		if otro == null or otro == self or not is_instance_valid(otro):
 			continue
-		if global_position.distance_to(otro.global_position) > radio:
+		if global_position.distance_to(otro.global_position) > alcance:
 			continue
 		if asustar_tambien and (otro.es_administrativo or otro.se_asusta) and otro.estado == Estado.PATRULLA:
 			otro.destino_huida = otro.punto_de_refugio(self)
-			otro.reloj_miedo = 1.6
+			otro.reloj_miedo = 2.0
 			otro.estado = Estado.HUIR
 		elif persigue_policia and otro.persigue_policia and otro.estado == Estado.PATRULLA and is_instance_valid(objetivo):
 			otro.objetivo = objetivo
@@ -329,12 +428,17 @@ func punto_de_intercepcion() -> Vector3:
 		p += vel * clampf(global_position.distance_to(p) / maxf(rapidez_perseguir, 0.1), 0.0, 1.0)
 	var hacia := p - global_position
 	hacia.y = 0.0
-	if hacia.length() > 2.5:
+	var dist := hacia.length()
+	if dist > 2.2:
 		var lateral := Vector3(-hacia.z, 0.0, hacia.x).normalized()
-		p += lateral * (fase_flanqueo * 1.15)
-	return p
+		var amplitud := 2.4 if es_noche else 1.2
+		var dir_flanco := (float(rol_nocturno - 1) if es_noche else fase_flanqueo)
+		p += lateral * (dir_flanco * amplitud)
+	return ajustar_a_malla(p)
 
 func punto_de_refugio(amenaza: Node3D) -> Vector3:
+	if es_noche:
+		return buscar_cobertura_nocturna(amenaza)
 	var lejos := global_position - amenaza.global_position
 	lejos.y = 0.0
 	lejos = lejos.normalized() if lejos.length() > 0.1 else Vector3.RIGHT
@@ -343,8 +447,8 @@ func punto_de_refugio(amenaza: Node3D) -> Vector3:
 		var detras := poli.global_position - amenaza.global_position
 		detras.y = 0.0
 		if detras.length() > 0.1:
-			return poli.global_position + detras.normalized() * 2.0
-	return global_position + lejos * 10.0
+			return ajustar_a_malla(poli.global_position + detras.normalized() * 2.2)
+	return ajustar_a_malla(global_position + lejos * 10.0)
 
 func animar_golpe() -> void:
 	lado_golpe = not lado_golpe
@@ -358,7 +462,7 @@ func atacar_policia(delta: float) -> void:
 	reloj_golpe -= delta
 	if reloj_golpe > 0.0:
 		return
-	reloj_golpe = randf_range(0.85, 1.35)
+	reloj_golpe = randf_range(0.75, 1.25) if es_noche else randf_range(0.9, 1.4)
 	animar_golpe()
 	if not is_instance_valid(objetivo):
 		return
@@ -396,12 +500,12 @@ func calcular_separacion() -> Vector3:
 			var d := global_position - otro.global_position
 			d.y = 0.0
 			var dist := d.length()
-			var radio_seguridad := DISTANCIA_SEPARACION * 0.9
+			var radio_seguridad := DISTANCIA_SEPARACION * 0.95
 			if dist >= radio_seguridad or dist < 0.01:
 				continue
 			var peso := (radio_seguridad - dist) / radio_seguridad
-			empuje += (d / dist) * (peso * 0.85)
-	return empuje.limit_length(1.5) * FUERZA_SEPARACION
+			empuje += (d / dist) * peso
+	return empuje.limit_length(1.8) * FUERZA_SEPARACION
 
 func _physics_process(delta: float) -> void:
 	if not listo:
@@ -430,21 +534,24 @@ func _physics_process(delta: float) -> void:
 	revisar_cercania(delta)
 	actualizar_noche(delta)
 
+	var radio_deteccion_miedo := radio_miedo * (1.35 if es_noche else 1.0)
 	if (es_administrativo or se_asusta) and (estado == Estado.PATRULLA or estado == Estado.CURIOSO):
-		var amenaza := amenaza_cercana(radio_miedo)
+		var amenaza := amenaza_cercana(radio_deteccion_miedo)
 		if amenaza != null:
 			if estado == Estado.CURIOSO:
 				soltar_incidente()
 			estado = Estado.HUIR
 			destino_huida = punto_de_refugio(amenaza)
-			reloj_miedo = 2.0
-			alertar_cercanos(7.5, true)
+			reloj_miedo = 2.4 if es_noche else 2.0
+			alertar_cercanos(8.0, true)
+
+	var radio_ver_actual := radio_ver * (0.75 if es_noche else 1.0)
 
 	match estado:
 		Estado.PATRULLA:
-			if persigue_policia and distancia < radio_ver:
+			if persigue_policia and distancia < radio_ver_actual and tiene_linea_vision(objetivo.global_position):
 				estado = Estado.PERSEGUIR
-				alertar_cercanos(8.0, false)
+				alertar_cercanos(9.0, false)
 			patrullar(delta)
 		Estado.PERSEGUIR:
 			if distancia > radio_perder or not is_instance_valid(objetivo):
@@ -457,7 +564,8 @@ func _physics_process(delta: float) -> void:
 				else:
 					detenerse()
 			else:
-				ir_a(punto_de_intercepcion(), rapidez_perseguir * clampf(factor_ritmo, 0.92, 1.12), UMBRAL_RUTA_PERSECUCION)
+				var vel_caza := (rapidez_perseguir * (1.1 if es_noche else 1.0)) * clampf(factor_ritmo, 0.92, 1.12)
+				ir_a(punto_de_intercepcion(), vel_caza, UMBRAL_RUTA_PERSECUCION)
 		Estado.ACUDIR:
 			if llego_a(destino_incidente) or atascado_cerca(delta):
 				llego = true
@@ -472,20 +580,24 @@ func _physics_process(delta: float) -> void:
 			mirar_hacia(mira, delta)
 			pelear(delta)
 		Estado.HUIR:
-			var amenaza := amenaza_cercana(radio_miedo * 1.6)
+			var amenaza := amenaza_cercana(radio_deteccion_miedo * 1.5)
 			if amenaza != null:
-				reloj_miedo = 2.0
-				destino_huida = punto_de_refugio(amenaza)
+				reloj_miedo = 2.2
+				if llego_a(destino_huida, 1.0):
+					destino_huida = punto_de_refugio(amenaza)
 			else:
 				reloj_miedo -= delta
 			if reloj_miedo <= 0.0:
 				estado = Estado.PATRULLA
-				pausa = 0.0
+				pausa = 0.3
 				elegir_destino()
+			elif es_noche and llego_a(destino_huida, 0.9) and amenaza != null and not tiene_linea_vision(amenaza.global_position):
+				detenerse()
+				mirar_hacia(amenaza.global_position, delta)
 			else:
 				ir_a(destino_huida, rapidez_huida * clampf(factor_ritmo, 0.95, 1.15))
 		Estado.CURIOSO:
-			if persigue_policia and distancia < radio_ver:
+			if persigue_policia and distancia < radio_ver_actual and tiene_linea_vision(objetivo.global_position):
 				soltar_incidente()
 				estado = Estado.PERSEGUIR
 			else:
@@ -501,8 +613,8 @@ func _physics_process(delta: float) -> void:
 	if not quiere_moverse:
 		var emp := calcular_separacion()
 		if emp.length() > 0.35:
-			velocity.x = emp.x * 0.45
-			velocity.z = emp.z * 0.45
+			velocity.x = emp.x * 0.55
+			velocity.z = emp.z * 0.55
 	move_and_slide()
 
 func pelear(delta: float) -> void:
@@ -622,7 +734,7 @@ func recibir_golpe(danio, direccion = Vector3.ZERO) -> void:
 		soltar_incidente()
 		estado = Estado.HUIR
 		reloj_miedo = 2.5
-		destino_huida = global_position + (emp.normalized() * 8.0 if emp.length() > 0.01 else Vector3.BACK * 8.0)
+		destino_huida = ajustar_a_malla(global_position + (emp.normalized() * 8.0 if emp.length() > 0.01 else Vector3.BACK * 8.0))
 
 func ir_a(p: Vector3, vel := -1.0, umbral := UMBRAL_RUTA) -> void:
 	if vel < 0.0:
@@ -644,8 +756,9 @@ func ir_a(p: Vector3, vel := -1.0, umbral := UMBRAL_RUTA) -> void:
 		return
 	dir = dir.normalized()
 	var separacion := calcular_separacion()
-	var dir_final := (dir * vel + separacion).limit_length(vel)
-	if dir_final.length() < 0.05:
+	var evasion_muros := evadir_obstaculos_locales(dir) * vel
+	var dir_final := (dir * vel + separacion + evasion_muros).limit_length(vel)
+	if dir_final.length() < 0.08:
 		dir_final = dir * (vel * 0.5)
 	quiere_moverse = true
 	if agente.avoidance_enabled:

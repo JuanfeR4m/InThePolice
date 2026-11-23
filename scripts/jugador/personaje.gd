@@ -23,6 +23,9 @@ func _ready():
 	if name == "Personaje2":
 		sufijo = "2"
 	if sufijo == "2":
+		# nivel_1 instancia personaje.tscn como "Personaje2": viene en el grupo jugador1
+		remove_from_group("jugador1")
+		add_to_group("jugador2")
 		_poner_tecla("Interactuar", "interactuar2")
 		_poner_tecla("Fuerza", "fuerza2")
 		_poner_tecla("Apuntar", "disparar2")

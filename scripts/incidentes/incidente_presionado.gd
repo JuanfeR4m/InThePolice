@@ -26,14 +26,6 @@ const PRESIONES := 12
 const CAIDA_PRESIONES := 0.25
 const VENTANA_JUNTOS := 0.3
 const SECUENCIA := [1, 2, 2, 1, 2]
-const TEXTOS := [
-	"E\nENTER",
-	"E x12\nENTER x12",
-	"E + ENTER",
-	"E + ENTER\nx12",
-	"E / ENTER\nx12",
-	"E ENTER ENTER\nE ENTER",
-]
 
 @export var modo := Modo.MANTENER
 @export var escena_pelea: PackedScene
@@ -42,7 +34,7 @@ const TEXTOS := [
 @onready var zona: Area3D = $Zona
 @onready var alerta: MeshInstance3D = $Alerta
 @onready var indicador: MeshInstance3D = $Indicador
-@onready var texto: Label3D = $Indicador/Label3D
+@onready var aviso: AvisoTecla = $Indicador/Aviso
 
 var puestos: Array = []
 var puestos_curiosos: Array = []
@@ -77,7 +69,7 @@ func _ready() -> void:
 		nube_hija.visible = false
 	alerta.visible = false
 	indicador.visible = false
-	texto.text = TEXTOS[modo]
+	aviso.configurar(modo, modo == Modo.MANTENER or modo == Modo.JUNTOS)
 	zona.monitoring = false
 
 func _process(delta: float) -> void:
@@ -104,6 +96,9 @@ func _process(delta: float) -> void:
 	if progreso >= 1.0:
 		resuelto.emit(self)
 		queue_free()
+		return
+	if cerca:
+		actualizar_aviso()
 
 func esta_mas_cerca(a: Node3D, b: Node3D) -> bool:
 	return a.global_position.distance_squared_to(global_position) < b.global_position.distance_squared_to(global_position)
@@ -332,6 +327,23 @@ func actualizar_progreso(delta: float) -> void:
 			elif presiono1() or presiono2():
 				paso = 0
 			progreso = float(paso) / SECUENCIA.size()
+
+func siguiente_tecla() -> int:
+	match modo:
+		Modo.ALTERNAR:
+			if ultimo == 1:
+				return 2
+			if ultimo == 2:
+				return 1
+		Modo.SECUENCIA:
+			var esperado: int = SECUENCIA[paso]
+			return esperado
+	return 0
+
+func actualizar_aviso() -> void:
+	aviso.mostrar_estado(Input.is_action_pressed("interactuar1"), Input.is_action_pressed("interactuar2"), siguiente_tecla())
+	if modo == Modo.SECUENCIA:
+		aviso.mostrar_secuencia(SECUENCIA, paso)
 
 func _on_zona_body_entered(body: Node3D) -> void:
 	if body.is_in_group("jugador1"):

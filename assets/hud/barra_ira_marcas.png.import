@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d03kmmwgfxaly"
-path="res://.godot/imported/cronometro_spritesheet_128.png-28bef43bd158535e6bbe098a24f56454.ctex"
+uid="uid://dsxgfq1ln3tcy"
+path="res://.godot/imported/barra_ira_marcas.png-d909adda9a846fa01ed46fefc339735f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/hub/cronometro_spritesheet_128.png"
-dest_files=["res://.godot/imported/cronometro_spritesheet_128.png-28bef43bd158535e6bbe098a24f56454.ctex"]
+source_file="res://assets/hud/barra_ira_marcas.png"
+dest_files=["res://.godot/imported/barra_ira_marcas.png-d909adda9a846fa01ed46fefc339735f.ctex"]
 
 [params]
 

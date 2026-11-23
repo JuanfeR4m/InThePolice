@@ -4,6 +4,8 @@
 [ext_resource type="Shader" uid="uid://chqooar1mt0s4" path="res://shaders/alerta.gdshader" id="2_yxmia"]
 [ext_resource type="Shader" uid="uid://ceg86m5tornlg" path="res://shaders/indicador.gdshader" id="4_6t2ed"]
 [ext_resource type="PackedScene" uid="uid://b06vybltr8d4q" path="res://escenas/incidentes/pelea.tscn" id="4_yxmia"]
+[ext_resource type="Shader" path="res://shaders/tecla.gdshader" id="6_tecla"]
+[ext_resource type="Script" path="res://scripts/incidentes/aviso_tecla.gd" id="7_aviso"]
 [ext_resource type="Texture2D" uid="uid://c1jo1urwet0te" path="res://assets/efectos/esfera_sheet.png" id="5_esfera"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r6318"]
@@ -108,6 +110,22 @@ shader_parameter/salto_flecha = 0.04
 [sub_resource type="QuadMesh" id="QuadMesh_r6318"]
 size = Vector2(1.2, 2.4)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tecla1"]
+render_priority = 5
+shader = ExtResource("6_tecla")
+shader_parameter/tamano = Vector2(0.9, 0.9)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tecla2"]
+render_priority = 5
+shader = ExtResource("6_tecla")
+shader_parameter/tamano = Vector2(1.6, 0.9)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tecla1"]
+size = Vector2(0.9, 0.9)
+
+[sub_resource type="QuadMesh" id="QuadMesh_tecla2"]
+size = Vector2(1.6, 0.9)
+
 [node name="IncidentePresionado" type="Node3D" unique_id=289719892]
 script = ExtResource("1_u2tg0")
 
@@ -134,13 +152,66 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
 material_override = SubResource("ShaderMaterial_bn13o")
 mesh = SubResource("QuadMesh_r6318")
 
-[node name="Label3D" type="Label3D" parent="Indicador" unique_id=475208215]
+[node name="Aviso" type="Node3D" parent="Indicador"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+script = ExtResource("7_aviso")
+
+[node name="Tecla1" type="MeshInstance3D" parent="Indicador/Aviso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0, 0)
+material_override = SubResource("ShaderMaterial_tecla1")
+mesh = SubResource("QuadMesh_tecla1")
+
+[node name="Label3D" type="Label3D" parent="Indicador/Aviso/Tecla1"]
 billboard = 1
-render_priority = 1
+no_depth_test = true
+render_priority = 11
+outline_render_priority = 10
 modulate = Color(0.105882354, 0.13333334, 0.2509804, 1)
-text = "E
-ENTER"
-font_size = 40
+text = "E"
+font_size = 56
+outline_size = 0
+pixel_size = 0.007
+
+[node name="Tecla2" type="MeshInstance3D" parent="Indicador/Aviso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 0)
+material_override = SubResource("ShaderMaterial_tecla2")
+mesh = SubResource("QuadMesh_tecla2")
+
+[node name="Label3D" type="Label3D" parent="Indicador/Aviso/Tecla2"]
+billboard = 1
+no_depth_test = true
+render_priority = 11
+outline_render_priority = 10
+modulate = Color(0.105882354, 0.13333334, 0.2509804, 1)
+text = "ENTER"
+font_size = 56
+outline_size = 0
+pixel_size = 0.007
+
+[node name="Simbolo" type="Label3D" parent="Indicador/Aviso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0, 0)
+billboard = 1
+no_depth_test = true
+render_priority = 11
+outline_render_priority = 10
+outline_modulate = Color(0.105882354, 0.13333334, 0.2509804, 1)
+text = "o"
+font_size = 72
+outline_size = 20
+pixel_size = 0.007
+
+[node name="Accion" type="Label3D" parent="Indicador/Aviso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+billboard = 1
+no_depth_test = true
+render_priority = 11
+outline_render_priority = 10
+outline_modulate = Color(0.105882354, 0.13333334, 0.2509804, 1)
+text = "MANTÉN"
+font_size = 52
+outline_size = 20
+pixel_size = 0.007
+vertical_alignment = 2
 
 [node name="Pelea" parent="." unique_id=1837389761 instance=ExtResource("4_yxmia")]
 

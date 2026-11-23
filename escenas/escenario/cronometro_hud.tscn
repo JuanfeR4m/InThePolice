@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://b85qskgtbjx2y"]
 
-[ext_resource type="Texture2D" uid="uid://d03kmmwgfxaly" path="res://assets/hub/cronometro_spritesheet_128.png" id="1_whe3v"]
+[ext_resource type="Texture2D" uid="uid://d03kmmwgfxaly" path="res://assets/hud/cronometro_spritesheet_128.png" id="1_whe3v"]
 [ext_resource type="Script" uid="uid://co1idg4mieqib" path="res://scripts/cronometro_hud.gd" id="2_scr"]
+
 
 [node name="Cronometro" type="Sprite2D" unique_id=690824458]
 position = Vector2(1040, 115)
