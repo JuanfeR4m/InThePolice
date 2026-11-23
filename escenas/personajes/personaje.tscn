@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://scripts/jugador/interactuar.gd" id="6_2vb47"]
 [ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/modelos_kenney/GLB format/character-male-c.glb" id="6_cx4ix"]
 
+[ext_resource type="Script" path="res://scripts/jugador/marcador_policia.gd" id="7_marcador"]
+
 [sub_resource type="CapsuleShape3D" id="Capsula"]
 radius = 0.35
 height = 1.75
@@ -37,3 +39,11 @@ transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2
 
 [node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=913766440]
 radius = 0.6
+
+[node name="Marcador" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+pixel_size = 0.004
+billboard = 1
+shaded = false
+texture_filter = 3
+script = ExtResource("7_marcador")

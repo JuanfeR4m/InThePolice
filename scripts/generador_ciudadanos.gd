@@ -51,13 +51,10 @@ func _on_timer_timeout() -> void:
 func crear(posicion: Vector3, destino: Vector3) -> void:
 	var ciudadano: Ciudadano = escenas.pick_random().instantiate()
 	ciudadano.origen = centro.global_position
-	ciudadano.centro_feria = centro.global_position
-	ciudadano.limite_feria = lado_feria
 	ciudadano.entrada = destino
 	ciudadano.viene_de_afuera = true
 	ciudadano.rapidez = randf_range(RAPIDEZ_MIN, RAPIDEZ_MAX)
 	ciudadano.objetivo = objetivo
-	ciudadano.rumbo = fmod(rumbo_base + creados * ANGULO_DORADO, TAU)
 	creados += 1
 	add_child(ciudadano)
 	ciudadano.global_position = posicion
