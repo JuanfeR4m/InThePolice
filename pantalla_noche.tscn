@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bpaw50aw2hc11"]
+
+[ext_resource type="Script" uid="uid://ddt3vyudt858o" path="res://pantalla_noche.gd" id="1_qvrm1"]
+
+[node name="Pantalla_Noche" type="CanvasLayer" unique_id=347389807]
+script = ExtResource("1_qvrm1")
