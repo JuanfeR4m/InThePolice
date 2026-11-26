@@ -67,6 +67,7 @@ var agente: NavigationAgent3D
 
 func _ready():
 	add_to_group(GRUPO)
+	add_to_group("enemigos_de_dia")   # se van al caer la noche (AmbienteNoche)
 	origen = global_position
 	destino_azar = origen
 	vida_max = vida

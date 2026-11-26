@@ -7,7 +7,7 @@ signal ladron_escapo(ciudadano: Ciudadano)
 
 enum EventoTipo { ARRESTO, DISPARO, PELEA, ROBO, SIRENA, PROTESTA }
 enum Estado { IDLE, CAMINANDO, HUYENDO, OBSERVANDO, ATACANDO, ROBANDO, PROTESTANDO }
-enum Rol { NINGUNO, PELEADOR, CURIOSO, ALEJANDOSE }
+enum Rol { NINGUNO, PELEADOR, CURIOSO, ALEJANDOSE, ATACANTE }
 
 ## A esta distancia (m) del puesto se considera que ya llegó
 const DIST_LLEGADA := 0.6
@@ -18,6 +18,20 @@ const RADIO_CAPTURA := 1.4
 ## Si quiere moverse y casi no avanza durante este tiempo (s), se considera atascado
 const TIEMPO_ATASCADO := 1.2
 const COLOR_LADRON := Color(0.95, 0.15, 0.15)
+## Margen (m) extra sobre `limite_feria` hasta donde puede llegar quien ya está adentro
+## (la cerca está a 15 m del centro y el límite es 13: así nadie atraviesa la cerca)
+const MARGEN_FERIA := 1.0
+## Contorno verde brillante de los ciudadanos que hay que defender de noche
+const SHADER_CONTORNO := preload("res://shaders/contorno_defender.gdshader")
+## Ataque nocturno a los administrativos (los verdes)
+const DIST_GOLPE := 1.2
+const INTERVALO_GOLPE := 1.2
+const GOLPES_PARA_CAER := 3
+## Tras calmarlo un policía, tarda esto (s) en volver a atacar
+const ENFRIAMIENTO_ATAQUE := 12.0
+const FRASES_ATAQUE := ["¡Mi trámite era a las 9!", "¡Quiero hablar con el gerente!", "¡Me cobraron dos veces!",
+	"¡Por la fila de 3 horas!", "¡Ventanilla cerrada, ¿en serio?!", "¡Sellen ESTO!"]
+const FRASES_CALMA := ["Ya, ya... perdón", "Mejor me voy a comer algo", "Fue la rabia, jefe", "Tampoco era para tanto"]
 
 @export_group("Movimiento")
 @export var velocidad_caminar := 1.5
@@ -101,6 +115,17 @@ var _llego_a_entrada := false
 var _tiempo_entrando := 0.0
 var _entrada_ajustada := Vector3.INF   # `entrada` ya pegada a la malla (se calcula una vez)
 var _t_atascado := 0.0
+var _ambiente: Node = null
+var _adentro := false             # true cuando ya entró a la feria: de ahí no vuelve a salir
+
+## Administrativo: ciudadano marcado de noche con contorno verde (hay que defenderlo)
+var es_administrativo := false
+var caido := false               # administrativo que ya no aguantó más y renunció
+var _golpes := 0
+var _objetivo_ataque: Ciudadano = null
+var _prox_golpe_ataque := 0.0
+var _no_ataca_hasta := 0.0
+var _marca_ataque: Label3D = null
 
 @onready var modelo: Node3D = $Modelo
 
@@ -156,7 +181,9 @@ func _physics_process(delta: float) -> void:
 		_huir_como_ladron(delta)
 	elif _rol != Rol.NINGUNO:
 		_comportamiento_incidente(delta)
-	elif jugador and _jugador_en_vision():
+	elif es_administrativo and _huir_de_atacante():
+		pass   # corre lejos de quien lo persigue
+	elif jugador and not _es_de_noche() and _jugador_en_vision():
 		_reaccionar_al_jugador()
 	elif _entrando(delta):
 		estado = Estado.CAMINANDO
@@ -166,6 +193,7 @@ func _physics_process(delta: float) -> void:
 
 	var pedida := Vector2(velocity.x, velocity.z).length()
 	move_and_slide()
+	_encerrar_en_feria()
 	_revisar_atasco(delta, pedida)
 	_actualizar_animacion()
 
@@ -337,6 +365,10 @@ func _salir_de_incidente() -> void:
 	_punto_curioso = Vector3.INF
 	_punto_alejarse = Vector3.INF
 	_anim_golpe = ""
+	_objetivo_ataque = null
+	if is_instance_valid(_marca_ataque):
+		_marca_ataque.queue_free()
+	_marca_ataque = null
 	if estado == Estado.ATACANDO or estado == Estado.OBSERVANDO or estado == Estado.HUYENDO:
 		estado = Estado.IDLE
 	# Libera su puesto (si el incidente se está borrando, él mismo se encarga)
@@ -345,7 +377,7 @@ func _salir_de_incidente() -> void:
 
 func _comportamiento_incidente(delta: float) -> void:
 	# Si el incidente desapareció sin avisar, vuelve a la normalidad
-	if _rol != Rol.ALEJANDOSE and not is_instance_valid(incidente):
+	if (_rol == Rol.PELEADOR or _rol == Rol.CURIOSO) and not is_instance_valid(incidente):
 		_salir_de_incidente()
 		return
 	match _rol:
@@ -355,6 +387,8 @@ func _comportamiento_incidente(delta: float) -> void:
 			_mirar_incidente()
 		Rol.ALEJANDOSE:
 			_alejarse(delta)
+		Rol.ATACANTE:
+			_atacar_objetivo()
 
 func _pelear() -> void:
 	if not llego:
@@ -388,12 +422,116 @@ func _alejarse(delta: float) -> void:
 	mover_hacia(_punto_alejarse, velocidad_correr)
 
 
+## De noche el policía deja de importarles: solo les interesan los administrativos (los verdes)
+func _es_de_noche() -> bool:
+	if not is_instance_valid(_ambiente):
+		_ambiente = get_tree().get_first_node_in_group("ambiente_noche")
+	return _ambiente != null and _ambiente.get("activa") == true
+
+
+# ---------- Ataque nocturno: los ciudadanos rabiosos van por los administrativos ----------
+func es_atacante() -> bool:
+	return _rol == Rol.ATACANTE
+
+## ¿Puede ser reclutado para atacar? (libre, no es de los verdes y no lo calmaron hace poco)
+func puede_atacar() -> bool:
+	return disponible() and not es_administrativo and _ahora() >= _no_ataca_hasta
+
+## GeneradorIncidentes lo llama de noche: este ciudadano se lanza contra un administrativo.
+func atacar_administrativo(objetivo: Ciudadano) -> void:
+	_salir_de_incidente()
+	_rol = Rol.ATACANTE
+	_objetivo_ataque = objetivo
+	estado = Estado.CAMINANDO
+	_marca_ataque = _decir(FRASES_ATAQUE.pick_random(), COLOR_LADRON, 0.0)
+
+func _atacar_objetivo() -> void:
+	if not is_instance_valid(_objetivo_ataque) or _objetivo_ataque.caido:
+		_salir_de_incidente()
+		return
+	# Si un policía lo toca, se calma (así se defiende a los verdes)
+	var policia := _policia_mas_cercano()
+	if policia != null and _distancia_plana(policia.global_position) <= RADIO_CAPTURA:
+		calmar(policia)
+		return
+	var blanco := _objetivo_ataque.global_position
+	if _distancia_plana(blanco) > DIST_GOLPE:
+		estado = Estado.CAMINANDO
+		mover_hacia(blanco, velocidad_correr * 0.9)
+		return
+	estado = Estado.ATACANDO
+	mirar(blanco)
+	var ahora := _ahora()
+	if ahora >= _prox_golpe_ataque:
+		_prox_golpe_ataque = ahora + INTERVALO_GOLPE
+		_objetivo_ataque.recibir_golpe()
+
+## Un policía lo alcanzó: se le baja la rabia, se aleja y tarda un rato en volver a atacar
+func calmar(policia: Node3D) -> void:
+	var desde := policia.global_position
+	_salir_de_incidente()
+	_no_ataca_hasta = _ahora() + ENFRIAMIENTO_ATAQUE
+	_decir(FRASES_CALMA.pick_random(), Color(0.55, 0.85, 1.0), 1.6)
+	alejarse_de(desde, 10.0)
+
+## Administrativo: recibe un golpe; a los GOLPES_PARA_CAER renuncia y se descuenta de los salvados
+func recibir_golpe() -> void:
+	if caido or not es_administrativo:
+		return
+	_golpes += 1
+	if _golpes >= GOLPES_PARA_CAER:
+		_renunciar()
+	else:
+		_decir("¡Auch!", Color(1.0, 0.8, 0.2), 0.8)
+
+func _renunciar() -> void:
+	caido = true
+	remove_from_group("administrativos")
+	_salir_de_incidente()
+	_decir("¡RENUNCIO!", Color(1.0, 0.3, 0.3), 1.4)
+	var juego = get_tree().get_first_node_in_group("juego")
+	if juego != null and "administrativos" in juego:
+		juego.administrativos = maxi(int(juego.administrativos) - 1, 0)
+	set_physics_process(false)
+	get_tree().create_timer(1.4).timeout.connect(queue_free)
+
+## Administrativo: si alguien lo viene persiguiendo de cerca, corre en dirección contraria
+func _huir_de_atacante() -> bool:
+	for nodo in get_tree().get_nodes_in_group("ciudadanos"):
+		var c := nodo as Ciudadano
+		if c != null and c._rol == Rol.ATACANTE and c._objetivo_ataque == self \
+				and _distancia_plana(c.global_position) < 7.0:
+			estado = Estado.HUYENDO
+			huir_de(c.global_position, velocidad_correr * 0.8)
+			return true
+	return false
+
+## Frase flotante sobre la cabeza (duracion 0 = se queda hasta que la borren)
+func _decir(texto: String, color: Color, duracion: float = 1.6) -> Label3D:
+	var etiqueta := Label3D.new()
+	etiqueta.text = texto
+	etiqueta.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	etiqueta.no_depth_test = true
+	etiqueta.pixel_size = 0.008
+	etiqueta.font_size = 56
+	etiqueta.outline_size = 14
+	etiqueta.modulate = color
+	etiqueta.outline_modulate = Color(0.1, 0.0, 0.0)
+	etiqueta.position = Vector3(0.0, 3.1, 0.0)
+	add_child(etiqueta)
+	if duracion > 0.0:
+		get_tree().create_timer(duracion).timeout.connect(func() -> void:
+			if is_instance_valid(etiqueta):
+				etiqueta.queue_free())
+	return etiqueta
+
+
 # ---------- Animación ----------
 func _actualizar_animacion() -> void:
 	if anim == null:
 		return
 	var nombre := ""
-	if _rol == Rol.PELEADOR and llego:
+	if (_rol == Rol.PELEADOR and llego) or (_rol == Rol.ATACANTE and estado == Estado.ATACANDO):
 		nombre = _animacion_golpe()
 	if nombre == "":
 		nombre = _animacion_por_estado()
@@ -442,6 +580,44 @@ func _colocar_accesorio() -> void:
 	ancla.add_child(obj)
 
 
+# ---------- Feria cerrada: entra y no vuelve a salir ----------
+func _dentro_de_feria(punto: Vector3) -> bool:
+	return absf(punto.x - centro_feria.x) <= limite_feria \
+		and absf(punto.z - centro_feria.z) <= limite_feria
+
+## Apenas pisa la feria queda "adentro"; desde entonces no puede pasar de la cerca.
+func _encerrar_en_feria() -> void:
+	if not viene_de_afuera:
+		return
+	if not _adentro:
+		_adentro = _dentro_de_feria(global_position)
+		return
+	var l := limite_feria + MARGEN_FERIA
+	global_position.x = clampf(global_position.x, centro_feria.x - l, centro_feria.x + l)
+	global_position.z = clampf(global_position.z, centro_feria.z - l, centro_feria.z + l)
+
+## Si ya está adentro, ningún destino (huir, alejarse, curiosear...) lo saca de la feria
+func _limitar_a_feria(punto: Vector3) -> Vector3:
+	if not viene_de_afuera or not _adentro:
+		return punto
+	punto.x = clampf(punto.x, centro_feria.x - limite_feria, centro_feria.x + limite_feria)
+	punto.z = clampf(punto.z, centro_feria.z - limite_feria, centro_feria.z + limite_feria)
+	return punto
+
+
+# ---------- Administrativos (de noche, contorno verde) ----------
+## AmbienteNoche lo llama al caer la noche en los ciudadanos elegidos para defender.
+func mostrar_contorno_noche() -> void:
+	if es_administrativo:
+		return
+	es_administrativo = true
+	add_to_group("administrativos")
+	var material := ShaderMaterial.new()
+	material.shader = SHADER_CONTORNO
+	for malla in modelo.find_children("*", "MeshInstance3D", true, false):
+		(malla as MeshInstance3D).material_overlay = material
+
+
 # ---------- Atascos ----------
 ## `entrada` pegada a la malla, calculada una sola vez cuando la malla ya existe
 func _entrada_en_malla() -> Vector3:
@@ -484,6 +660,7 @@ func _evento_cerca(punto_evento: Vector3) -> bool:
 	return global_position.distance_to(punto_evento) <= rango_evento
 
 func mover_hacia(destino: Vector3, vel: float) -> void:
+	destino = _limitar_a_feria(destino)
 	var meta := destino
 	if _agente != null and _hay_malla():
 		var ahora := _ahora()

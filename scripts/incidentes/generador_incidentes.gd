@@ -6,7 +6,7 @@ signal ira_cambio(valor: int)
 const IRA_MAXIMA := 100
 const IRA_ESCALADO := 8
 const IRA_RESUELTO := 5
-## El ladrón sale de entre los ciudadanos que estén a esta distancia (m) de algún policía
+
 const RADIO_ROBO := 18.0
 const IRA_DIFICIL := 40
 const MODOS_FACILES := [
@@ -26,32 +26,103 @@ const MODOS_COOPERATIVOS := [
 	IncidentePresionado.Modo.ALTERNAR,
 	IncidentePresionado.Modo.SECUENCIA,
 ]
-## Distancia mínima entre dos conflictos para que no se encimen
+
 const DISTANCIA_ENTRE_INCIDENTES := 8.0
 
 @export var escena_incidente: PackedScene
 @export var puntos: Node3D
 @export var maximo_activos := 8
-## Desmarcalo para probar con UN solo jugador: solo salen incidentes que uno puede resolver solo
+
 @export var modos_cooperativos := true
-## Cada cuantos segundos aparece un ladron (si no hay uno activo)
+
 @export var intervalo_robo := 30.0
-## Segundos que tiene el ladron para escapar antes de que lo atrapen
+
 @export var tiempo_huida := 20.0
 @export_group("Conflictos espontáneos")
-## Si está activo, el conflicto nace entre dos ciudadanos cercanos (de cualquier tipo, en cualquier
-## parte del mapa). Si no encuentra pareja, usa los puntos fijos como antes.
+
 @export var conflictos_espontaneos := true
-## Distancia máxima entre los dos ciudadanos que se pelean
+
 @export var distancia_pareja := 20.0
 
+@export_group("Ataque nocturno")
+
+@export var intervalo_ataque_calmo := 7.0
+@export var intervalo_ataque_furioso := 1.5
+@export var atacantes_calmo := 1
+@export var atacantes_furioso := 8
+
 var ira := 0
+var reloj_ataque := 4.0
 var ocupados := {}
 var reloj_robo := 30.0
 var ladron: Ciudadano = null
 var _contador := 0
+var _era_noche := false
+
+
+func es_de_noche() -> bool:
+	var ambiente := get_tree().get_first_node_in_group("ambiente_noche")
+	if ambiente != null and ambiente.get("activa") == true:
+		return true
+	var partida := get_tree().get_first_node_in_group("partida")
+	if partida == null:
+		return false
+	var tiempo: float = partida.get("tiempo")
+	var noche_en: float = partida.get("noche_en")
+	return tiempo > 0.0 and tiempo < noche_en
+
+
+func procesar_ataques(delta: float) -> void:
+	reloj_ataque -= delta
+	if reloj_ataque > 0.0:
+		return
+	var furia := clampf(float(ira) / float(IRA_MAXIMA), 0.0, 1.0)
+	reloj_ataque = lerpf(intervalo_ataque_calmo, intervalo_ataque_furioso, furia)
+	var tope := roundi(lerpf(float(atacantes_calmo), float(atacantes_furioso), furia))
+	var atacando := 0
+	var candidatos: Array[Ciudadano] = []
+	for nodo in get_tree().get_nodes_in_group("ciudadanos"):
+		var c := nodo as Ciudadano
+		if c == null:
+			continue
+		if c.es_atacante():
+			atacando += 1
+		elif c.puede_atacar():
+			candidatos.append(c)
+	if atacando >= tope or candidatos.is_empty():
+		return
+	var atacante: Ciudadano = candidatos.pick_random()
+	var objetivo: Ciudadano = null
+	var menor := INF
+	for nodo in get_tree().get_nodes_in_group("administrativos"):
+		var admin := nodo as Ciudadano
+		if admin == null or admin.caido:
+			continue
+		var d := atacante.global_position.distance_to(admin.global_position)
+		if d < menor:
+			menor = d
+			objetivo = admin
+	if objetivo != null:
+		atacante.atacar_administrativo(objetivo)
+
+
+func cancelar_incidentes() -> void:
+	for llave in ocupados.keys():
+		var incidente = ocupados[llave]
+		if is_instance_valid(incidente) and not incidente.is_queued_for_deletion():
+			incidente.queue_free()
+	ocupados.clear()
 
 func _process(delta: float) -> void:
+	
+	var noche := es_de_noche()
+	if noche and not _era_noche:
+		cancelar_incidentes()
+		reloj_ataque = 4.0
+	_era_noche = noche
+	if noche:
+		procesar_ataques(delta)
+		return
 	reloj_robo -= delta
 	if reloj_robo > 0.0:
 		return
@@ -69,7 +140,7 @@ func elegir_ladron() -> void:
 		var c := nodo as Ciudadano
 		if c == null or not c.disponible():
 			continue
-		# Cerca de CUALQUIER policía (con el punto medio entre los dos podía no haber nadie)
+		
 		for j in jugadores:
 			if c.global_position.distance_to((j as Node3D).global_position) <= RADIO_ROBO:
 				candidatos.append(c)
@@ -88,17 +159,19 @@ func _on_ladron_escapo(_ciudadano: Ciudadano) -> void:
 	cambiar_ira(IRA_ESCALADO)
 
 func _on_timer_timeout() -> void:
+	if _era_noche:
+		return
 	limpiar_ocupados()
 	if ocupados.size() >= maximo_activos:
 		return
-	# 1) Conflicto espontáneo entre dos ciudadanos libres cercanos
+
 	if conflictos_espontaneos:
 		var posicion := posicion_espontanea()
 		if posicion != Vector3.INF:
 			crear_incidente(posicion, _contador)
 			_contador += 1
 			return
-	# 2) Si no hay pareja, usa los puntos fijos del mapa
+	
 	if puntos == null:
 		return
 	var libres: Array[Node] = []
@@ -110,8 +183,7 @@ func _on_timer_timeout() -> void:
 	var elegido := libres.pick_random() as Node3D
 	crear_incidente(elegido.global_position, elegido)
 
-## Corre el punto a la zona caminable más cercana: si cae dentro de un puesto o un edificio,
-## los peleadores no pueden llegar y el incidente se cancela solo.
+
 func sobre_malla(posicion: Vector3) -> Vector3:
 	var mapa := get_viewport().find_world_3d().navigation_map
 	if NavigationServer3D.map_get_regions(mapa).is_empty():
@@ -129,7 +201,7 @@ func crear_incidente(posicion: Vector3, llave: Variant) -> void:
 	incidente.global_position = posicion
 	ocupados[llave] = incidente
 
-## Punto medio entre dos ciudadanos libres que están cerca entre sí (Vector3.INF si no hay)
+
 func posicion_espontanea() -> Vector3:
 	var libres: Array[Ciudadano] = []
 	for nodo in get_tree().get_nodes_in_group("ciudadanos"):

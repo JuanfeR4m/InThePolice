@@ -23,6 +23,7 @@ var busca = 0.0
 
 
 func _ready():
+	add_to_group("enemigos_de_dia")   # se van al caer la noche (AmbienteNoche)
 	jugador = get_tree().get_first_node_in_group("jugador")
 	for d in ruta:
 		puntos.append(global_position + d)

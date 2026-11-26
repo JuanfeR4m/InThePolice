@@ -24,6 +24,8 @@ extends Node3D
 			_poner_previa(v)
 ## Tecla N para ver la noche sin esperar (desactivar al entregar)
 @export var tecla_prueba := true
+## Cuántos ciudadanos aparecen de noche con contorno verde para defenderlos
+@export var cantidad_a_defender := 10
 
 @export_group("Cielo y niebla")
 @export var color_cielo := Color("0B0E22")
@@ -120,13 +122,36 @@ func iniciar_noche() -> void:
 
 	_cielo_y_niebla()
 	_parpadear_luces()
+	# De noche los policías no tienen enemigos propios: solo hay que defender a los verdes
+	_despedir_enemigos_de_dia()
 	# Los ciudadanos a defender se marcan en verde justo ahora
-	for c in get_tree().get_nodes_in_group("ciudadanos"):
-		if c.has_method("mostrar_contorno_noche"):
-			c.mostrar_contorno_noche()
+	_marcar_a_defender()
 	_tumbar_mobiliario(d)
 	_encender_fuegos()
 	_mostrar_basura(d)
+
+
+## El Guardia y el Manifestante de prueba (los que golpean al policía) desaparecen al caer la noche
+func _despedir_enemigos_de_dia() -> void:
+	for n in get_tree().get_nodes_in_group("enemigos_de_dia"):
+		n.queue_free()
+
+## Elige `cantidad_a_defender` ciudadanos al azar (primero los que están libres, sin pelea ni robo)
+func _marcar_a_defender() -> void:
+	var libres: Array = []
+	var ocupados: Array = []
+	for c in get_tree().get_nodes_in_group("ciudadanos"):
+		if not c.has_method("mostrar_contorno_noche"):
+			continue
+		if c.has_method("disponible") and c.disponible():
+			libres.append(c)
+		else:
+			ocupados.append(c)
+	libres.shuffle()
+	ocupados.shuffle()
+	libres.append_array(ocupados)
+	for i in mini(cantidad_a_defender, libres.size()):
+		libres[i].mostrar_contorno_noche()
 
 
 func _process(delta: float) -> void:

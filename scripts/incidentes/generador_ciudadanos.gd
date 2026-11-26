@@ -7,6 +7,22 @@ const DISTANCIA_LIBRE := 1.5
 const DISTANCIA_JUGADOR := 4.0
 const INTENTOS := 15
 
+## Cuánta gente de cada tipo sale (por nombre de escena): más peso = más seguido.
+## De día hay mucho curioso y tonto (relleno gracioso) y casi no hay periodistas ni ladrones;
+## de noche sube la gente rabiosa (borrachos, manifestantes, conflictivos).
+const PESOS_DIA := {
+	"ciudadano_curioso": 4.0, "ciudadano_tonto": 4.0, "ciudadano_borracho": 3.0,
+	"ciudadano_miedoso": 3.0, "ciudadano_manifestante": 2.0, "ciudadano_conflictivo": 2.0,
+	"ciudadano_ladron": 1.0, "ciudadano_periodista": 0.7,
+}
+const PESOS_NOCHE := {
+	"ciudadano_curioso": 1.0, "ciudadano_tonto": 3.0, "ciudadano_borracho": 4.0,
+	"ciudadano_miedoso": 2.0, "ciudadano_manifestante": 4.0, "ciudadano_conflictivo": 4.0,
+	"ciudadano_ladron": 0.5, "ciudadano_periodista": 0.3,
+}
+## Máximo de ciudadanos de un tipo en la feria al mismo tiempo
+const TOPE_POR_TIPO := {"ciudadano_periodista": 2, "ciudadano_ladron": 2}
+
 const ANGULO_DORADO := 2.39996323
 const RAPIDEZ_MIN := 1.5
 const RAPIDEZ_MAX := 2.5
@@ -50,7 +66,7 @@ func _on_timer_timeout() -> void:
 	crear(ajustar_a_malla(mapa, punto.global_position), ajustar_a_malla(mapa, entrada_al_azar()))
 
 func crear(posicion: Vector3, destino: Vector3) -> void:
-	var ciudadano: Ciudadano = escenas.pick_random().instantiate()
+	var ciudadano: Ciudadano = elegir_escena().instantiate()
 	ciudadano.origen = centro.global_position
 	ciudadano.centro_feria = centro.global_position
 	ciudadano.limite_feria = lado_feria
@@ -62,6 +78,43 @@ func crear(posicion: Vector3, destino: Vector3) -> void:
 	creados += 1
 	add_child(ciudadano)
 	ciudadano.global_position = posicion
+
+## Elige el tipo de ciudadano según los pesos del día o de la noche, respetando los topes
+func elegir_escena() -> PackedScene:
+	var pesos: Dictionary = PESOS_NOCHE if es_de_noche() else PESOS_DIA
+	var conteo := {}
+	for nodo in get_tree().get_nodes_in_group(GRUPO_CIUDADANOS):
+		var tipo := nodo.scene_file_path.get_file().get_basename()
+		conteo[tipo] = int(conteo.get(tipo, 0)) + 1
+	var pesos_validos: Array[float] = []
+	var total := 0.0
+	for e in escenas:
+		var tipo := e.resource_path.get_file().get_basename()
+		var peso: float = pesos.get(tipo, 1.0)
+		if TOPE_POR_TIPO.has(tipo) and int(conteo.get(tipo, 0)) >= int(TOPE_POR_TIPO[tipo]):
+			peso = 0.0
+		pesos_validos.append(peso)
+		total += peso
+	if total <= 0.0:
+		return escenas.pick_random()
+	var tiro := randf() * total
+	for i in escenas.size():
+		tiro -= pesos_validos[i]
+		if tiro <= 0.0 and pesos_validos[i] > 0.0:
+			return escenas[i]
+	return escenas.back()
+
+## Misma regla de noche que GeneradorIncidentes (AmbienteNoche activo o poco tiempo en la Partida)
+func es_de_noche() -> bool:
+	var ambiente := get_tree().get_first_node_in_group("ambiente_noche")
+	if ambiente != null and ambiente.get("activa") == true:
+		return true
+	var partida := get_tree().get_first_node_in_group("partida")
+	if partida == null:
+		return false
+	var tiempo: float = partida.get("tiempo")
+	var noche_en: float = partida.get("noche_en")
+	return tiempo > 0.0 and tiempo < noche_en
 
 func ajustar_a_malla(mapa: RID, punto: Vector3) -> Vector3:
 	if hay_malla:
