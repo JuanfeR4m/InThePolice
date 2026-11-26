@@ -22,6 +22,10 @@ func _comportamiento_idle() -> void:
 			_descansa_hasta = ahora + tiempo_descanso
 	_tambalear(global_position + _direccion)
 
+func _al_atascarse() -> void:
+	super()
+	_proximo_cambio = 0.0   # contra una pared: elige otra dirección ya
+
 func _reaccionar_al_jugador() -> void:
 	# Se acerca al policía a "conversar", sin entender nada
 	estado = Estado.CAMINANDO

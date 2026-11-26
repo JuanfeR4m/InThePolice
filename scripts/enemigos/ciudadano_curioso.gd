@@ -5,7 +5,7 @@ extends Ciudadano
 
 
 func _comportamiento_idle() -> void:
-	estado = Estado.IDLE
+	_pasear()   # antes se quedaba quieto para siempre hasta que pasaba un policía o un evento
 
 func _reaccionar_al_jugador() -> void:
 	estado = Estado.OBSERVANDO

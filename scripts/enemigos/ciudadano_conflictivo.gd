@@ -8,7 +8,7 @@ var _proximo_ataque := 0.0
 
 
 func _comportamiento_idle() -> void:
-	estado = Estado.IDLE
+	_pasear()   # antes se quedaba quieto para siempre
 
 func _reaccionar_al_jugador() -> void:
 	estado = Estado.ATACANDO

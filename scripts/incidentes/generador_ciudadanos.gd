@@ -22,6 +22,7 @@ const RAPIDEZ_MAX := 2.5
 
 var hay_malla := false
 var creados := 0
+var _alcanzable_cache := {}   # id del marcador -> ¿tiene camino hasta el centro de la feria?
 var rumbo_base := randf() * TAU
 
 func _ready() -> void:
@@ -46,7 +47,7 @@ func _on_timer_timeout() -> void:
 	if punto == null:
 		return
 	var mapa := centro.get_world_3d().navigation_map
-	crear(ajustar_a_malla(mapa, punto.global_position), entrada_al_azar())
+	crear(ajustar_a_malla(mapa, punto.global_position), ajustar_a_malla(mapa, entrada_al_azar()))
 
 func crear(posicion: Vector3, destino: Vector3) -> void:
 	var ciudadano: Ciudadano = escenas.pick_random().instantiate()
@@ -71,9 +72,31 @@ func posicion_inicial(mapa: RID) -> Vector3:
 	for i in INTENTOS:
 		var punto := centro.global_position + punto_en_feria()
 		punto = ajustar_a_malla(mapa, punto)
-		if esta_libre(punto):
+		if esta_libre(punto) and es_alcanzable(mapa, punto):
 			return punto
 	return Vector3.INF
+
+## ¿Hay camino desde `punto` hasta el centro de la feria? Descarta las islas aisladas de la malla:
+## quien aparece en una isla no puede salir y se queda trabado para siempre.
+func es_alcanzable(mapa: RID, punto: Vector3) -> bool:
+	if not hay_malla:
+		return true
+	var meta := NavigationServer3D.map_get_closest_point(mapa, centro.global_position)
+	var ruta := NavigationServer3D.map_get_path(mapa, punto, meta, true)
+	if ruta.is_empty():
+		return false
+	var fin := ruta[ruta.size() - 1]
+	return Vector2(fin.x - meta.x, fin.z - meta.z).length() < 2.0
+
+func marcador_alcanzable(marcador: Node3D) -> bool:
+	var id := marcador.get_instance_id()
+	if not _alcanzable_cache.has(id):
+		var mapa := centro.get_world_3d().navigation_map
+		var ok := es_alcanzable(mapa, ajustar_a_malla(mapa, marcador.global_position))
+		_alcanzable_cache[id] = ok
+		if not ok:
+			push_warning("%s cae en una isla aislada de la malla: no aparecerán ciudadanos ahí (muévelo)" % marcador.name)
+	return _alcanzable_cache[id]
 
 func esta_libre(punto: Vector3) -> bool:
 	return not hay_cerca(punto, GRUPO_CIUDADANOS, DISTANCIA_LIBRE) \
@@ -93,7 +116,7 @@ func punto_libre() -> Node3D:
 	var libres: Array[Node3D] = []
 	for hijo in puntos.get_children():
 		var punto := hijo as Node3D
-		if punto != null and esta_libre(punto.global_position):
+		if punto != null and esta_libre(punto.global_position) and marcador_alcanzable(punto):
 			libres.append(punto)
 	if libres.is_empty():
 		return null

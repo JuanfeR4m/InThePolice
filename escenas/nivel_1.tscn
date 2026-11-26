@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://bss3wrijjf7fg" path="res://escenas/personajes/personaje.tscn" id="1_bvwj0"]
 [ext_resource type="PackedScene" uid="uid://bpoe64ckmnffe" path="res://escenas/entorno/camera_3d.tscn" id="2_0lcy5"]
-[ext_resource type="PackedScene" uid="uid://bjekt0e1nvewt" path="res://escenas/personajes/ciudadano.tscn" id="3_xqdpg"]
 [ext_resource type="PackedScene" uid="uid://cjqripveonc8u" path="res://escenas/personajes/guardia.tscn" id="4_lnmr5"]
 [ext_resource type="PackedScene" uid="uid://biyljgujvggl4" path="res://escenas/zonas/zona_b.tscn" id="5_biv72"]
 [ext_resource type="PackedScene" uid="uid://c3vrf7k4qf5i5" path="res://escenas/personajes/manifestante.tscn" id="6_8he2b"]
@@ -11,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cikptugflnihk" path="res://escenas/incidentes/generador_incidentes.tscn" id="10_622t7"]
 [ext_resource type="Script" uid="uid://dyoj5k78bc5t8" path="res://scripts/hud/juego.gd" id="11_lgf0p"]
 [ext_resource type="PackedScene" uid="uid://71fg8epyucis" path="res://escenas/entorno/parque.tscn" id="13_dt1ax"]
-[ext_resource type="Script" uid="uid://lgw8aoh6vie6" path="res://scripts/generador_ciudadanos.gd" id="14_vpnp5"]
+[ext_resource type="Script" uid="uid://qlbsjeyab57v" path="res://scripts/incidentes/generador_ciudadanos.gd" id="14_vpnp5"]
 [ext_resource type="Script" uid="uid://dudnny6yffb8" path="res://scripts/audio_partida.gd" id="15_2sgaa"]
 [ext_resource type="PackedScene" uid="uid://b3wbnxop6qmv6" path="res://escenas/hud/hud_partida.tscn" id="16_lgf0p"]
 [ext_resource type="PackedScene" path="res://escenas/entorno/ambiente_noche.tscn" id="17_c6c8x"]
@@ -54,10 +53,6 @@ shadow_enabled = true
 [node name="Camera3D" parent="." unique_id=1147277627 instance=ExtResource("2_0lcy5")]
 transform = Transform3D(1, 0, 0, 0, 0.8191518, 0.5735763, 0, -0.5735763, 0.8191518, 0, 5, 7)
 
-[node name="ciudadano" parent="." unique_id=1585811737 node_paths=PackedStringArray("objetivo") instance=ExtResource("3_xqdpg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -3)
-objetivo = NodePath("../Personaje")
-
 [node name="Guardia" parent="." unique_id=1604311321 instance=ExtResource("4_lnmr5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
 rango_vision = 4.0
@@ -84,18 +79,6 @@ puntos = NodePath("../PuntosIncidentes")
 
 [node name="Juego" type="Node" parent="." unique_id=2222872]
 script = ExtResource("11_lgf0p")
-
-[node name="ciudadano2" parent="." unique_id=473483946 instance=ExtResource("3_xqdpg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-
-[node name="ciudadano3" parent="." unique_id=62460076 instance=ExtResource("3_xqdpg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 8)
-
-[node name="ciudadano5" parent="." unique_id=1204786832 instance=ExtResource("3_xqdpg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 7)
-
-[node name="ciudadano4" parent="." unique_id=1135475979 instance=ExtResource("3_xqdpg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 8)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1554140891]
 navigation_mesh = SubResource("NavigationMesh_pxqlq")

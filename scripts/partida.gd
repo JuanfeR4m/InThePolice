@@ -113,6 +113,10 @@ func conectar_ira():
 func _al_cambiar_ira(valor):
 	if hud != null:
 		hud.poner_ira(valor)
+	# Juego.ira es la que leen otros sistemas (ambiente de noche, etc.): la mantenemos igual
+	var j = _juego()
+	if j != null:
+		j.ira = float(valor)
 	if ira_maxima_pierde and valor >= generador_incidentes.IRA_MAXIMA:
 		perder("La Ira llegó al máximo: se ignoraron demasiados incidentes")
 
@@ -144,7 +148,7 @@ func terminar(nuevo, texto):
 
 func _sonido_fin():
 	var hud_actual = get_tree().get_first_node_in_group("hud")
-	if hud_actual != null:
+	if hud_actual != null and hud_actual.has_method("detener_tiempo"):
 		hud_actual.detener_tiempo()
 	var audio = get_parent().get_node_or_null("AudioPartida")
 	if audio == null or audio.get("p_inicio") == null:

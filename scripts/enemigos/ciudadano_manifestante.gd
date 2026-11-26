@@ -4,12 +4,26 @@ extends Ciudadano
 @export var punto_protesta: Node3D
 @export var radio_protesta := 3.0
 
+var _puesto_protesta := Vector3.INF
+
 
 func _comportamiento_idle() -> void:
-	var punto := punto_protesta.global_position if punto_protesta != null else _ancla
 	estado = Estado.PROTESTANDO
-	if global_position.distance_to(punto) > radio_protesta:
-		mover_hacia(punto, velocidad_caminar)
+	if _puesto_protesta == Vector3.INF:
+		if not _hay_malla():
+			return
+		# Cada manifestante toma su propio sitio alrededor del punto. Antes todos iban al mismo
+		# centro y quedaban amontonados (los ciudadanos no chocan entre sí). `rumbo` ya viene
+		# repartido por el generador.
+		var centro := punto_protesta.global_position if punto_protesta != null else _ancla
+		var r := radio_protesta * (0.4 + 0.6 * randf())
+		_puesto_protesta = _sobre_malla(centro + Vector3(cos(rumbo), 0.0, sin(rumbo)) * r)
+	if _distancia_plana(_puesto_protesta) > 0.8:
+		mover_hacia(_puesto_protesta, velocidad_caminar)
+
+func _al_atascarse() -> void:
+	super()
+	_puesto_protesta = Vector3.INF   # elige otro sitio
 
 func _reaccionar_al_jugador() -> void:
 	# No huye: se queda y encara al policía

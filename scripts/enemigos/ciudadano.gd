@@ -9,6 +9,16 @@ enum EventoTipo { ARRESTO, DISPARO, PELEA, ROBO, SIRENA, PROTESTA }
 enum Estado { IDLE, CAMINANDO, HUYENDO, OBSERVANDO, ATACANDO, ROBANDO, PROTESTANDO }
 enum Rol { NINGUNO, PELEADOR, CURIOSO, ALEJANDOSE }
 
+## A esta distancia (m) del puesto se considera que ya llegó
+const DIST_LLEGADA := 0.6
+## Si la ruta ya terminó (el puesto no se puede alcanzar del todo), basta con estar tan cerca
+const DIST_LLEGADA_BLOQUEADO := 2.0
+## Un policía que toca al ladrón a esta distancia (m) lo atrapa
+const RADIO_CAPTURA := 1.4
+## Si quiere moverse y casi no avanza durante este tiempo (s), se considera atascado
+const TIEMPO_ATASCADO := 1.2
+const COLOR_LADRON := Color(0.95, 0.15, 0.15)
+
 @export_group("Movimiento")
 @export var velocidad_caminar := 1.5
 @export var velocidad_correr := 4.0
@@ -59,6 +69,8 @@ var anim: AnimationPlayer
 var es_ladron := false
 var _tiempo_huida := 0.0
 var _punto_huida := Vector3.ZERO
+var _prox_huida := 0.0
+var _marca_ladron: Label3D = null
 
 # Incidente (lo asigna IncidentePresionado: lee y escribe estas variables)
 var incidente: IncidentePresionado = null
@@ -87,12 +99,18 @@ var _destino_paseo := Vector3.INF
 var _prox_paseo := 0.0
 var _llego_a_entrada := false
 var _tiempo_entrando := 0.0
+var _entrada_ajustada := Vector3.INF   # `entrada` ya pegada a la malla (se calcula una vez)
+var _t_atascado := 0.0
 
 @onready var modelo: Node3D = $Modelo
 
 
 func _ready() -> void:
 	add_to_group("ciudadanos")
+	# Los ciudadanos no se bloquean entre sí (capa 2), pero sí chocan con el mundo y los policías (capa 1).
+	# Sin esto, un peleador ya parado en su puesto le cierra el paso al otro y la pelea se cancela.
+	collision_layer = 2
+	collision_mask = 1
 	_es_miron = randf() < probabilidad_mirar
 	# Agrega tu jugador al grupo "jugador" desde el editor
 	jugador = get_tree().get_first_node_in_group("jugador")
@@ -115,8 +133,11 @@ func _ready() -> void:
 		_agente.name = "NavigationAgent3D"
 		add_child(_agente)
 	_agente.avoidance_enabled = false
-	_agente.path_desired_distance = 0.5
-	_agente.target_desired_distance = 0.5
+	# La malla del nivel flota ~0.5 m sobre el suelo y el agente mide en 3D: con 0.5 nunca daba por
+	# alcanzado un punto de ruta y se quedaba oscilando. 1.0 deja margen (la llegada fina la decide
+	# _llego_a(), que mide en el plano).
+	_agente.path_desired_distance = 1.0
+	_agente.target_desired_distance = 1.0
 
 
 func _physics_process(delta: float) -> void:
@@ -139,11 +160,13 @@ func _physics_process(delta: float) -> void:
 		_reaccionar_al_jugador()
 	elif _entrando(delta):
 		estado = Estado.CAMINANDO
-		mover_hacia(entrada, velocidad_caminar)
+		mover_hacia(_entrada_en_malla(), velocidad_caminar)
 	else:
 		_comportamiento_idle()
 
+	var pedida := Vector2(velocity.x, velocity.z).length()
 	move_and_slide()
+	_revisar_atasco(delta, pedida)
 	_actualizar_animacion()
 
 
@@ -169,37 +192,96 @@ func disponible() -> bool:
 	return not es_ladron and incidente == null and _rol == Rol.NINGUNO \
 		and estado in [Estado.IDLE, Estado.CAMINANDO, Estado.OBSERVANDO]
 
-## Lo convierte en ladrón: huye durante `tiempo` segundos
+## Lo convierte en ladrón: huye durante `tiempo` segundos y se marca para que los policías lo vean
 func volverse_ladron(tiempo: float) -> void:
 	_salir_de_incidente()
 	es_ladron = true
 	_tiempo_huida = tiempo
+	_prox_huida = 0.0
 	estado = Estado.ROBANDO
-	# Punto de escape lejos del jugador (o del centro del paseo si no hay jugador)
-	var desde := jugador.global_position if jugador else _ancla
-	var dir := global_position - desde
-	dir.y = 0.0
-	if dir.length() < 0.1:
-		dir = Vector3.FORWARD
-	_punto_huida = global_position + dir.normalized() * 40.0
+	_poner_marca_ladron()
+	print("%s se volvió ladrón (huye %.0f s)" % [name, tiempo])
 
-## Llamar desde el jugador cuando alcanza al ladrón
+## Se llama cuando un policía alcanza al ladrón (lo hace el propio ladrón al sentirlo cerca)
 func atrapar() -> void:
 	if not es_ladron:
 		return
 	es_ladron = false
+	print("%s fue atrapado" % name)
 	ladron_atrapado.emit(self)
 	queue_free()
 
 func _huir_como_ladron(delta: float) -> void:
 	_tiempo_huida -= delta
+	var policia := _policia_mas_cercano()
+	# ¿Lo alcanzó algún policía?
+	if policia != null and _distancia_plana(policia.global_position) <= RADIO_CAPTURA:
+		atrapar()
+		return
 	if _tiempo_huida <= 0.0:
 		es_ladron = false
+		print("%s escapó" % name)
 		ladron_escapo.emit(self)
 		queue_free()
 		return
 	estado = Estado.HUYENDO
+	var ahora := _ahora()
+	if ahora >= _prox_huida or _distancia_plana(_punto_huida) < 1.0:
+		_prox_huida = ahora + 0.4
+		_punto_huida = _elegir_punto_de_huida(policia)
 	mover_hacia(_punto_huida, velocidad_correr)
+
+## Elige hacia dónde correr: el punto (dentro de la feria) más lejos del policía más cercano
+func _elegir_punto_de_huida(policia: Node3D) -> Vector3:
+	var desde := policia.global_position if policia != null else _ancla
+	var mejor := global_position
+	var mejor_d := -1.0
+	var base := randf() * TAU
+	for i in 12:
+		var ang := base + TAU * i / 12.0
+		var p := global_position + Vector3(cos(ang), 0.0, sin(ang)) * 7.0
+		p.x = clampf(p.x, centro_feria.x - limite_feria, centro_feria.x + limite_feria)
+		p.z = clampf(p.z, centro_feria.z - limite_feria, centro_feria.z + limite_feria)
+		var d := Vector2(p.x - desde.x, p.z - desde.z).length()
+		if d > mejor_d:
+			mejor_d = d
+			mejor = p
+	return _sobre_malla(mejor)
+
+func _policia_mas_cercano() -> Node3D:
+	var mejor: Node3D = null
+	var menor := INF
+	for nodo in get_tree().get_nodes_in_group("jugador"):
+		var p := nodo as Node3D
+		if p == null:
+			continue
+		var d := _distancia_plana(p.global_position)
+		if d < menor:
+			menor = d
+			mejor = p
+	return mejor
+
+func _distancia_plana(punto: Vector3) -> float:
+	return Vector2(global_position.x - punto.x, global_position.z - punto.z).length()
+
+## Cartel rojo flotante sobre el ladrón, visible desde cualquier ángulo y a través de objetos
+func _poner_marca_ladron() -> void:
+	if is_instance_valid(_marca_ladron):
+		return
+	var marca := Label3D.new()
+	marca.name = "MarcaLadron"
+	marca.text = "¡LADRÓN!"
+	marca.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	marca.no_depth_test = true
+	marca.fixed_size = false
+	marca.pixel_size = 0.009
+	marca.font_size = 64
+	marca.outline_size = 16
+	marca.modulate = COLOR_LADRON
+	marca.outline_modulate = Color(0.1, 0.0, 0.0)
+	marca.position = Vector3(0.0, 2.7, 0.0)
+	add_child(marca)
+	_marca_ladron = marca
 
 
 # ---------- Incidentes (pelea, curiosos, gente que se aleja) ----------
@@ -208,7 +290,7 @@ func ir_a_pelea(punto: Vector3, inc: IncidentePresionado) -> void:
 	_salir_de_incidente()
 	incidente = inc
 	_rol = Rol.PELEADOR
-	_punto_pelea = punto
+	_punto_pelea = _sobre_malla(punto)
 	llego = false
 	estado = Estado.CAMINANDO
 
@@ -225,7 +307,7 @@ func curiosear(punto: Vector3, centro: Vector3, inc: IncidentePresionado) -> voi
 	_salir_de_incidente()
 	incidente = inc
 	_rol = Rol.CURIOSO
-	_punto_curioso = punto
+	_punto_curioso = _sobre_malla(punto)
 	_centro_curioso = centro
 	estado = Estado.CAMINANDO
 
@@ -276,8 +358,7 @@ func _comportamiento_incidente(delta: float) -> void:
 
 func _pelear() -> void:
 	if not llego:
-		var falta := Vector2(global_position.x - _punto_pelea.x, global_position.z - _punto_pelea.z).length()
-		if falta > 0.6:
+		if not _llego_a(_punto_pelea):
 			estado = Estado.CAMINANDO
 			# Corre: el incidente solo espera unos segundos a que lleguen
 			mover_hacia(_punto_pelea, velocidad_correr)
@@ -290,8 +371,7 @@ func _pelear() -> void:
 		mirar(incidente.global_position)
 
 func _mirar_incidente() -> void:
-	var falta := Vector2(global_position.x - _punto_curioso.x, global_position.z - _punto_curioso.z).length()
-	if falta > 0.6:
+	if not _llego_a(_punto_curioso):
 		estado = Estado.CAMINANDO
 		mover_hacia(_punto_curioso, velocidad_caminar)
 	else:
@@ -362,6 +442,37 @@ func _colocar_accesorio() -> void:
 	ancla.add_child(obj)
 
 
+# ---------- Atascos ----------
+## `entrada` pegada a la malla, calculada una sola vez cuando la malla ya existe
+func _entrada_en_malla() -> Vector3:
+	if _entrada_ajustada == Vector3.INF and _hay_malla():
+		_entrada_ajustada = _sobre_malla(entrada)
+	return entrada if _entrada_ajustada == Vector3.INF else _entrada_ajustada
+
+## Si quiere moverse pero casi no avanza (choca con algo o no hay camino), pide otro destino.
+func _revisar_atasco(delta: float, pedida: float) -> void:
+	if pedida < 0.3:
+		_t_atascado = 0.0
+		return
+	var real := get_real_velocity()
+	if Vector2(real.x, real.z).length() < pedida * 0.25:
+		_t_atascado += delta
+		if _t_atascado >= TIEMPO_ATASCADO:
+			_t_atascado = 0.0
+			_al_atascarse()
+	else:
+		_t_atascado = maxf(_t_atascado - delta, 0.0)
+
+## Los hijos pueden sobrescribirlo (llamando a super()) para elegir otra cosa que hacer.
+func _al_atascarse() -> void:
+	_ultimo_destino = Vector3.INF   # fuerza ruta nueva
+	_prox_ruta = 0.0
+	_destino_paseo = Vector3.INF    # y paseo nuevo
+	_prox_paseo = 0.0
+	if viene_de_afuera and not _llego_a_entrada:
+		_llego_a_entrada = true     # deja de insistir con la entrada y sigue con su paseo
+
+
 # ---------- Utilidades compartidas ----------
 func _ahora() -> float:
 	return Time.get_ticks_msec() / 1000.0
@@ -380,15 +491,21 @@ func mover_hacia(destino: Vector3, vel: float) -> void:
 			_prox_ruta = ahora + 0.3
 			_ultimo_destino = destino
 			_agente.target_position = destino
-		if not _agente.is_navigation_finished():
+		if _agente.is_navigation_finished():
+			# La ruta terminó. Si el destino sigue lejos es inalcanzable (hueco de la malla, isla
+			# aislada...): ir en línea recta solo lo estrella contra un obstáculo, así que se queda
+			# quieto y quien lo llamó elige otro destino (o _revisar_atasco lo pide).
+			if _distancia_plana(destino) > DIST_LLEGADA_BLOQUEADO:
+				return
+		else:
 			meta = _agente.get_next_path_position()
 	var dir := meta - global_position
 	dir.y = 0.0
 	if dir.length() < 0.1:
-		# La ruta no avanza (sin camino o ya terminó): si el destino sigue lejos, va en línea recta
+		# La ruta no avanza: si el destino sigue cerca va directo; sin malla no hay otra forma
 		var directo := destino - global_position
 		directo.y = 0.0
-		if directo.length() < 0.8:
+		if directo.length() < DIST_LLEGADA * 0.5:
 			return
 		meta = destino
 		dir = directo
@@ -409,12 +526,28 @@ func _hay_malla() -> bool:
 		and not NavigationServer3D.map_get_regions(mapa).is_empty()
 	return _malla_lista
 
+## Mueve `punto` a la zona caminable más cercana (si aún no hay malla lo deja como está)
+func _sobre_malla(punto: Vector3) -> Vector3:
+	if _agente == null or not _hay_malla():
+		return punto
+	return NavigationServer3D.map_get_closest_point(_agente.get_navigation_map(), punto)
+
+## ¿Ya llegó a `punto`? También cuenta si la ruta terminó y quedó razonablemente cerca
+## (un puesto que no se puede alcanzar del todo no debe dejarlo atascado para siempre).
+func _llego_a(punto: Vector3) -> bool:
+	var falta := _distancia_plana(punto)
+	if falta <= DIST_LLEGADA:
+		return true
+	return _agente != null and _hay_malla() and _agente.is_navigation_finished() \
+		and falta <= DIST_LLEGADA_BLOQUEADO
+
 ## true mientras camina desde la entrada del parque hacia su punto de llegada
 func _entrando(delta: float) -> bool:
 	if not viene_de_afuera or _llego_a_entrada:
 		return false
 	_tiempo_entrando += delta
-	var falta := Vector2(global_position.x - entrada.x, global_position.z - entrada.z).length()
+	var punto := _entrada_en_malla()
+	var falta := Vector2(global_position.x - punto.x, global_position.z - punto.z).length()
 	if falta < 1.5 or _tiempo_entrando > 25.0:
 		_llego_a_entrada = true
 		return false
@@ -426,7 +559,13 @@ func _pasear() -> void:
 	if _destino_paseo == Vector3.INF or ahora >= _prox_paseo:
 		_prox_paseo = ahora + randf_range(4.0, 9.0)
 		var ang := randf() * TAU
-		_destino_paseo = _ancla + Vector3(cos(ang), 0.0, sin(ang)) * sqrt(randf()) * _radio_paseo
+		var p := _ancla + Vector3(cos(ang), 0.0, sin(ang)) * sqrt(randf()) * _radio_paseo
+		if viene_de_afuera:
+			# no se sale del cercado (el paseo puede asomarse más allá de las cercas)
+			p.x = clampf(p.x, centro_feria.x - limite_feria, centro_feria.x + limite_feria)
+			p.z = clampf(p.z, centro_feria.z - limite_feria, centro_feria.z + limite_feria)
+		# Sobre la malla: ~1 de cada 4 puntos al azar cae en un hueco (puesto, banca, atracción)
+		_destino_paseo = _sobre_malla(p)
 	var falta := Vector2(global_position.x - _destino_paseo.x, global_position.z - _destino_paseo.z).length()
 	if falta > 1.0:
 		estado = Estado.CAMINANDO
@@ -437,7 +576,7 @@ func _pasear() -> void:
 func huir_de(punto_evento: Vector3, vel: float) -> void:
 	var dir := global_position - punto_evento
 	dir.y = 0.0
-	mover_hacia(global_position + dir.normalized() * 5.0, vel)
+	mover_hacia(_sobre_malla(global_position + dir.normalized() * 5.0), vel)
 
 func mirar(blanco: Vector3) -> void:
 	var p := Vector3(blanco.x, global_position.y, blanco.z)

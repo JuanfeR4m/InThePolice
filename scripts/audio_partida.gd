@@ -77,4 +77,5 @@ func _terminar(archivo: String):
 		p_fin.play()
 	var hud = get_tree().get_first_node_in_group("hud")
 	if hud != null:
-		hud.detener_tiempo()
+		if hud.has_method("detener_tiempo"):
+			hud.detener_tiempo()

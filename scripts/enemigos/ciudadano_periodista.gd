@@ -18,7 +18,7 @@ func _comportamiento_idle() -> void:
 	if _ahora() < _foco_hasta:
 		_observar(_foco)
 	else:
-		estado = Estado.IDLE
+		_pasear()   # en busca de algo que fotografiar
 
 func _reaccionar_al_jugador() -> void:
 	_observar(jugador.global_position)

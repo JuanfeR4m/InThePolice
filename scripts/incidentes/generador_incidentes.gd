@@ -6,7 +6,8 @@ signal ira_cambio(valor: int)
 const IRA_MAXIMA := 100
 const IRA_ESCALADO := 8
 const IRA_RESUELTO := 5
-const RADIO_ROBO := 12.0
+## El ladrón sale de entre los ciudadanos que estén a esta distancia (m) de algún policía
+const RADIO_ROBO := 18.0
 const IRA_DIFICIL := 40
 const MODOS_FACILES := [
 	IncidentePresionado.Modo.MANTENER,
@@ -63,15 +64,16 @@ func elegir_ladron() -> void:
 	var jugadores := get_tree().get_nodes_in_group("jugador")
 	if jugadores.is_empty():
 		return
-	var centro := Vector3.ZERO
-	for j in jugadores:
-		centro += (j as Node3D).global_position
-	centro /= jugadores.size()
 	var candidatos: Array[Ciudadano] = []
 	for nodo in get_tree().get_nodes_in_group("ciudadanos"):
 		var c := nodo as Ciudadano
-		if c != null and c.disponible() and c.global_position.distance_to(centro) <= RADIO_ROBO:
-			candidatos.append(c)
+		if c == null or not c.disponible():
+			continue
+		# Cerca de CUALQUIER policía (con el punto medio entre los dos podía no haber nadie)
+		for j in jugadores:
+			if c.global_position.distance_to((j as Node3D).global_position) <= RADIO_ROBO:
+				candidatos.append(c)
+				break
 	if candidatos.is_empty():
 		return
 	ladron = candidatos.pick_random()
@@ -108,7 +110,17 @@ func _on_timer_timeout() -> void:
 	var elegido := libres.pick_random() as Node3D
 	crear_incidente(elegido.global_position, elegido)
 
+## Corre el punto a la zona caminable más cercana: si cae dentro de un puesto o un edificio,
+## los peleadores no pueden llegar y el incidente se cancela solo.
+func sobre_malla(posicion: Vector3) -> Vector3:
+	var mapa := get_viewport().find_world_3d().navigation_map
+	if NavigationServer3D.map_get_regions(mapa).is_empty():
+		return posicion
+	var cercano := NavigationServer3D.map_get_closest_point(mapa, posicion)
+	return Vector3(cercano.x, posicion.y, cercano.z)
+
 func crear_incidente(posicion: Vector3, llave: Variant) -> void:
+	posicion = sobre_malla(posicion)
 	var incidente: IncidentePresionado = escena_incidente.instantiate()
 	incidente.modo = elegir_modo()
 	incidente.resuelto.connect(_on_incidente_resuelto)
