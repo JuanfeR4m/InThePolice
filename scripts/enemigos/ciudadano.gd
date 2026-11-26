@@ -34,6 +34,10 @@ const FRASES_ATAQUE := ["¡Mi trámite era a las 9!", "¡Quiero hablar con el ge
 # Tinte rojo según la Ira (Juego.ira): empieza a notarse desde IRA_TINTE_MIN
 const IRA_TINTE_MIN := 20.0
 const TINTE_MAX := 0.45
+# Con mucha Ira, un atacante a veces empuja al policía en vez de dejarse calmar
+const EMPUJON_ESPERA := 4.0
+const EMPUJON_PROB_MAX := 0.6
+const FRASE_EMPUJON := "¡Quítese!"
 const FRASES_CALMA := ["Ya, ya... perdón", "Mejor me voy a comer algo", "Fue la rabia, jefe", "Tampoco era para tanto"]
 
 @export_group("Movimiento")
@@ -130,6 +134,8 @@ var _prox_golpe_ataque := 0.0
 var _no_ataca_hasta := 0.0
 var _marca_ataque: Label3D = null
 var _material_ira: StandardMaterial3D = null
+var _prox_empujon := 0.0
+var _inmune_calma_hasta := 0.0
 var _prox_tinte := 0.0
 
 @onready var modelo: Node3D = $Modelo
@@ -457,7 +463,10 @@ func _atacar_objetivo() -> void:
 		return
 	# Si un policía lo toca, se calma (así se defiende a los verdes)
 	var policia := _policia_mas_cercano()
-	if policia != null and _distancia_plana(policia.global_position) <= RADIO_CAPTURA:
+	if policia != null and _distancia_plana(policia.global_position) <= RADIO_CAPTURA \
+			and _ahora() >= _inmune_calma_hasta:
+		if _intentar_empujar(policia):
+			return
 		calmar(policia)
 		return
 	var blanco := _objetivo_ataque.global_position
@@ -472,6 +481,31 @@ func _atacar_objetivo() -> void:
 		_prox_golpe_ataque = ahora + INTERVALO_GOLPE
 		_objetivo_ataque.recibir_golpe()
 
+## Cuanta más Ira acumulada, más probable que el atacante empuje al policía que lo toca.
+## Un policía empujado queda aturdido un momento y el atacante no se calma por 1 s
+## (la patada sí lo calma siempre).
+func _intentar_empujar(policia: Node3D) -> bool:
+	var ahora := _ahora()
+	if ahora < _prox_empujon:
+		return false
+	_prox_empujon = ahora + EMPUJON_ESPERA
+	if randf() > _ira_normalizada() * EMPUJON_PROB_MAX:
+		return false
+	if not policia.has_method("empujar"):
+		return false
+	var dir := policia.global_position - global_position
+	dir.y = 0.0
+	policia.empujar(dir)
+	_inmune_calma_hasta = ahora + 1.0
+	_decir(FRASE_EMPUJON, COLOR_LADRON, 1.0)
+	return true
+
+func _ira_normalizada() -> float:
+	var juego = get_tree().get_first_node_in_group("juego")
+	if juego == null or not ("ira" in juego):
+		return 0.0
+	return clampf(float(juego.ira) / 100.0, 0.0, 1.0)
+
 ## Un policía lo alcanzó: se le baja la rabia, se aleja y tarda un rato en volver a atacar
 func calmar(policia: Node3D) -> void:
 	var desde := policia.global_position
@@ -480,8 +514,12 @@ func calmar(policia: Node3D) -> void:
 	_decir(FRASES_CALMA.pick_random(), Color(0.55, 0.85, 1.0), 1.6)
 	alejarse_de(desde, 10.0)
 
-## Administrativo: recibe un golpe; a los GOLPES_PARA_CAER renuncia y se descuenta de los salvados
-func recibir_golpe() -> void:
+## Administrativo: recibe un golpe; a los GOLPES_PARA_CAER renuncia y se descuenta de los salvados.
+## Los atacantes lo llaman sin argumentos. Los disparos de prueba (apuntar.gd) mandan daño y
+## dirección: esos se ignoran para que no cuenten como golpe de un atacante.
+func recibir_golpe(cuanto := -1, _direccion := Vector3.ZERO) -> void:
+	if cuanto >= 0:
+		return
 	if caido or not es_administrativo:
 		return
 	_golpes += 1

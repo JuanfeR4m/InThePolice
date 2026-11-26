@@ -17,6 +17,7 @@ var accion = ""
 var avance = Vector3.ZERO
 var estado = Estado.QUIETO
 var ruido = 0.0
+var aturdido = 0.0
 
 
 func _ready():
@@ -73,6 +74,13 @@ func _physics_process(delta):
 	var objetivo = direction * speed * multiplicador
 	var paso = speed / tiempo_arranque * delta
 
+	# Empujón de un atacante: no controla el movimiento mientras está aturdido
+	if aturdido > 0.0:
+		aturdido = maxf(aturdido - delta, 0.0)
+		objetivo = Vector3.ZERO
+		direction = Vector3.ZERO
+	empuje = empuje.move_toward(Vector3.ZERO, 25.0 * delta)
+
 	avance = avance.move_toward(objetivo, paso)
 
 	velocity.x = avance.x + empuje.x
@@ -91,6 +99,12 @@ func _physics_process(delta):
 	if estado != antes:
 		print(name, " estado ", Estado.keys()[estado], " · rapidez máxima ", RAPIDEZ[estado], " m/s")
 	animar()
+
+
+## Un atacante empuja al policía (lo llama ciudadano.gd)
+func empujar(direccion: Vector3, fuerza: float = 8.0, tiempo: float = 0.5):
+	empuje = direccion.normalized() * fuerza
+	aturdido = tiempo
 
 
 func elegir_estado():
