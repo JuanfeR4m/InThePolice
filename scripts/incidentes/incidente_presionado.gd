@@ -151,8 +151,12 @@ func indice_cercano(c: Node3D) -> int:
 			mejor = i
 	return mejor
 
+## Las peleas son dentro de la cerca: solo pelea quien ya entró a la feria.
+func esta_en_feria(c: Node3D) -> bool:
+	return not c.has_method("esta_dentro_de_feria") or c.esta_dentro_de_feria()
+
 func acepta_peleador(c: Node3D) -> bool:
-	return not iniciado and indice_libre(puestos) != -1 \
+	return not iniciado and indice_libre(puestos) != -1 and esta_en_feria(c) \
 		and c.global_position.distance_to(global_position) <= RADIO_RECLUTAR
 
 func acepta_curioso(c: Node3D) -> bool:
@@ -197,7 +201,7 @@ func reclutar() -> void:
 	if not iniciado:
 		var candidatos: Array[Node3D] = []
 		for c in get_tree().get_nodes_in_group("ciudadanos"):
-			if c.has_method("disponible") and c.disponible() \
+			if c.has_method("disponible") and c.disponible() and esta_en_feria(c) \
 			and c.global_position.distance_to(global_position) <= RADIO_RECLUTAR:
 				candidatos.append(c)
 		ordenar_por_cercania(candidatos)

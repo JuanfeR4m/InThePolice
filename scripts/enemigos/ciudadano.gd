@@ -330,7 +330,7 @@ func ir_a_pelea(punto: Vector3, inc: IncidentePresionado) -> void:
 	_salir_de_incidente()
 	incidente = inc
 	_rol = Rol.PELEADOR
-	_punto_pelea = _sobre_malla(punto)
+	_punto_pelea = _sobre_malla(_punto_en_feria(punto))   # la pelea nunca queda fuera de la cerca
 	llego = false
 	estado = Estado.CAMINANDO
 
@@ -662,6 +662,16 @@ func _encerrar_en_feria() -> void:
 	var l := limite_feria + MARGEN_FERIA
 	global_position.x = clampf(global_position.x, centro_feria.x - l, centro_feria.x + l)
 	global_position.z = clampf(global_position.z, centro_feria.z - l, centro_feria.z + l)
+
+## ¿Está dentro de la cerca ahora mismo? IncidentePresionado solo recluta peleadores que ya entraron.
+func esta_dentro_de_feria() -> bool:
+	return _dentro_de_feria(global_position)
+
+## Como _limitar_a_feria, pero siempre (sin importar si ya entró): para puestos de pelea.
+func _punto_en_feria(punto: Vector3) -> Vector3:
+	punto.x = clampf(punto.x, centro_feria.x - limite_feria, centro_feria.x + limite_feria)
+	punto.z = clampf(punto.z, centro_feria.z - limite_feria, centro_feria.z + limite_feria)
+	return punto
 
 ## Si ya está adentro, ningún destino (huir, alejarse, curiosear...) lo saca de la feria
 func _limitar_a_feria(punto: Vector3) -> Vector3:
