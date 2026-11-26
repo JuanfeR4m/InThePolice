@@ -14,7 +14,7 @@ extends Node3D
 ## 1.0 = desorden total, 0.0 = casi nada
 @export_range(0.0, 1.0) var desorden := 1.0
 ## Si es true, el desorden depende de la Ira (Juego.ira)
-@export var usar_ira := false
+@export var usar_ira := true
 ## Marca esto en el editor para ver los fuegos y la basura sin correr el juego.
 ## Desmárcalo antes de guardar/jugar (al jugar se ocultan solos igual).
 @export var vista_previa := false:

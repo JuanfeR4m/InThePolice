@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/modelos_kenney/GLB format/character-male-c.glb" id="6_cx4ix"]
 
 [ext_resource type="Script" path="res://scripts/jugador/marcador_policia.gd" id="7_marcador"]
+[ext_resource type="Script" path="res://scripts/jugador/aro_policia.gd" id="8_aro"]
 
 [sub_resource type="CapsuleShape3D" id="Capsula"]
 radius = 0.35
@@ -48,3 +49,12 @@ billboard = 1
 shaded = false
 texture_filter = 3
 script = ExtResource("7_marcador")
+
+[node name="Aro" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+cast_shadow = 0
+pixel_size = 0.0035
+axis = 1
+shaded = false
+texture_filter = 3
+script = ExtResource("8_aro")

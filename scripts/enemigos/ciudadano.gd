@@ -31,6 +31,9 @@ const GOLPES_PARA_CAER := 3
 const ENFRIAMIENTO_ATAQUE := 12.0
 const FRASES_ATAQUE := ["¡Mi trámite era a las 9!", "¡Quiero hablar con el gerente!", "¡Me cobraron dos veces!",
 	"¡Por la fila de 3 horas!", "¡Ventanilla cerrada, ¿en serio?!", "¡Sellen ESTO!"]
+# Tinte rojo según la Ira (Juego.ira): empieza a notarse desde IRA_TINTE_MIN
+const IRA_TINTE_MIN := 20.0
+const TINTE_MAX := 0.45
 const FRASES_CALMA := ["Ya, ya... perdón", "Mejor me voy a comer algo", "Fue la rabia, jefe", "Tampoco era para tanto"]
 
 @export_group("Movimiento")
@@ -126,6 +129,8 @@ var _objetivo_ataque: Ciudadano = null
 var _prox_golpe_ataque := 0.0
 var _no_ataca_hasta := 0.0
 var _marca_ataque: Label3D = null
+var _material_ira: StandardMaterial3D = null
+var _prox_tinte := 0.0
 
 @onready var modelo: Node3D = $Modelo
 
@@ -195,6 +200,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_encerrar_en_feria()
 	_revisar_atasco(delta, pedida)
+	_actualizar_tinte_ira()
 	_actualizar_animacion()
 
 
@@ -557,6 +563,29 @@ func _animacion_golpe() -> String:
 
 func _velocidad_horizontal() -> float:
 	return Vector2(velocity.x, velocity.z).length()
+
+
+# ---------- Rabia visible: más Ira acumulada, más rojo ----------
+func _actualizar_tinte_ira() -> void:
+	if es_administrativo or caido:
+		return   # los verdes conservan su contorno
+	var ahora := _ahora()
+	if ahora < _prox_tinte:
+		return
+	_prox_tinte = ahora + 0.5
+	var juego = get_tree().get_first_node_in_group("juego")
+	if juego == null or not ("ira" in juego):
+		return
+	var rabia := clampf((float(juego.ira) - IRA_TINTE_MIN) / (100.0 - IRA_TINTE_MIN), 0.0, 1.0)
+	if _material_ira == null:
+		if rabia <= 0.0:
+			return
+		_material_ira = StandardMaterial3D.new()
+		_material_ira.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		_material_ira.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		for malla in modelo.find_children("*", "MeshInstance3D", true, false):
+			(malla as MeshInstance3D).material_overlay = _material_ira
+	_material_ira.albedo_color = Color(1.0, 0.1, 0.1, rabia * TINTE_MAX)
 
 
 # ---------- Accesorio (máscara, gafas...) ----------
