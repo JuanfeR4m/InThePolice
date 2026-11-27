@@ -44,6 +44,25 @@ const FRENADO_VUELO := 7.5
 const TIEMPO_CAIDO := 4.0
 const TIEMPO_LEVANTARSE := 0.8
 const DANIO_EMPUJON := 1
+## De noche cualquier ciudadano se puede empujar. Cada empujón lo tumba un momento y le quita
+## 1 de vida; con el último queda aturdido en el piso, se levanta, se va corriendo y desaparece.
+## (Un administrativo no se va: pierde un golpe por empujón y, al perder todos, renuncia.)
+const EMPUJONES_PARA_CAER := 3
+const FUERZA_CAIDA_LEVE := 8.0
+const TIEMPO_CAIDA_LEVE := 1.6
+## Segundos que corre para irse antes de desaparecer
+const TIEMPO_IRSE := 5.0
+## Atacantes que van por los policías (jugadores)
+const DANIO_GOLPE_POLICIA := 1
+const INTERVALO_GOLPE_POLICIA := 1.5
+const FRASES_ATAQUE_POLICIA := ["¡Fuera de aquí, policía!", "¡Nadie nos va a callar!", "¡Abuso de autoridad!",
+	"¡Esto es por la fila!", "¡Devuélvanme mi turno!"]
+## Barra de vida sobre los administrativos (una casilla por golpe que aguantan)
+const ALTO_BARRA_VIDA := 3.5
+const COLOR_BARRA_FONDO := Color("1B2240")
+const COLOR_VIDA_LLENA := Color("5FB88B")
+const COLOR_VIDA_BAJA := Color("D63A3A")
+const COLOR_VIDA_VACIA := Color(0.28, 0.3, 0.42)
 const DISTANCIA_AGARRE := 1.0
 const SEGUIMIENTO_AGARRE := 8.0
 const DISTANCIA_SOLTAR := 3.0
@@ -153,6 +172,14 @@ var agarrado_por: Node3D = null
 var _impulso := Vector3.ZERO
 var _tiempo_caido := 0.0
 var _anim_caida := ""
+var _objetivo_policia: Node3D = null    # si no es null, este atacante va por un policía
+var _empujones := 0
+var _derrotado := false                 # ya aguantó todos los empujones: al levantarse se va
+var _se_va_para_siempre := false
+var _desde_empujon := Vector3.ZERO
+var _barra_vida: Node3D = null
+var _pips_vida: Array[MeshInstance3D] = []
+var _golpes_mostrados := -1
 
 @onready var modelo: Node3D = $Modelo
 
@@ -406,6 +433,8 @@ func _salir_de_incidente() -> void:
 	_punto_alejarse = Vector3.INF
 	_anim_golpe = ""
 	_objetivo_ataque = null
+	_objetivo_policia = null
+	_se_va_para_siempre = false
 	if is_instance_valid(_marca_ataque):
 		_marca_ataque.queue_free()
 	_marca_ataque = null
@@ -456,6 +485,9 @@ func _alejarse(delta: float) -> void:
 	_tiempo_alejarse -= delta
 	var falta := Vector2(global_position.x - _punto_alejarse.x, global_position.z - _punto_alejarse.z).length()
 	if _tiempo_alejarse <= 0.0 or falta < 1.0:
+		if _se_va_para_siempre:
+			queue_free()
+			return
 		_salir_de_incidente()
 		return
 	estado = Estado.HUYENDO
@@ -485,7 +517,48 @@ func atacar_administrativo(victima: Ciudadano) -> void:
 	estado = Estado.CAMINANDO
 	_marca_ataque = _decir(FRASES_ATAQUE.pick_random(), COLOR_LADRON, 0.0)
 
+## GeneradorIncidentes lo llama de noche: este ciudadano se lanza contra un policía (jugador).
+func atacar_policia(policia: Node3D) -> void:
+	_salir_de_incidente()
+	_rol = Rol.ATACANTE
+	_objetivo_policia = policia
+	estado = Estado.CAMINANDO
+	_marca_ataque = _decir(FRASES_ATAQUE_POLICIA.pick_random(), COLOR_LADRON, 0.0)
+
+func _atacar_policia() -> void:
+	# Si su víctima cayó (o ya no existe), busca al otro policía de pie; si no queda ninguno, se rinde
+	if not is_instance_valid(_objetivo_policia) or _objetivo_policia.desmayado:
+		var otro := _policia_mas_cercano()
+		if otro == null:
+			_salir_de_incidente()
+			return
+		_objetivo_policia = otro
+	var blanco := _objetivo_policia.global_position
+	if _distancia_plana(blanco) > DIST_GOLPE:
+		estado = Estado.CAMINANDO
+		mover_hacia(blanco, velocidad_correr * 0.9)
+		return
+	estado = Estado.ATACANDO
+	mirar(blanco)
+	var ahora := _ahora()
+	if ahora >= _prox_golpe_ataque:
+		_prox_golpe_ataque = ahora + INTERVALO_GOLPE_POLICIA
+		_golpear_policia(_objetivo_policia)
+
+## El golpe es un empujón que cuenta como 1 de vida (igual que `_intentar_empujar`)
+func _golpear_policia(policia: Node3D) -> void:
+	var dir := policia.global_position - global_position
+	dir.y = 0.0
+	if policia.has_method("empujar"):
+		policia.empujar(dir, 6.0, 0.4)
+	var salud = policia.get_node_or_null("Salud")
+	if salud != null:
+		salud.recibir_golpe(DANIO_GOLPE_POLICIA)
+
 func _atacar_objetivo() -> void:
+	if _objetivo_policia != null:
+		_atacar_policia()
+		return
 	if not is_instance_valid(_objetivo_ataque) or _objetivo_ataque.caido:
 		_salir_de_incidente()
 		return
@@ -545,21 +618,60 @@ func calmar(policia: Node3D) -> void:
 	_decir(FRASES_CALMA.pick_random(), Color(0.55, 0.85, 1.0), 1.6)
 	alejarse_de(desde, 10.0)
 
-func recibir_empujon(desde: Vector3) -> bool:
-	if empujado or caido or es_administrativo:
+## `conservar_rol` = true: solo se tambalea y, al recuperarse, sigue con lo que hacía (atacando)
+func recibir_empujon(desde: Vector3, tiempo: float = TIEMPO_CAIDO, fuerza: float = FUERZA_VUELO,
+		conservar_rol: bool = false) -> bool:
+	if empujado or caido:
 		return false
 	soltar()
-	_salir_de_incidente()
+	if not conservar_rol:
+		_salir_de_incidente()
 	empujado = true
 	_anim_caida = ""
-	_tiempo_caido = TIEMPO_CAIDO
+	_tiempo_caido = tiempo
 	_impulso = global_position - desde
 	_impulso.y = 0.0
 	if _impulso.length() < 0.1:
 		_impulso = Vector3.FORWARD.rotated(Vector3.UP, randf() * TAU)
-	_impulso = _impulso.normalized() * FUERZA_VUELO
+	_impulso = _impulso.normalized() * fuerza
 	mirar(desde)
 	return true
+
+## Patada de un policía de noche (la llama fuerza.gd). Le puede pasar a cualquiera.
+## Cada empujón lo tumba y le resta 1 de vida:
+##  - administrativo: pierde un golpe (se ve en su barra) y, al perder todos, renuncia;
+##  - cualquier otro: con el último empujón queda aturdido en el piso, se va y desaparece.
+## Si estaba atacando, al levantarse sigue atacando.
+func recibir_empujon_nocturno(desde: Vector3) -> bool:
+	if empujado or caido:
+		return false
+	_desde_empujon = desde
+	if es_administrativo:
+		var cayo := recibir_empujon(desde, TIEMPO_CAIDA_LEVE, FUERZA_CAIDA_LEVE, true)
+		if cayo:
+			recibir_golpe()
+		return cayo
+	_empujones += 1
+	if _empujones >= EMPUJONES_PARA_CAER:
+		_derrotado = true
+		_decir("¡Ya, ya, me largo!", Color(1.0, 0.8, 0.2), 1.4)
+		return recibir_empujon(desde)
+	_decir("¡Auch! (%d/%d)" % [_empujones, EMPUJONES_PARA_CAER], Color(1.0, 0.8, 0.2), 0.8)
+	_prox_golpe_ataque = _ahora() + INTERVALO_GOLPE_POLICIA
+	return recibir_empujon(desde, TIEMPO_CAIDA_LEVE, FUERZA_CAIDA_LEVE, true)
+
+## Ya se levantó del piso tras el último empujón: corre lejos de quien lo pateó y desaparece.
+func _irse_para_siempre() -> void:
+	_derrotado = false
+	var dir := global_position - _desde_empujon
+	dir.y = 0.0
+	if dir.length() < 0.1:
+		dir = Vector3.FORWARD.rotated(Vector3.UP, randf() * TAU)
+	_rol = Rol.ALEJANDOSE
+	_se_va_para_siempre = true
+	_punto_alejarse = _sobre_malla(_punto_en_feria(global_position + dir.normalized() * 30.0))
+	_tiempo_alejarse = TIEMPO_IRSE
+	estado = Estado.HUYENDO
 
 func puede_ser_agarrado() -> bool:
 	return not is_instance_valid(agarrado_por) and not empujado and not caido \
@@ -590,6 +702,8 @@ func _estar_caido(delta: float) -> void:
 	if _tiempo_caido <= 0.0:
 		empujado = false
 		estado = Estado.IDLE
+		if _derrotado:
+			_irse_para_siempre()
 
 func _animar_caida() -> void:
 	var nombre := _animacion_caido()
@@ -695,6 +809,66 @@ func _animacion_golpe() -> String:
 
 func _velocidad_horizontal() -> float:
 	return Vector2(velocity.x, velocity.z).length()
+
+
+# ---------- Barra de vida de los administrativos (se ve de noche) ----------
+func _process(_delta: float) -> void:
+	_actualizar_barra_vida()
+
+func _actualizar_barra_vida() -> void:
+	var debe := es_administrativo and not caido and _es_de_noche()
+	if not debe:
+		if is_instance_valid(_barra_vida):
+			_barra_vida.visible = false
+		return
+	if not is_instance_valid(_barra_vida):
+		_crear_barra_vida()
+	_barra_vida.visible = true
+	# Siempre de frente a la cámara, sin importar hacia dónde mire el ciudadano
+	var camara := get_viewport().get_camera_3d()
+	if camara != null:
+		_barra_vida.global_basis = camara.global_basis
+	if _golpes != _golpes_mostrados:
+		_pintar_barra_vida()
+
+func _crear_barra_vida() -> void:
+	_barra_vida = Node3D.new()
+	_barra_vida.name = "BarraVida"
+	_barra_vida.position = Vector3(0.0, ALTO_BARRA_VIDA, 0.0)
+	add_child(_barra_vida)
+	_barra_vida.add_child(_cuadro_barra(Vector2(1.34, 0.36), COLOR_BARRA_FONDO, 1))
+	_pips_vida.clear()
+	for i in GOLPES_PARA_CAER:
+		var pip := _cuadro_barra(Vector2(0.38, 0.2), COLOR_VIDA_LLENA, 2)
+		pip.position = Vector3((i - (GOLPES_PARA_CAER - 1) / 2.0) * 0.43, 0.0, 0.01)
+		_barra_vida.add_child(pip)
+		_pips_vida.append(pip)
+	_golpes_mostrados = -1
+
+func _cuadro_barra(tam: Vector2, color: Color, prioridad: int) -> MeshInstance3D:
+	var cuadro := MeshInstance3D.new()
+	var malla := QuadMesh.new()
+	malla.size = tam
+	cuadro.mesh = malla
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.no_depth_test = true
+	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	material.albedo_color = color
+	material.render_priority = prioridad
+	cuadro.material_override = material
+	cuadro.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	return cuadro
+
+## Casillas verdes = vida que le queda; grises = lo que le falta. Con 1 sola queda en rojo.
+func _pintar_barra_vida() -> void:
+	_golpes_mostrados = _golpes
+	var vida := maxi(GOLPES_PARA_CAER - _golpes, 0)
+	var color := COLOR_VIDA_BAJA if vida <= 1 else COLOR_VIDA_LLENA
+	for i in _pips_vida.size():
+		var material := _pips_vida[i].material_override as StandardMaterial3D
+		material.albedo_color = color if i < vida else COLOR_VIDA_VACIA
 
 
 # ---------- Rabia visible: más Ira acumulada, más rojo ----------

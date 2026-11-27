@@ -23,6 +23,7 @@ var aturdido = 0.0
 var agarrando = false
 var desmayado = false
 var animacion_desmayo = false
+var animacion_aturdido = false
 var material_gris := StandardMaterial3D.new()
 
 
@@ -143,6 +144,13 @@ func animar():
 			anim.play("die", 0.15)
 		return
 	animacion_desmayo = false
+	# Empujado (por un ciudadano o por el compañero): cae mientras dura el aturdimiento
+	if aturdido > 0.0 and anim.has_animation("fall"):
+		if not animacion_aturdido:
+			animacion_aturdido = true
+			anim.play("fall", 0.1)
+		return
+	animacion_aturdido = false
 	if accion != "":
 		anim.play(accion)
 		return

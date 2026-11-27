@@ -50,6 +50,8 @@ const DISTANCIA_ENTRE_INCIDENTES := 8.0
 @export var intervalo_ataque_furioso := 1.5
 @export var atacantes_calmo := 1
 @export var atacantes_furioso := 8
+## Probabilidad de que un atacante nuevo vaya por un policía en vez de por un administrativo
+@export_range(0.0, 1.0) var probabilidad_atacar_policia := 0.5
 
 var ira := 0
 var reloj_ataque := 4.0
@@ -102,8 +104,26 @@ func procesar_ataques(delta: float) -> void:
 		if d < menor:
 			menor = d
 			objetivo = admin
-	if objetivo != null:
+	var policia := _policia_de_pie_cercano(atacante)
+	# Si solo hay un tipo de víctima disponible, va por ese; si hay los dos, se reparte
+	if policia != null and (objetivo == null or randf() < probabilidad_atacar_policia):
+		atacante.atacar_policia(policia)
+	elif objetivo != null:
 		atacante.atacar_administrativo(objetivo)
+
+
+func _policia_de_pie_cercano(desde: Node3D) -> Node3D:
+	var mejor: Node3D = null
+	var menor := INF
+	for nodo in get_tree().get_nodes_in_group("jugador"):
+		var p := nodo as Node3D
+		if p == null or p.desmayado:
+			continue
+		var d := desde.global_position.distance_to(p.global_position)
+		if d < menor:
+			menor = d
+			mejor = p
+	return mejor
 
 
 func cancelar_incidentes() -> void:
