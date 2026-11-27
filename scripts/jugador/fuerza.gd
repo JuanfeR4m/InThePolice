@@ -29,7 +29,7 @@ func _physics_process(delta):
 				estado = Estado.LISTA
 
 func puede():
-	return pj.is_on_floor()
+	return pj.is_on_floor() and not pj.desmayado
 
 func empezar():
 	estado = Estado.ACTIVA
@@ -64,7 +64,7 @@ func _aplicar_patada():
 		if es_noche:
 			if c.es_atacante():
 				c.calmar(pj)
-		else:
+		elif c.recibir_empujon(pj.global_position):
 			pateo_a_alguien = true
 	if pateo_a_alguien:
 		marcado = true

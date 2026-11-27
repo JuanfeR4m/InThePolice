@@ -39,6 +39,17 @@ const EMPUJON_ESPERA := 4.0
 const EMPUJON_PROB_MAX := 0.6
 const FRASE_EMPUJON := "¡Quítese!"
 const FRASES_CALMA := ["Ya, ya... perdón", "Mejor me voy a comer algo", "Fue la rabia, jefe", "Tampoco era para tanto"]
+const FUERZA_VUELO := 11.0
+const FRENADO_VUELO := 7.5
+const TIEMPO_CAIDO := 4.0
+const TIEMPO_LEVANTARSE := 0.8
+const DANIO_EMPUJON := 1
+const DISTANCIA_AGARRE := 1.0
+const SEGUIMIENTO_AGARRE := 8.0
+const DISTANCIA_SOLTAR := 3.0
+const ANIM_VOLANDO := "fall"
+const ANIM_CAIDO := "die"
+const ANIM_LEVANTARSE := "sit"
 
 @export_group("Movimiento")
 @export var velocidad_caminar := 1.5
@@ -137,6 +148,11 @@ var _material_ira: StandardMaterial3D = null
 var _prox_empujon := 0.0
 var _inmune_calma_hasta := 0.0
 var _prox_tinte := 0.0
+var empujado := false
+var agarrado_por: Node3D = null
+var _impulso := Vector3.ZERO
+var _tiempo_caido := 0.0
+var _anim_caida := ""
 
 @onready var modelo: Node3D = $Modelo
 
@@ -188,7 +204,11 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= 9.8 * delta
 
-	if es_ladron:
+	if is_instance_valid(agarrado_por):
+		_ser_llevado()
+	elif empujado:
+		_estar_caido(delta)
+	elif es_ladron:
 		_huir_como_ladron(delta)
 	elif _rol != Rol.NINGUNO:
 		_comportamiento_incidente(delta)
@@ -229,7 +249,7 @@ func _animacion_por_estado() -> String:
 # ---------- Ladrón ----------
 ## Está libre para que lo recluten (pelea, robo): no está ocupado con otra cosa.
 func disponible() -> bool:
-	return not es_ladron and incidente == null and _rol == Rol.NINGUNO \
+	return not empujado and not is_instance_valid(agarrado_por) and not es_ladron and incidente == null and _rol == Rol.NINGUNO \
 		and estado in [Estado.IDLE, Estado.CAMINANDO, Estado.OBSERVANDO]
 
 ## Lo convierte en ladrón: huye durante `tiempo` segundos y se marca para que los policías lo vean
@@ -293,7 +313,7 @@ func _policia_mas_cercano() -> Node3D:
 	var menor := INF
 	for nodo in get_tree().get_nodes_in_group("jugador"):
 		var p := nodo as Node3D
-		if p == null:
+		if p == null or p.desmayado:
 			continue
 		var d := _distancia_plana(p.global_position)
 		if d < menor:
@@ -450,10 +470,10 @@ func puede_atacar() -> bool:
 	return disponible() and not es_administrativo and _ahora() >= _no_ataca_hasta
 
 ## GeneradorIncidentes lo llama de noche: este ciudadano se lanza contra un administrativo.
-func atacar_administrativo(objetivo: Ciudadano) -> void:
+func atacar_administrativo(victima: Ciudadano) -> void:
 	_salir_de_incidente()
 	_rol = Rol.ATACANTE
-	_objetivo_ataque = objetivo
+	_objetivo_ataque = victima
 	estado = Estado.CAMINANDO
 	_marca_ataque = _decir(FRASES_ATAQUE.pick_random(), COLOR_LADRON, 0.0)
 
@@ -496,6 +516,9 @@ func _intentar_empujar(policia: Node3D) -> bool:
 	var dir := policia.global_position - global_position
 	dir.y = 0.0
 	policia.empujar(dir)
+	var salud = policia.get_node_or_null("Salud")
+	if salud != null:
+		salud.recibir_golpe(DANIO_EMPUJON)
 	_inmune_calma_hasta = ahora + 1.0
 	_decir(FRASE_EMPUJON, COLOR_LADRON, 1.0)
 	return true
@@ -513,6 +536,66 @@ func calmar(policia: Node3D) -> void:
 	_no_ataca_hasta = _ahora() + ENFRIAMIENTO_ATAQUE
 	_decir(FRASES_CALMA.pick_random(), Color(0.55, 0.85, 1.0), 1.6)
 	alejarse_de(desde, 10.0)
+
+func recibir_empujon(desde: Vector3) -> bool:
+	if empujado or caido or es_administrativo:
+		return false
+	soltar()
+	_salir_de_incidente()
+	empujado = true
+	_anim_caida = ""
+	_tiempo_caido = TIEMPO_CAIDO
+	_impulso = global_position - desde
+	_impulso.y = 0.0
+	if _impulso.length() < 0.1:
+		_impulso = Vector3.FORWARD.rotated(Vector3.UP, randf() * TAU)
+	_impulso = _impulso.normalized() * FUERZA_VUELO
+	mirar(desde)
+	return true
+
+func puede_ser_agarrado() -> bool:
+	return not is_instance_valid(agarrado_por) and not empujado and not caido \
+		and incidente == null and _rol == Rol.NINGUNO
+
+func ser_agarrado(policia: Node3D) -> void:
+	agarrado_por = policia
+
+func soltar() -> void:
+	agarrado_por = null
+	estado = Estado.IDLE
+
+func _ser_llevado() -> void:
+	if _distancia_plana(agarrado_por.global_position) > DISTANCIA_SOLTAR:
+		soltar()
+		return
+	var destino := agarrado_por.global_position - agarrado_por.global_basis.z * DISTANCIA_AGARRE
+	var falta := destino - global_position
+	velocity.x = falta.x * SEGUIMIENTO_AGARRE
+	velocity.z = falta.z * SEGUIMIENTO_AGARRE
+	mirar(agarrado_por.global_position)
+
+func _estar_caido(delta: float) -> void:
+	_tiempo_caido -= delta
+	_impulso = _impulso.move_toward(Vector3.ZERO, FRENADO_VUELO * delta)
+	velocity.x = _impulso.x
+	velocity.z = _impulso.z
+	if _tiempo_caido <= 0.0:
+		empujado = false
+		estado = Estado.IDLE
+
+func _animar_caida() -> void:
+	var nombre := _animacion_caido()
+	if nombre == _anim_caida or not anim.has_animation(nombre):
+		return
+	_anim_caida = nombre
+	anim.play(nombre, 0.15)
+
+func _animacion_caido() -> String:
+	if _impulso.length() > 0.1:
+		return ANIM_VOLANDO
+	if _tiempo_caido < TIEMPO_LEVANTARSE:
+		return ANIM_LEVANTARSE
+	return ANIM_CAIDO
 
 ## Administrativo: recibe un golpe; a los GOLPES_PARA_CAER renuncia y se descuenta de los salvados.
 ## Los atacantes lo llaman sin argumentos. Los disparos de prueba (apuntar.gd) mandan daño y
@@ -573,6 +656,9 @@ func _decir(texto: String, color: Color, duracion: float = 1.6) -> Label3D:
 # ---------- Animación ----------
 func _actualizar_animacion() -> void:
 	if anim == null:
+		return
+	if empujado:
+		_animar_caida()
 		return
 	var nombre := ""
 	if (_rol == Rol.PELEADOR and llego) or (_rol == Rol.ATACANTE and estado == Estado.ATACANDO):

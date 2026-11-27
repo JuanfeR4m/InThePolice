@@ -17,7 +17,6 @@ var administrativos := 10
 var mensaje := ""
 
 var _t := 0.0
-var _l_antes := false
 var _terminada := false
 
 
@@ -59,16 +58,8 @@ func _procesar_teclas_prueba(delta: float) -> void:
 	if Input.is_key_pressed(KEY_K):
 		ira = maxf(ira - 30.0 * delta, 0.0)
 
-	var l_ahora := Input.is_key_pressed(KEY_L)
-	if l_ahora and not _l_antes:
-		administrativos = maxi(administrativos - 1, 0)
-	_l_antes = l_ahora
-
 
 func _evaluar_condiciones_fin() -> void:
-	if ira >= 100.0:
-		_terminada = true
-		ira_llena.emit()
-	elif tiempo_restante <= 0.0:
+	if tiempo_restante <= 0.0:
 		_terminada = true
 		tiempo_agotado.emit()

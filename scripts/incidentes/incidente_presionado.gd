@@ -282,21 +282,31 @@ func pasar_a_rojo() -> void:
 	material_alerta.set_shader_parameter("velocidad", VELOCIDAD_ALERTA)
 	material_indicador.set_shader_parameter("color_centro", COLOR_ALERTA)
 
+func jugador_desmayado(grupo: String) -> bool:
+	var jugador = get_tree().get_first_node_in_group(grupo)
+	return jugador != null and jugador.desmayado
+
+func puede1() -> bool:
+	return jugador1_cerca and not jugador_desmayado("jugador1")
+
+func puede2() -> bool:
+	return jugador2_cerca and not jugador_desmayado("jugador2")
+
 func estan_resolviendo() -> bool:
-	if jugador1_cerca and Input.is_action_pressed("interactuar1"):
+	if puede1() and Input.is_action_pressed("interactuar1"):
 		return true
-	if jugador2_cerca and Input.is_action_pressed("interactuar2"):
+	if puede2() and Input.is_action_pressed("interactuar2"):
 		return true
 	return false
 
 func presiono1() -> bool:
-	return jugador1_cerca and Input.is_action_just_pressed("interactuar1")
+	return puede1() and Input.is_action_just_pressed("interactuar1")
 
 func presiono2() -> bool:
-	return jugador2_cerca and Input.is_action_just_pressed("interactuar2")
+	return puede2() and Input.is_action_just_pressed("interactuar2")
 
 func sostienen_los_dos() -> bool:
-	return jugador1_cerca and jugador2_cerca \
+	return puede1() and puede2() \
 		and Input.is_action_pressed("interactuar1") \
 		and Input.is_action_pressed("interactuar2")
 

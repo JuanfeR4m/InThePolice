@@ -1,7 +1,9 @@
 extends CharacterBody3D
 
-enum Estado { QUIETO, CAMINAR, CORRER, RESOLVIENDO }
-const RAPIDEZ = [0.0, 4.0, 7.0, 0.5]
+enum Estado { QUIETO, CAMINAR, CORRER, RESOLVIENDO, ARRASTRANDO }
+const RAPIDEZ = [0.0, 4.0, 7.0, 0.5, 2.5]
+const RADIO_AYUDA := 2.0
+const COLOR_GRIS := Color(0.5, 0.5, 0.5, 0.85)
 
 @export var camara: Camera3D
 @export var speed_caminar: float = 4.0
@@ -18,9 +20,15 @@ var avance = Vector3.ZERO
 var estado = Estado.QUIETO
 var ruido = 0.0
 var aturdido = 0.0
+var agarrando = false
+var desmayado = false
+var animacion_desmayo = false
+var material_gris := StandardMaterial3D.new()
 
 
 func _ready():
+	material_gris.albedo_color = COLOR_GRIS
+	material_gris.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	if name == "Personaje2":
 		sufijo = "2"
 	if sufijo == "2":
@@ -75,7 +83,7 @@ func _physics_process(delta):
 	var paso = speed / tiempo_arranque * delta
 
 	# Empujón de un atacante: no controla el movimiento mientras está aturdido
-	if aturdido > 0.0:
+	if aturdido > 0.0 or desmayado:
 		aturdido = maxf(aturdido - delta, 0.0)
 		objetivo = Vector3.ZERO
 		direction = Vector3.ZERO
@@ -92,7 +100,7 @@ func _physics_process(delta):
 	move_and_slide()
 	var antes = estado
 	estado = elegir_estado()
-	if estado == Estado.RESOLVIENDO:
+	if estado == Estado.RESOLVIENDO or estado == Estado.ARRASTRANDO:
 		multiplicador = RAPIDEZ[estado] / speed
 	else:
 		multiplicador = 1.0
@@ -107,7 +115,17 @@ func empujar(direccion: Vector3, fuerza: float = 8.0, tiempo: float = 0.5):
 	aturdido = tiempo
 
 
+func poner_gris(activo: bool):
+	var capa = null
+	if activo:
+		capa = material_gris
+	for malla in find_children("*", "MeshInstance3D", true, false):
+		malla.material_overlay = capa
+
+
 func elegir_estado():
+	if agarrando:
+		return Estado.ARRASTRANDO
 	if Input.is_action_pressed(_accion("interactuar")):
 		return Estado.RESOLVIENDO
 	var rapidez = Vector2(velocity.x, velocity.z).length()
@@ -119,6 +137,12 @@ func elegir_estado():
 
 
 func animar():
+	if desmayado:
+		if not animacion_desmayo:
+			animacion_desmayo = true
+			anim.play("die", 0.15)
+		return
+	animacion_desmayo = false
 	if accion != "":
 		anim.play(accion)
 		return
@@ -131,3 +155,5 @@ func animar():
 			anim.play("idle")
 		Estado.CORRER:
 			anim.play("sprint")
+		Estado.ARRASTRANDO:
+			anim.play("holding-both")

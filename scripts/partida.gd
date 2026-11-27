@@ -9,8 +9,6 @@ const MINIMO_SALVADOS := 5
 const TOTAL_ADMINISTRATIVOS := 10
 
 
-@export var ira_maxima_pierde := true
-
 @export var tiempo_limite = 180.0
 @export var metas = 0
 @export var noche_en = 80.0
@@ -46,6 +44,7 @@ func _physics_process(delta):
 	sincronizar_hud()
 	conectar_ira()
 	revisar_administrativos()
+	revisar_jugadores()
 	if estado != Estado.JUGANDO:
 		return
 
@@ -117,14 +116,22 @@ func _al_cambiar_ira(valor):
 	var j = _juego()
 	if j != null:
 		j.ira = float(valor)
-	if ira_maxima_pierde and valor >= generador_incidentes.IRA_MAXIMA:
-		perder("La Ira llegó al máximo: se ignoraron demasiados incidentes")
 
 
 func revisar_administrativos():
 	var j = _juego()
 	if j != null and j.administrativos < MINIMO_SALVADOS:
 		perder("Se perdieron 6 administrativos")
+
+
+func revisar_jugadores():
+	var jugadores = get_tree().get_nodes_in_group("jugador")
+	if jugadores.size() < 2:
+		return
+	for j in jugadores:
+		if not j.desmayado:
+			return
+	perder("Los dos policías se desmayaron")
 
 
 func _juego():

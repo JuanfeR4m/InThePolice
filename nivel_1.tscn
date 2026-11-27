@@ -4,4 +4,13 @@
 
 [node name="Nivel1" unique_id=1034632057 instance=ExtResource("1_xi31o")]
 
+[node name="Entrada2" parent="PuntosCiudadanos" parent_id_path=PackedInt32Array(1263945081) index="1" unique_id=1864387530]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -1.6798286)
+
+[node name="Entrada3" parent="PuntosCiudadanos" parent_id_path=PackedInt32Array(1263945081) index="2" unique_id=1070046695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.933922, 0, -3.2331772)
+
+[node name="Entrada4" parent="PuntosCiudadanos" parent_id_path=PackedInt32Array(1263945081) index="3" unique_id=2045849592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43636322, 0, 24.350452)
+
 [editable path="ZonaA"]
