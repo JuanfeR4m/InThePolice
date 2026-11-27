@@ -213,7 +213,8 @@ func elegir_policia():
 	var mejor = null
 	var mejor_score = INF
 	for p in get_tree().get_nodes_in_group("jugador"):
-		if not is_instance_valid(p):
+		# Un policía desmayado no cuenta: golpearlo no hace nada y el otro quedaría libre
+		if not is_instance_valid(p) or p.desmayado:
 			continue
 		var score = global_position.distance_to(p.global_position) + 3.0 * contar_perseguidores(p)
 		if p == jugador:
@@ -221,6 +222,11 @@ func elegir_policia():
 		if score < mejor_score:
 			mejor_score = score
 			mejor = p
+	if mejor == null:
+		# Los dos caídos: conserva el último objetivo para que el resto del script no falle
+		if is_instance_valid(jugador):
+			return jugador
+		return get_tree().get_first_node_in_group("jugador")
 	return mejor
 
 
@@ -358,6 +364,8 @@ func recibir_golpe(cuanto, direccion = Vector3.ZERO):
 func golpear():
 	if distancia() > alcance_golpe:
 		print(name, " falla a ", snappedf(distancia(), 0.01), " m")
+		return
+	if jugador.desmayado:
 		return
 	var salud = jugador.get_node_or_null("Salud")
 	if salud != null and salud.has_method("recibir_golpe"):

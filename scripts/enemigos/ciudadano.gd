@@ -204,6 +204,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= 9.8 * delta
 
+	_actualizar_jugador()
 	if is_instance_valid(agarrado_por):
 		_ser_llevado()
 	elif empujado:
@@ -320,6 +321,13 @@ func _policia_mas_cercano() -> Node3D:
 			menor = d
 			mejor = p
 	return mejor
+
+## `jugador` es el policía de pie más cercano (antes era siempre el jugador 1).
+## Si los dos están desmayados se queda con el último que tenía.
+func _actualizar_jugador() -> void:
+	var cercano := _policia_mas_cercano()
+	if cercano != null:
+		jugador = cercano
 
 func _distancia_plana(punto: Vector3) -> float:
 	return Vector2(global_position.x - punto.x, global_position.z - punto.z).length()

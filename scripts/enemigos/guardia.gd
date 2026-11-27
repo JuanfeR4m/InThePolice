@@ -34,6 +34,7 @@ func _physics_process(delta):
 	reloj = maxf(reloj - delta, 0.0)
 	busca = maxf(busca - delta, 0.0)
 
+	actualizar_jugador()
 	var d = distancia_a(jugador.global_position)
 	var ve = lo_ve()
 	if ve:
@@ -62,6 +63,21 @@ func _physics_process(delta):
 				frenar()
 
 	move_and_slide()
+
+
+## Persigue al policía de pie más cercano (antes era siempre el jugador 1)
+func actualizar_jugador():
+	var mejor = null
+	var menor = INF
+	for p in get_tree().get_nodes_in_group("jugador"):
+		if p.desmayado:
+			continue
+		var dist = distancia_a(p.global_position)
+		if dist < menor:
+			menor = dist
+			mejor = p
+	if mejor != null:
+		jugador = mejor
 
 
 func decidir(d, ve):
