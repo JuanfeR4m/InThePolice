@@ -1,7 +1,9 @@
 extends CharacterBody3D
 
-enum Estado { QUIETO, CAMINAR, CORRER, RESOLVIENDO }
-const RAPIDEZ = [0.0, 4.0, 7.0, 0.5]
+enum Estado { QUIETO, CAMINAR, CORRER, RESOLVIENDO, ARRASTRANDO }
+const RAPIDEZ = [0.0, 4.0, 7.0, 0.5, 2.5]
+const RADIO_AYUDA := 2.0
+const COLOR_GRIS := Color(0.5, 0.5, 0.5, 0.85)
 
 @export var camara: Camera3D
 @export var speed_caminar: float = 4.0
@@ -17,12 +19,23 @@ var accion = ""
 var avance = Vector3.ZERO
 var estado = Estado.QUIETO
 var ruido = 0.0
+var aturdido = 0.0
+var agarrando = false
+var desmayado = false
+var animacion_desmayo = false
+var animacion_aturdido = false
+var material_gris := StandardMaterial3D.new()
 
 
 func _ready():
+	material_gris.albedo_color = COLOR_GRIS
+	material_gris.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	if name == "Personaje2":
 		sufijo = "2"
 	if sufijo == "2":
+		# nivel_1 instancia personaje.tscn como "Personaje2": viene en el grupo jugador1
+		remove_from_group("jugador1")
+		add_to_group("jugador2")
 		_poner_tecla("Interactuar", "interactuar2")
 		_poner_tecla("Fuerza", "fuerza2")
 		_poner_tecla("Apuntar", "disparar2")
@@ -40,10 +53,10 @@ func _accion(base: String) -> String:
 	return base + "1"
 
 
-func _poner_tecla(nodo: String, accion: String):
+func _poner_tecla(nodo: String, nombre_accion: String):
 	var n = get_node_or_null(nodo)
 	if n != null:
-		n.tecla = accion
+		n.tecla = nombre_accion
 
 
 func aplicar_color(color: Color):
@@ -70,6 +83,13 @@ func _physics_process(delta):
 	var objetivo = direction * speed * multiplicador
 	var paso = speed / tiempo_arranque * delta
 
+	# Empujón de un atacante: no controla el movimiento mientras está aturdido
+	if aturdido > 0.0 or desmayado:
+		aturdido = maxf(aturdido - delta, 0.0)
+		objetivo = Vector3.ZERO
+		direction = Vector3.ZERO
+	empuje = empuje.move_toward(Vector3.ZERO, 25.0 * delta)
+
 	avance = avance.move_toward(objetivo, paso)
 
 	velocity.x = avance.x + empuje.x
@@ -81,7 +101,7 @@ func _physics_process(delta):
 	move_and_slide()
 	var antes = estado
 	estado = elegir_estado()
-	if estado == Estado.RESOLVIENDO:
+	if estado == Estado.RESOLVIENDO or estado == Estado.ARRASTRANDO:
 		multiplicador = RAPIDEZ[estado] / speed
 	else:
 		multiplicador = 1.0
@@ -90,7 +110,23 @@ func _physics_process(delta):
 	animar()
 
 
+## Un atacante empuja al policía (lo llama ciudadano.gd)
+func empujar(direccion: Vector3, fuerza: float = 8.0, tiempo: float = 0.5):
+	empuje = direccion.normalized() * fuerza
+	aturdido = tiempo
+
+
+func poner_gris(activo: bool):
+	var capa = null
+	if activo:
+		capa = material_gris
+	for malla in find_children("*", "MeshInstance3D", true, false):
+		malla.material_overlay = capa
+
+
 func elegir_estado():
+	if agarrando:
+		return Estado.ARRASTRANDO
 	if Input.is_action_pressed(_accion("interactuar")):
 		return Estado.RESOLVIENDO
 	var rapidez = Vector2(velocity.x, velocity.z).length()
@@ -102,6 +138,19 @@ func elegir_estado():
 
 
 func animar():
+	if desmayado:
+		if not animacion_desmayo:
+			animacion_desmayo = true
+			anim.play("die", 0.15)
+		return
+	animacion_desmayo = false
+	# Empujado (por un ciudadano o por el compañero): cae mientras dura el aturdimiento
+	if aturdido > 0.0 and anim.has_animation("fall"):
+		if not animacion_aturdido:
+			animacion_aturdido = true
+			anim.play("fall", 0.1)
+		return
+	animacion_aturdido = false
 	if accion != "":
 		anim.play(accion)
 		return
@@ -114,3 +163,5 @@ func animar():
 			anim.play("idle")
 		Estado.CORRER:
 			anim.play("sprint")
+		Estado.ARRASTRANDO:
+			anim.play("holding-both")

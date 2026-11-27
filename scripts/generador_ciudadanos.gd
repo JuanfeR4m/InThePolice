@@ -1,4 +1,4 @@
-class_name GeneradorCiudadanos
+
 extends Node
 
 const GRUPO_CIUDADANOS := "ciudadanos"
@@ -6,6 +6,8 @@ const GRUPO_JUGADOR := "jugador"
 const DISTANCIA_LIBRE := 1.5
 const DISTANCIA_JUGADOR := 4.0
 const INTENTOS := 15
+# Reparte los rumbos de los ciudadanos de forma pareja alrededor del círculo
+const ANGULO_DORADO := 2.39996323
 const RAPIDEZ_MIN := 1.5
 const RAPIDEZ_MAX := 2.5
 
@@ -15,10 +17,12 @@ const RAPIDEZ_MAX := 2.5
 @export var objetivo: Node3D
 @export var inicial := 25
 @export var maximo := 30
-@export var radio_entrada := 8.0
-@export var radio_inicial := 15.0
+## Mitad del lado de la feria (cuadrado centrado en `centro`); las cercas están en 15
+@export var lado_feria := 13.0
 
 var hay_malla := false
+var creados := 0
+var rumbo_base := randf() * TAU
 
 func _ready() -> void:
 	if escenas.is_empty() or centro == null:
@@ -51,6 +55,7 @@ func crear(posicion: Vector3, destino: Vector3) -> void:
 	ciudadano.viene_de_afuera = true
 	ciudadano.rapidez = randf_range(RAPIDEZ_MIN, RAPIDEZ_MAX)
 	ciudadano.objetivo = objetivo
+	creados += 1
 	add_child(ciudadano)
 	ciudadano.global_position = posicion
 
@@ -61,7 +66,7 @@ func ajustar_a_malla(mapa: RID, punto: Vector3) -> Vector3:
 
 func posicion_inicial(mapa: RID) -> Vector3:
 	for i in INTENTOS:
-		var punto := centro.global_position + punto_en_circulo(radio_inicial)
+		var punto := centro.global_position + punto_en_feria()
 		punto = ajustar_a_malla(mapa, punto)
 		if esta_libre(punto):
 			return punto
@@ -78,10 +83,8 @@ func hay_cerca(punto: Vector3, grupo: String, distancia: float) -> bool:
 			return true
 	return false
 
-func punto_en_circulo(radio: float) -> Vector3:
-	var angulo := randf() * TAU
-	var distancia := sqrt(randf()) * radio
-	return Vector3(cos(angulo), 0.0, sin(angulo)) * distancia
+func punto_en_feria() -> Vector3:
+	return Vector3(randf_range(-lado_feria, lado_feria), 0.0, randf_range(-lado_feria, lado_feria))
 
 func punto_libre() -> Node3D:
 	var libres: Array[Node3D] = []
@@ -94,4 +97,4 @@ func punto_libre() -> Node3D:
 	return libres.pick_random()
 
 func entrada_al_azar() -> Vector3:
-	return centro.global_position + punto_en_circulo(radio_entrada)
+	return centro.global_position + punto_en_feria()

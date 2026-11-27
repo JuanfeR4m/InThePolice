@@ -4,11 +4,15 @@ extends Node3D
 signal resuelto(incidente: IncidentePresionado)
 signal escalado(incidente: IncidentePresionado)
 
+enum Modo { MANTENER, ESPICHAR, JUNTOS, ESPICHAR_JUNTOS, ALTERNAR, SECUENCIA }
+
 const TIEMPO_RESOLVER := 3.0
 const TIEMPO_ALERTA := 10.0
 const TIEMPO_LIMITE := 15.0
 const COLOR_NORMAL := Color("F2B632")
 const COLOR_ALERTA := Color("D63A3A")
+# El dibujo del anillo es amarillo; este tinte lo vuelve rojo al entrar en alerta
+const TINTE_ANILLO_ALERTA := Color(0.9, 0.12, 0.12)
 const VELOCIDAD_ALERTA := 10.0
 const PELEADORES := 2
 const RADIO_FORMACION := 1.0
@@ -16,15 +20,22 @@ const CURIOSOS := 3
 const DISTANCIA_MIRAR := 2.2
 const RADIO_RECLUTAR := 70.0
 const RADIO_CURIOSOS := 40.0
-const ESPERA_MAXIMA := 25.0
+const RADIO_HUIDA := 12.0   # los que no miran y están así de cerca se alejan
+const ESPERA_MAXIMA := 40.0
 const INTERVALO_RECLUTAR := 1.0
+const PRESIONES := 12
+const CAIDA_PRESIONES := 0.25
+const VENTANA_JUNTOS := 0.3
+const SECUENCIA := [1, 2, 2, 1, 2]
 
+@export var modo := Modo.MANTENER
 @export var escena_pelea: PackedScene
 
-@onready var anillo: MeshInstance3D = $Anillo
+@onready var anillo: AnimatedSprite3D = $Anillo
 @onready var zona: Area3D = $Zona
 @onready var alerta: MeshInstance3D = $Alerta
 @onready var indicador: MeshInstance3D = $Indicador
+@onready var aviso: AvisoTecla = $Indicador/Aviso
 
 var puestos: Array = []
 var puestos_curiosos: Array = []
@@ -36,9 +47,12 @@ var reloj_reclutar := 0.0
 var jugador1_cerca := false
 var jugador2_cerca := false
 var progreso := 0.0
+var paso := 0
+var ultimo := 0
+var reloj1 := 0.0
+var reloj2 := 0.0
 var espera := 0.0
 var en_rojo := false
-var material_anillo := StandardMaterial3D.new()
 var material_alerta: ShaderMaterial
 var material_indicador: ShaderMaterial
 
@@ -46,15 +60,17 @@ func _ready() -> void:
 	add_to_group("incidentes")
 	puestos.resize(PELEADORES)
 	puestos_curiosos.resize(CURIOSOS)
-	material_anillo.albedo_color = COLOR_NORMAL
-	anillo.material_override = material_anillo
 	material_alerta = alerta.material_override.duplicate()
 	alerta.material_override = material_alerta
 	material_indicador = indicador.material_override.duplicate()
 	indicador.material_override = material_indicador
 	anillo.visible = false
+	var nube_hija := get_node_or_null("Pelea")
+	if nube_hija != null:
+		nube_hija.visible = false
 	alerta.visible = false
 	indicador.visible = false
+	aviso.configurar(modo, modo == Modo.MANTENER or modo == Modo.JUNTOS)
 	zona.monitoring = false
 
 func _process(delta: float) -> void:
@@ -73,17 +89,17 @@ func _process(delta: float) -> void:
 	if espera >= TIEMPO_ALERTA and not en_rojo:
 		en_rojo = true
 		pasar_a_rojo()
-	if estan_resolviendo():
-		progreso += delta
-	else:
-		progreso = 0.0
+	actualizar_progreso(delta)
 	var cerca := jugador1_cerca or jugador2_cerca
 	alerta.visible = not cerca
 	indicador.visible = cerca
-	material_indicador.set_shader_parameter("progreso", progreso / TIEMPO_RESOLVER)
-	if progreso >= TIEMPO_RESOLVER:
+	material_indicador.set_shader_parameter("progreso", progreso)
+	if progreso >= 1.0:
 		resuelto.emit(self)
 		queue_free()
+		return
+	if cerca:
+		actualizar_aviso()
 
 func esta_mas_cerca(a: Node3D, b: Node3D) -> bool:
 	return a.global_position.distance_squared_to(global_position) < b.global_position.distance_squared_to(global_position)
@@ -135,8 +151,12 @@ func indice_cercano(c: Node3D) -> int:
 			mejor = i
 	return mejor
 
+## Las peleas son dentro de la cerca: solo pelea quien ya entró a la feria.
+func esta_en_feria(c: Node3D) -> bool:
+	return not c.has_method("esta_dentro_de_feria") or c.esta_dentro_de_feria()
+
 func acepta_peleador(c: Node3D) -> bool:
-	return not iniciado and indice_libre(puestos) != -1 \
+	return not iniciado and indice_libre(puestos) != -1 and esta_en_feria(c) \
 		and c.global_position.distance_to(global_position) <= RADIO_RECLUTAR
 
 func acepta_curioso(c: Node3D) -> bool:
@@ -181,7 +201,7 @@ func reclutar() -> void:
 	if not iniciado:
 		var candidatos: Array[Node3D] = []
 		for c in get_tree().get_nodes_in_group("ciudadanos"):
-			if c.has_method("disponible") and c.disponible() \
+			if c.has_method("disponible") and c.disponible() and esta_en_feria(c) \
 			and c.global_position.distance_to(global_position) <= RADIO_RECLUTAR:
 				candidatos.append(c)
 		ordenar_por_cercania(candidatos)
@@ -190,15 +210,20 @@ func reclutar() -> void:
 				break
 		reclutados = true
 		return
-	var mirones: Array[Node3D] = []
+	# La pelea ya empezó: unos ciudadanos cercanos van a mirar, los demás se alejan
+	var cercanos: Array[Node3D] = []
 	for c in get_tree().get_nodes_in_group("ciudadanos"):
-		if c.has_method("puede_mirar") and c.puede_mirar() \
+		if c.has_method("disponible") and c.disponible() \
 		and c.global_position.distance_to(global_position) <= RADIO_CURIOSOS:
-			mirones.append(c)
-	ordenar_por_cercania(mirones)
-	for c in mirones:
-		if not inscribir_curioso(c):
-			break
+			cercanos.append(c)
+	ordenar_por_cercania(cercanos)
+	for c in cercanos:
+		var quiere_mirar: bool = c.has_method("puede_mirar") and c.puede_mirar()
+		if quiere_mirar and indice_libre(puestos_curiosos) != -1:
+			inscribir_curioso(c)
+		elif c.has_method("alejarse_de") \
+		and c.global_position.distance_to(global_position) <= RADIO_HUIDA:
+			c.alejarse_de(global_position, RADIO_HUIDA + 6.0)
 
 func llegaron_todos() -> bool:
 	var activos := peleadores_activos()
@@ -216,6 +241,12 @@ func revisar_llegada(delta: float) -> void:
 	if llegaron_todos():
 		iniciar()
 	elif espera_llegada >= ESPERA_MAXIMA:
+		var activos := peleadores_activos()
+		var llegaron := 0
+		for p in activos:
+			if p.llego:
+				llegaron += 1
+		push_warning("Incidente cancelado: reclutados %d/%d, llegaron %d" % [activos.size(), PELEADORES, llegaron])
 		queue_free()
 
 func iniciar() -> void:
@@ -226,10 +257,17 @@ func iniciar() -> void:
 
 func mostrar_pelea() -> void:
 	var activos := peleadores_activos()
-	if escena_pelea == null or activos.is_empty():
+	if activos.is_empty():
 		return
-	nube_pelea = escena_pelea.instantiate()
-	add_child(nube_pelea)
+	if escena_pelea != null:
+		nube_pelea = escena_pelea.instantiate()
+		add_child(nube_pelea)
+	else:
+		# En la escena la nube ya viene como nodo hijo "Pelea" (escena_pelea no se asigna)
+		nube_pelea = get_node_or_null("Pelea")
+	if nube_pelea == null:
+		return
+	nube_pelea.visible = true
 	nube_pelea.mostrar_sobre(activos)
 
 func _exit_tree() -> void:
@@ -239,17 +277,99 @@ func _exit_tree() -> void:
 		c.dejar_de_curiosear()
 
 func pasar_a_rojo() -> void:
-	material_anillo.albedo_color = COLOR_ALERTA
+	anillo.modulate = TINTE_ANILLO_ALERTA
 	material_alerta.set_shader_parameter("color_relleno", COLOR_ALERTA)
 	material_alerta.set_shader_parameter("velocidad", VELOCIDAD_ALERTA)
 	material_indicador.set_shader_parameter("color_centro", COLOR_ALERTA)
 
+func jugador_desmayado(grupo: String) -> bool:
+	var jugador = get_tree().get_first_node_in_group(grupo)
+	return jugador != null and jugador.desmayado
+
+func puede1() -> bool:
+	return jugador1_cerca and not jugador_desmayado("jugador1")
+
+func puede2() -> bool:
+	return jugador2_cerca and not jugador_desmayado("jugador2")
+
 func estan_resolviendo() -> bool:
-	if jugador1_cerca and Input.is_action_pressed("interactuar1"):
+	if puede1() and Input.is_action_pressed("interactuar1"):
 		return true
-	if jugador2_cerca and Input.is_action_pressed("interactuar2"):
+	if puede2() and Input.is_action_pressed("interactuar2"):
 		return true
 	return false
+
+func presiono1() -> bool:
+	return puede1() and Input.is_action_just_pressed("interactuar1")
+
+func presiono2() -> bool:
+	return puede2() and Input.is_action_just_pressed("interactuar2")
+
+func sostienen_los_dos() -> bool:
+	return puede1() and puede2() \
+		and Input.is_action_pressed("interactuar1") \
+		and Input.is_action_pressed("interactuar2")
+
+func actualizar_progreso(delta: float) -> void:
+	match modo:
+		Modo.MANTENER:
+			if estan_resolviendo():
+				progreso += delta / TIEMPO_RESOLVER
+			else:
+				progreso = 0.0
+		Modo.ESPICHAR:
+			progreso = maxf(progreso - CAIDA_PRESIONES * delta, 0.0)
+			if presiono1() or presiono2():
+				progreso += 1.0 / PRESIONES
+		Modo.JUNTOS:
+			if sostienen_los_dos():
+				progreso += delta / TIEMPO_RESOLVER
+			else:
+				progreso = 0.0
+		Modo.ESPICHAR_JUNTOS:
+			progreso = maxf(progreso - CAIDA_PRESIONES * delta, 0.0)
+			reloj1 = maxf(reloj1 - delta, 0.0)
+			reloj2 = maxf(reloj2 - delta, 0.0)
+			if presiono1():
+				reloj1 = VENTANA_JUNTOS
+			if presiono2():
+				reloj2 = VENTANA_JUNTOS
+			if reloj1 > 0.0 and reloj2 > 0.0:
+				progreso += 1.0 / PRESIONES
+				reloj1 = 0.0
+				reloj2 = 0.0
+		Modo.ALTERNAR:
+			progreso = maxf(progreso - CAIDA_PRESIONES * delta, 0.0)
+			if presiono1() and ultimo != 1:
+				ultimo = 1
+				progreso += 1.0 / PRESIONES
+			elif presiono2() and ultimo != 2:
+				ultimo = 2
+				progreso += 1.0 / PRESIONES
+		Modo.SECUENCIA:
+			var esperado: int = SECUENCIA[paso]
+			if (esperado == 1 and presiono1()) or (esperado == 2 and presiono2()):
+				paso += 1
+			elif presiono1() or presiono2():
+				paso = 0
+			progreso = float(paso) / SECUENCIA.size()
+
+func siguiente_tecla() -> int:
+	match modo:
+		Modo.ALTERNAR:
+			if ultimo == 1:
+				return 2
+			if ultimo == 2:
+				return 1
+		Modo.SECUENCIA:
+			var esperado: int = SECUENCIA[paso]
+			return esperado
+	return 0
+
+func actualizar_aviso() -> void:
+	aviso.mostrar_estado(Input.is_action_pressed("interactuar1"), Input.is_action_pressed("interactuar2"), siguiente_tecla())
+	if modo == Modo.SECUENCIA:
+		aviso.mostrar_secuencia(SECUENCIA, paso)
 
 func _on_zona_body_entered(body: Node3D) -> void:
 	if body.is_in_group("jugador1"):

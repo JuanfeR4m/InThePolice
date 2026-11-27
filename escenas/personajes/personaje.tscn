@@ -6,12 +6,16 @@
 [ext_resource type="Script" uid="uid://d3oyghjp2e16o" path="res://scripts/prototipos/apuntar.gd" id="5_pqm5q"]
 [ext_resource type="Script" uid="uid://ciqkdsc7x5rl2" path="res://scripts/jugador/interactuar.gd" id="6_2vb47"]
 [ext_resource type="PackedScene" uid="uid://c6ahemttr3fhi" path="res://assets/modelos_kenney/GLB format/character-male-c.glb" id="6_cx4ix"]
+[ext_resource type="Script" uid="uid://b5po0gb82iele" path="res://scripts/jugador/marcador_policia.gd" id="7_marcador"]
+[ext_resource type="Script" uid="uid://6vphsqwcrd1r" path="res://scripts/jugador/aro_policia.gd" id="8_aro"]
+[ext_resource type="Script" uid="uid://d3pweifgl7auw" path="res://scripts/salud.gd" id="9_64020"]
 
 [sub_resource type="CapsuleShape3D" id="Capsula"]
 radius = 0.35
 height = 1.75
 
 [node name="Personaje" type="CharacterBody3D" unique_id=2144265238 groups=["jugador", "jugador1"]]
+collision_mask = 3
 script = ExtResource("1_rnc3r")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1178244521]
@@ -30,10 +34,25 @@ alcance = 2.0
 
 [node name="Interactuar" type="Node" parent="." unique_id=1684086891]
 script = ExtResource("6_2vb47")
-tiempo_necesario = 3.0
 
 [node name="Modelo" parent="." unique_id=1292492849 instance=ExtResource("6_cx4ix")]
 transform = Transform3D(-2.6, 0, -2.2729921e-07, 0, 2.6, 0, 2.2729921e-07, 0, -2.6, 0, 0, 0)
 
 [node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=913766440]
 radius = 0.6
+
+[node name="Marcador" type="Sprite3D" parent="." unique_id=545618293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+pixel_size = 0.004
+billboard = 1
+script = ExtResource("7_marcador")
+
+[node name="Aro" type="Sprite3D" parent="." unique_id=863136210]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+cast_shadow = 0
+pixel_size = 0.0035
+axis = 1
+script = ExtResource("8_aro")
+
+[node name="Salud" type="Node" parent="." unique_id=1520413708]
+script = ExtResource("9_64020")

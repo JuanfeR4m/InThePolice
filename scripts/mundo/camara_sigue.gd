@@ -1,20 +1,24 @@
 extends Camera3D
 
+
 @export var objetivos: Array[Node3D] = []
 @export var direccion = Vector3(0, 9, 4)
-@export var suavizado = 3.0
+@export var suavizado = 5.0
 
-@export var limite_min = Vector2(-15, -15)
-@export var limite_max = Vector2(15, 15)
-@export var margen_vista = 1.0
+@export var limite_min = Vector2(-140, -140)
+@export var limite_max = Vector2(140, 140)
 
 @export var zoom_min = 1.0
-@export var zoom_max = 2.2
-@export var separacion_min = 6.0
-@export var separacion_max = 30.0
-@export var suavizado_zoom = 2.0
+@export var zoom_max = 5.0
+
+@export_range(0.0, 0.5) var margen_pantalla = 0.18
+
+@export var velocidad_alejar = 5.0
+@export var velocidad_acercar = 1.5
 
 var zoom_actual = 1.0
+var foco_actual = Vector3.ZERO
+
 
 func _ready():
 	top_level = true
@@ -27,8 +31,10 @@ func _ready():
 		push_warning("Camara: no se encontraron los jugadores")
 		set_physics_process(false)
 		return
-	var foco = _calcular_foco()
-	look_at_from_position(foco + direccion, foco)
+	foco_actual = _limitar_foco(_calcular_foco())
+	zoom_actual = _zoom_necesario(foco_actual)
+	look_at_from_position(foco_actual + direccion * zoom_actual, foco_actual)
+
 
 func _calcular_foco() -> Vector3:
 	var suma = Vector3.ZERO
@@ -39,46 +45,66 @@ func _calcular_foco() -> Vector3:
 			n += 1
 	return suma / n if n > 0 else Vector3.ZERO
 
-func _calcular_separacion() -> float:
-	if objetivos.size() < 2 or objetivos[0] == null or objetivos[1] == null:
-		return 0.0
-	var a = objetivos[0].global_position
-	var b = objetivos[1].global_position
-	return Vector2(a.x - b.x, a.z - b.z).length()
 
-func _extension_visible(zoom: float) -> Vector2:
-	var dist = direccion.length() * zoom
-	var mitad_alto = dist * tan(deg_to_rad(fov) * 0.5)
+func _limitar_foco(foco: Vector3) -> Vector3:
+	foco.x = clamp(foco.x, limite_min.x, limite_max.x)
+	foco.z = clamp(foco.z, limite_min.y, limite_max.y)
+	return foco
+
+
+func _en_pantalla(punto: Vector3, foco: Vector3, zoom: float) -> Vector2:
+	var vista = Transform3D.IDENTITY.looking_at(-direccion, Vector3.UP)
+	vista.origin = foco + direccion * zoom
+	var local = vista.affine_inverse() * punto
+	if local.z >= -0.01:
+		return Vector2(INF, INF)
 	var vp = get_viewport().get_visible_rect().size
 	var aspecto = vp.x / vp.y
-	var elevacion = atan2(direccion.y, Vector2(direccion.x, direccion.z).length())
-	return Vector2(mitad_alto * aspecto, mitad_alto / sin(elevacion)) * margen_vista
+	var t = tan(deg_to_rad(fov) * 0.5)
+	var prof = -local.z
+	if keep_aspect == Camera3D.KEEP_WIDTH:
+		return Vector2(local.x / prof / t, local.y / prof / t * aspecto)
+	return Vector2(local.x / prof / (t * aspecto), local.y / prof / t)
 
-func _zoom_tope() -> float:
-	var ext1 = _extension_visible(1.0)
-	var mitad_mapa = (limite_max - limite_min) * 0.5
-	var tope = min(mitad_mapa.x / ext1.x, mitad_mapa.y / ext1.y)
-	return max(tope, zoom_min)
+
+func _caben_todos(foco: Vector3, zoom: float) -> bool:
+	var limite = 1.0 - margen_pantalla
+	for o in objetivos:
+		if o == null:
+			continue
+		var p = _en_pantalla(o.global_position + Vector3(0, 1.0, 0), foco, zoom)
+		if abs(p.x) > limite or abs(p.y) > limite:
+			return false
+	return true
+
+
+
+func _zoom_necesario(foco: Vector3) -> float:
+	if _caben_todos(foco, zoom_min):
+		return zoom_min
+	if not _caben_todos(foco, zoom_max):
+		return zoom_max
+	var bajo = zoom_min
+	var alto = zoom_max
+	for i in 14:
+		var medio = (bajo + alto) * 0.5
+		if _caben_todos(foco, medio):
+			alto = medio
+		else:
+			bajo = medio
+	return alto
+
 
 func _physics_process(delta):
-	var foco = _calcular_foco()
+	var foco_objetivo = _limitar_foco(_calcular_foco())
+	foco_actual = foco_actual.lerp(foco_objetivo, clamp(suavizado * delta, 0.0, 1.0))
 
-	var tope = _zoom_tope()
-	var t = clamp(inverse_lerp(separacion_min, separacion_max, _calcular_separacion()), 0.0, 1.0)
-	var zoom_objetivo = min(lerp(zoom_min, zoom_max, t), tope)
-	zoom_actual = lerp(zoom_actual, zoom_objetivo, suavizado_zoom * delta)
-	zoom_actual = min(zoom_actual, tope)
+	
+	var zoom_objetivo = _zoom_necesario(foco_actual)
+	var velocidad = velocidad_alejar if zoom_objetivo > zoom_actual else velocidad_acercar
+	zoom_actual = lerp(zoom_actual, zoom_objetivo, clamp(velocidad * delta, 0.0, 1.0))
 
-	var ext = _extension_visible(zoom_actual)
-	var centro = (limite_min + limite_max) * 0.5
+	if not _caben_todos(foco_actual, zoom_actual):
+		zoom_actual = max(zoom_actual, zoom_objetivo)
 
-	var min_x = limite_min.x + ext.x
-	var max_x = limite_max.x - ext.x
-	foco.x = clamp(foco.x, min_x, max_x) if min_x <= max_x else centro.x
-
-	var min_z = limite_min.y + ext.y
-	var max_z = limite_max.y - ext.y
-	foco.z = clamp(foco.z, min_z, max_z) if min_z <= max_z else centro.y
-
-	var destino = foco + direccion * zoom_actual
-	global_position = global_position.lerp(destino, suavizado * delta)
+	global_position = foco_actual + direccion * zoom_actual

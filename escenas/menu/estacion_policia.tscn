@@ -1,0 +1,227 @@
+[gd_scene format=3 uid="uid://7injxgh1ixif"]
+
+[ext_resource type="Texture2D" uid="uid://bpxd52oxmeq0i" path="res://assets/efectos/Grafiti policial InThePolice.png" id="1_l8dpx"]
+
+[sub_resource type="BoxMesh" id="m_piso"]
+size = Vector3(12, 0.2, 10)
+
+[sub_resource type="StandardMaterial3D" id="mat_piso"]
+albedo_color = Color(0.52, 0.56, 0.64, 1)
+
+[sub_resource type="BoxMesh" id="m_alfombra"]
+size = Vector3(4, 0.02, 9.1)
+
+[sub_resource type="StandardMaterial3D" id="mat_alfombra"]
+albedo_color = Color(0.75, 0.15, 0.15, 1)
+
+[sub_resource type="BoxMesh" id="m_pared_fondo"]
+size = Vector3(12, 4, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="mat_pared"]
+albedo_color = Color(0.86, 0.89, 0.93, 1)
+
+[sub_resource type="BoxMesh" id="m_pared_lado"]
+size = Vector3(0.2, 4, 10)
+
+[sub_resource type="BoxMesh" id="m_banda"]
+size = Vector3(12, 0.6, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="mat_azul"]
+albedo_color = Color(0.1, 0.25, 0.6, 1)
+
+[sub_resource type="BoxMesh" id="m_mostrador"]
+size = Vector3(4, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_madera"]
+albedo_color = Color(0.45, 0.3, 0.18, 1)
+
+[sub_resource type="BoxMesh" id="m_mostrador_top"]
+size = Vector3(4.4, 0.1, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="mat_metal"]
+albedo_color = Color(0.18, 0.18, 0.24, 1)
+
+[sub_resource type="BoxMesh" id="m_barrote"]
+size = Vector3(0.08, 3, 0.08)
+
+[sub_resource type="BoxMesh" id="m_barra_top"]
+size = Vector3(2.6, 0.1, 0.1)
+
+[sub_resource type="BoxMesh" id="m_banca"]
+size = Vector3(2, 0.4, 0.6)
+
+[sub_resource type="SphereMesh" id="m_sirena"]
+radius = 0.2
+height = 0.4
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="mat_sirena_roja"]
+albedo_color = Color(1, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.05, 0.05, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="mat_sirena_azul"]
+albedo_color = Color(0.1, 0.3, 1, 1)
+emission_enabled = true
+emission = Color(0.05, 0.2, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="Environment" id="env_estacion"]
+background_mode = 1
+background_color = Color(0.35, 0.55, 0.85, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.8
+
+[node name="EstacionPolicia" type="Node3D" unique_id=27952315]
+
+[node name="Piso" type="MeshInstance3D" parent="." unique_id=807794394]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("m_piso")
+surface_material_override/0 = SubResource("mat_piso")
+
+[node name="Alfombra" type="MeshInstance3D" parent="." unique_id=1058292565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011, 0.5)
+mesh = SubResource("m_alfombra")
+surface_material_override/0 = SubResource("mat_alfombra")
+
+[node name="ParedFondo" type="MeshInstance3D" parent="." unique_id=2051230327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -4)
+mesh = SubResource("m_pared_fondo")
+surface_material_override/0 = SubResource("mat_pared")
+
+[node name="ParedIzquierda" type="MeshInstance3D" parent="." unique_id=1326572396]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2, 0)
+mesh = SubResource("m_pared_lado")
+surface_material_override/0 = SubResource("mat_pared")
+
+[node name="ParedDerecha" type="MeshInstance3D" parent="." unique_id=1060575213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2, 0)
+mesh = SubResource("m_pared_lado")
+surface_material_override/0 = SubResource("mat_pared")
+
+[node name="BandaAzul" type="MeshInstance3D" parent="." unique_id=22560079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -3.875)
+mesh = SubResource("m_banda")
+surface_material_override/0 = SubResource("mat_azul")
+
+[node name="Mostrador" type="MeshInstance3D" parent="." unique_id=520559749]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.5, -2.5)
+mesh = SubResource("m_mostrador")
+surface_material_override/0 = SubResource("mat_madera")
+
+[node name="MostradorTop" type="MeshInstance3D" parent="." unique_id=141296189]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.05, -2.5)
+mesh = SubResource("m_mostrador_top")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote1" type="MeshInstance3D" parent="." unique_id=263038105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 1.5, -1)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote2" type="MeshInstance3D" parent="." unique_id=1493715403]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, -1)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote3" type="MeshInstance3D" parent="." unique_id=568697288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4, 1.5, -1)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote4" type="MeshInstance3D" parent="." unique_id=630322653]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 1.5, -1)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote5" type="MeshInstance3D" parent="." unique_id=580734645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 1.5, -1)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote6" type="MeshInstance3D" parent="." unique_id=302338689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 1.5, -1)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="BarraSuperiorCelda" type="MeshInstance3D" parent="." unique_id=1112585431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 3, -1)
+mesh = SubResource("m_barra_top")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote7" type="MeshInstance3D" parent="." unique_id=2054241022]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.2315943, 1.5, -3.2979736)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote8" type="MeshInstance3D" parent="." unique_id=1971519084]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.2480216, 1.5, -2.898311)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote9" type="MeshInstance3D" parent="." unique_id=475432050]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.2644486, 1.5, -2.4986482)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote10" type="MeshInstance3D" parent="." unique_id=1008912592]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.2808766, 1.5, -2.0989857)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote11" type="MeshInstance3D" parent="." unique_id=126043790]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.2973037, 1.5, -1.6993234)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="Barrote12" type="MeshInstance3D" parent="." unique_id=124660052]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.3137307, 1.5, -1.2996608)
+mesh = SubResource("m_barrote")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="BarraSuperiorCelda2" type="MeshInstance3D" parent="." unique_id=1189602077]
+transform = Transform3D(0.0410684, 0, -0.99915636, 0, 1, 0, 0.99915636, 0, 0.0410684, 3.2726626, 3, -2.2988172)
+mesh = SubResource("m_barra_top")
+surface_material_override/0 = SubResource("mat_metal")
+
+[node name="BancaCelda" type="MeshInstance3D" parent="." unique_id=614592788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.630375, 0.2, -2.284645)
+mesh = SubResource("m_banca")
+surface_material_override/0 = SubResource("mat_madera")
+
+[node name="SirenaRoja" type="MeshInstance3D" parent="." unique_id=2114698299]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 3.6, -3.6)
+mesh = SubResource("m_sirena")
+surface_material_override/0 = SubResource("mat_sirena_roja")
+
+[node name="SirenaAzul" type="MeshInstance3D" parent="." unique_id=489764232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 3.6, -3.6)
+mesh = SubResource("m_sirena")
+surface_material_override/0 = SubResource("mat_sirena_azul")
+
+[node name="LuzRoja" type="OmniLight3D" parent="." unique_id=2012352614]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 3.2, -2.5)
+light_color = Color(1, 0.1, 0.1, 1)
+light_energy = 1.5
+omni_range = 7.0
+
+[node name="LuzAzul" type="OmniLight3D" parent="." unique_id=2050102156]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 3.2, -2.5)
+light_color = Color(0.1, 0.3, 1, 1)
+light_energy = 1.5
+omni_range = 7.0
+
+[node name="LuzSol" type="DirectionalLight3D" parent="." unique_id=991497567]
+transform = Transform3D(0.866, 0.35355, -0.35355, 0, 0.7071, 0.7071, 0.5, -0.61237, 0.61237, 0, 6, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1689384461]
+environment = SubResource("env_estacion")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1921262720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6097317, -3.7283354)
+pixel_size = 0.004
+texture = ExtResource("1_l8dpx")

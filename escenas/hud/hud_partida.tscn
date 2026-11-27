@@ -1,0 +1,236 @@
+[gd_scene format=3 uid="uid://b3wbnxop6qmv6"]
+
+[ext_resource type="Script" uid="uid://xcwaxlpnf1pb" path="res://scripts/hud/hud_partida.gd" id="1_hud"]
+[ext_resource type="Shader" uid="uid://yr8or1uyq0sr" path="res://shaders/hud_ambiente.gdshader" id="2_sh"]
+[ext_resource type="FontFile" uid="uid://crsanvcm60wob" path="res://assets/fuentes/LilitaOne-Regular.woff2" id="3_font"]
+[ext_resource type="Texture2D" uid="uid://dxxkb2xbc0nfn" path="res://assets/hud/cara_ira_spritesheet.png" id="4_cara"]
+[ext_resource type="Texture2D" uid="uid://c8ci6t6rlsmqk" path="res://assets/hud/cinta_policia.png" id="5_cinta"]
+[ext_resource type="Texture2D" uid="uid://brq7131corswa" path="res://assets/hud/barra_ira_fondo.png" id="6_fondo"]
+[ext_resource type="Texture2D" uid="uid://b6g7382dlp220" path="res://assets/hud/barra_ira_relleno.png" id="7_relleno"]
+[ext_resource type="Texture2D" uid="uid://dsxgfq1ln3tcy" path="res://assets/hud/barra_ira_marcas.png" id="8_marcas"]
+[ext_resource type="Texture2D" uid="uid://dqapeymhoos4n" path="res://assets/hud/icono_admin.png" id="9_admin"]
+[ext_resource type="PackedScene" uid="uid://b85qskgtbjx2y" path="res://escenas/escenario/cronometro_hud.tscn" id="10_crono"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_amb"]
+shader = ExtResource("2_sh")
+shader_parameter/noche = 0.0
+shader_parameter/peligro = 0.0
+shader_parameter/intensidad = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_placa"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.06, 0.13, 0.35, 0.94)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.86, 0, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ventana"]
+content_margin_top = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.18, 0.37, 0.82, 0.35)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cara"]
+atlas = ExtResource("4_cara")
+region = Rect2(0, 0, 249, 128)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sirena"]
+bg_color = Color(0.18, 0.42, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
+shadow_color = Color(0.18, 0.42, 1, 0.6)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_admin"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.06, 0.13, 0.35, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.86, 0, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
+shadow_offset = Vector2(0, 3)
+
+[node name="HUD" type="CanvasLayer" unique_id=634129480]
+layer = 0
+script = ExtResource("1_hud")
+ira_max = 60.0
+
+[node name="Raiz" type="Control" parent="." unique_id=760117509]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Ambiente" type="ColorRect" parent="Raiz" unique_id=1753726279]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_amb")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PlacaIra" type="PanelContainer" parent="Raiz" unique_id=665780479]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 17.0
+offset_bottom = 13.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_placa")
+
+[node name="Columna" type="VBoxContainer" parent="Raiz/PlacaIra" unique_id=395719785]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Cinta" type="TextureRect" parent="Raiz/PlacaIra/Columna" unique_id=913153539]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+texture = ExtResource("5_cinta")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="MarcoCara" type="PanelContainer" parent="Raiz/PlacaIra/Columna" unique_id=264903518]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ventana")
+
+[node name="Cara" type="TextureRect" parent="Raiz/PlacaIra/Columna/MarcoCara" unique_id=525519023]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 87)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = SubResource("AtlasTexture_cara")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FilaBarra" type="HBoxContainer" parent="Raiz/PlacaIra/Columna" unique_id=344107892]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Barra" type="TextureProgressBar" parent="Raiz/PlacaIra/Columna/FilaBarra" unique_id=1545565769]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+step = 0.01
+texture_under = ExtResource("6_fondo")
+texture_over = ExtResource("8_marcas")
+texture_progress = ExtResource("7_relleno")
+texture_progress_offset = Vector2(6, 6)
+
+[node name="Sirena" type="Panel" parent="Raiz/PlacaIra/Columna/FilaBarra" unique_id=1943725031]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_sirena")
+
+[node name="PlacaAdmins" type="PanelContainer" parent="Raiz" unique_id=508264375]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -17.0
+offset_right = 17.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_admin")
+
+[node name="Fila" type="HBoxContainer" parent="Raiz/PlacaAdmins" unique_id=288822696]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Icono" type="TextureRect" parent="Raiz/PlacaAdmins/Fila" unique_id=1402329725]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("9_admin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AdminNumero" type="Label" parent="Raiz/PlacaAdmins/Fila" unique_id=2132042916]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.86, 0, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.05, 0.12, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 36
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RelojAnclaje" type="Control" parent="Raiz" unique_id=1300052859]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Cronometro" parent="Raiz/RelojAnclaje" unique_id=1278080260 instance=ExtResource("10_crono")]
+position = Vector2(-114.50003, 110.875015)
+scale = Vector2(2.0078125, 1.7988279)
+tamano_texto = 26
+fuente = ExtResource("3_font")
+
+[node name="Mensaje" type="Label" parent="Raiz" unique_id=2130148431]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 110.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.86, 0, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.05, 0.12, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 54
+horizontal_alignment = 1
+vertical_alignment = 1

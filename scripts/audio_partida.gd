@@ -34,11 +34,7 @@ func _ready():
 		_empezar_musica()
 
 	
-	await get_tree().process_frame
-	var hud = get_tree().get_first_node_in_group("hud")
-	if hud != null:
-		hud.tiempo_agotado.connect(derrota)
-		hud.ira_llena.connect(derrota)
+
 
 
 func _crear_player(archivo: String, volumen: float) -> AudioStreamPlayer:
@@ -81,4 +77,5 @@ func _terminar(archivo: String):
 		p_fin.play()
 	var hud = get_tree().get_first_node_in_group("hud")
 	if hud != null:
-		hud.detener_tiempo()
+		if hud.has_method("detener_tiempo"):
+			hud.detener_tiempo()
